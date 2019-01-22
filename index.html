@@ -3,35 +3,95 @@
 <html>
 <head>
     <title>数据可视化</title>
-    <script type="text/javascript" src="d3.min.js"></script>
+    <script type="text/javascript" src="js/d3.min.js"></script>
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
     <style type="text/css">
     	html, body {
     		padding: 0px;
     		margin: 0px;
+    		border: 0px;
+    		overflow: hidden;
     	}
-    	#header {
-    		height: 35px;
-    		background-color: black;
-		    color: white;
-		    text-align: center;
-		    font-size: 20px;
-		    padding: 1px;
-    	}
-        #left_tool_bar {
-        	width: 5%;
+        #top_tool_bar {
+        	width: 100%;
+        	height: 30px;
+        	background: #027080;
+        	margin: 0px;
+        	border: 0px;
+        	padding: 0px;
+        }
+        #logo {
+        	width: 24px;
+        	height: 24px;
+        	margin: 3px;
+			float: left;
+			background-image: url('pic/logo.png');
+			background-size: cover;
+        }
+        .top_menu {
+        	width: 10%;
         	height: 100%;
+			float: left;
+			font-size: 12px;
+        }
+        #top_right_bar {
+        	float: right;
+        }
+        #search_line_layout {
+        	height: 24px;
+        	margin: 3px;
+        	margin-right: 0px;
         	float: left;
-			background: gray;
+        }
+        #search_line {
+        	width: 90px;
+        	height: 20px;
+        	border: 0px;
+        	padding: 0px;
+        	float: left;
+        	border: 1px solid #0F9C8D;
+        	border-radius: 3px;
+        	background-color: transparent;
+        }
+        #search_line:hover {
+        	border-color: #16E3CD;
+        }
+		#search_button {
+			width: 22px;
+			height: 22px;
+		}
+		.top_tool_button {
+        	width: 30px;
+        	float: left;
+        	padding: 5px;
+        }
+        #left_tool_bar {
+        	position: absolute;
+        	width: 30px;
+        	height: 100%;
+			background: #027080;
         }
         #main_window {
-			width: 95%;
-			height: 90%;
-			float: left;
+        	position: absolute;
+			width: 100%;
+			height: 100%;
         }
         #svg {
-            background-color: #33B8C2;
+            background-color: #184680;
             width: 100%;
             height: 100%;
+            display: block;
+        }
+        #setting_box {
+        	width: 170px;
+        	height: 100%;
+        	opacity: 0.8;
+        	background-color: #0D877A;
+        	position: absolute;
+        	right: 0px;
+        	top: 0px;
+        	font-size: 10px;
+        	display: none;
         }
         circle {
         	cursor: move;
@@ -52,22 +112,20 @@
 		    stroke-width: 4 !important;
 		    stroke-opacity: 0.8;
 		}
-        .zoom_out {
-        	width: 100%;
-        	background: url(zoom_in.png) no-repeat 4px 5px;
-        	background-size: cover;
-        }
-        .zoom_in {
-        	width: 15px;
-        	height:  15px;
-        	background-image: url('zoom_in.png')
-        }
-        .zoom_source {
-        	width: 15px;
-        	height:  15px;
-        	background-image: url('zoom_max.png');
-        	background-size: auto;
-        }
+		button {
+			width: 100%;
+			height: 30px;
+			border: none;
+			color: white;
+			background-color: transparent;
+    		float: left;
+    		-webkit-transition-duration: 1s;
+    		transition-duration: 0.5s;
+		}
+		button:hover {
+			background-color: #55D6C2;
+    		color: white;
+		}
         #tooltip {
             position:absolute;
             width: 40px;
@@ -83,24 +141,100 @@
         #tooltip p {
             margin:0;
             font-family: sans-serif;
-            font-size: 5px;
+            font-size: 8px;
             line-height: 10px;
         }
+        input[type="range"] {
+        	display: block;
+        	-webkit-appearance: none;
+        	background-color: #bdc3c7;
+        	background-size: 20% 80%;
+        	width: 100%;
+        	height: 4px;
+        	border-radius: 5px;
+        	margin: 0 auto;
+        	outline: 0;
+        }
+		input[type="range"]::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			background-color: #e74c3c;
+			width: 8px;
+			height: 8px;
+			border-radius: 50%;
+			border: 2px solid white;
+			cursor: pointer;
+			transition: 0.3s ease-in-out;
+			}
     </style>
 </head>
 <body>
-	<div id="header">网络图数据分析平台</div>
-	<div id="left_tool_bar">
-		<div class="zoom_out"></div><br>
-		<div id="zoom_in"></div><br>
-		<div id="zoom_source"></div><br>
+	<div id="top_tool_bar">
+		<div id="logo"></div>
+		<button id="upload_data" class="top_menu"><i class="fa fa-upload"></i> 上传数据</button>
+		<button id="download_data" class="top_menu"><i class="fa fa-download"></i> 导出数据</button>
+		<button id="download_data" class="top_menu"><i class="fa fa-share"></i> 导出图片</button>
+		<div id="top_right_bar">
+			<div id="search_line_layout">
+				<input type="text" name="" id="search_line">
+				<button id="search_button"><i class="fa fa-search"></i></button>
+			</div>
+			<button class="top_tool_button" id="resize"><i class="fa fa-expand"></i></button>
+			<button class="top_tool_button" id="setting_button"><i class="fa fa-gear"></i></button>
+		</div>	
 	</div>
 	<div id="main_window">
+		<div id="left_tool_bar">
+			<button id="zoom_out"><i class="fa fa-plus-circle"></i></button>
+			<button id="zoom_in"><i class="fa fa-minus-circle"></i></button>
+			<button id="zoom_reset"><i class="fa fa-arrows-h"></i></button>
+		</div>
 		<svg id="svg"></svg>
+		<div id="setting_box">
+			<div id="setting_box_header">自定义设置<i class="fa fa-arrow-right"></i></div>
+				<table id="setting_box_content">
+					<tbody>
+						<tr>
+							<td>节点间斥力</td>
+							<td>
+								<input type="range" name="points" id="strength" min="0" max="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>节点大小</td>
+							<td>
+								<input type="range" name="points" id="node_size" min="0" max="4" step="0.1" />
+							</td>
+						</tr>
+						<tr>
+							<td>节点透明度</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>节点颜色</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>节点轮廓宽度</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>边长度</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>边颜色</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>边透明度</td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 	</div>
-
 	<div id="tooltip" class="hidden">
-	    <p><strong>This Label is:</strong></p>
+	    <p><strong>This Node is:</strong></p>
 	    <p><span id="tooltip_value">100</span></p>
 	</div>
 	<script type="text/javascript">
@@ -218,12 +352,12 @@
 		function hoverNode(hoverNode) {
 			console.log(hoverNode);
 		    // 设置提示条的x,y坐标
-            xPosition = hoverNode.x;
-            yPosition = hoverNode.y;
+            xPosition = d3.event.x;
+            yPosition = d3.event.y;
             // 更新提示条位置和值
             d3.select("#tooltip")
-              .style("left", xPosition+"px")
-              .style("top", yPosition+"px")
+              .style("left", xPosition + "px")
+              .style("top", yPosition + "px")
               .select("#tooltip_value")
               .text(hoverNode.label);
             // 显示提示条
@@ -249,6 +383,16 @@
 		function zoomed() {
 			svg.selectAll("g").attr("transform", d3.event.transform);
 		}
+		// 按钮缩放
+		d3.select("#zoom_out").on("click", function() {
+			zoom.scaleBy(svg, 2);
+		});		
+		d3.select("#zoom_in").on("click", function() {
+			zoom.scaleBy(svg, 0.5);
+		});		
+		d3.select("#zoom_reset").on("click", function() {
+			svg.call(zoom.transform, d3.zoomIdentity);
+		});
 
 		var linkElements = svg.append("g")
 		  .attr("class", "links")
@@ -298,7 +442,70 @@
 		})
 
 		simulation.force("link").links(links);
-
+	</script>
+	<script type="text/javascript">
+		d3.select("#setting_button").on("click", changeShowState);
+		var setting_box = d3.select("#setting_box");
+		var isShow = false;
+		function changeShowState() {
+			isShow = !isShow;
+			if (isShow) {
+				setting_box.style("display", "block");
+			}
+			else {
+				setting_box.style("display", "none");
+			}
+			console.log(isShow);
+		}
+	</script>
+	<script type="text/javascript">
+		d3.select("#resize").on("click", resize);
+		var check = true;
+		var resize_button = d3.select("#resize").select("i");
+		function resize() {
+			if (check) {
+				enterFullScreen()
+				resize_button.attr("class","fa fa-compress");
+			}
+			else {
+				exitFullScreen()
+				resize_button.attr("class","fa fa-expand");
+			}
+			check = !check;
+		}
+		//进入全屏
+	    function enterFullScreen() {
+	        var de = document.documentElement;
+	        if (de.requestFullscreen) {
+	            de.requestFullscreen();
+	        } else if (de.mozRequestFullScreen) {
+	            de.mozRequestFullScreen();
+	        } else if (de.webkitRequestFullScreen) {
+	            de.webkitRequestFullScreen();
+	        }
+	    }
+	    //退出全屏
+	    function exitFullScreen() {
+	        var de = document;
+	        if (de.exitFullscreen) {
+	            de.exitFullscreen();
+	        } else if (de.mozCancelFullScreen) {
+	            de.mozCancelFullScreen();
+	        } else if (de.webkitCancelFullScreen) {
+	            de.webkitCancelFullScreen();
+	        }
+	    }
+	</script>
+	<script type="text/javascript">
+		var changeSizeSlider = d3.select("#node_size");
+		changeSizeSlider.on("input propertychange", changeSize);
+		function changeSize() {
+			node_size = this.value;
+			nodeElements.attr("r", function(node, i){
+		    	return node.weight * node_size;
+		    })
+		}
+		
 	</script>
 </body>
 </html>
