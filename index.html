@@ -6,75 +6,75 @@
     <script type="text/javascript" src="js/d3.min.js"></script>
     <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
     <style type="text/css">
-    	html, body {
-    		padding: 0px;
-    		margin: 0px;
-    		border: 0px;
-    		overflow: hidden;
-    	}
+        html, body {
+            padding: 0px;
+            margin: 0px;
+            border: 0px;
+            overflow: hidden;
+        }
         #top_tool_bar {
-        	width: 100%;
-        	height: 30px;
-        	background: #027080;
-        	margin: 0px;
-        	border: 0px;
-        	padding: 0px;
+            width: 100%;
+            height: 30px;
+            background: #027080;
+            margin: 0px;
+            border: 0px;
+            padding: 0px;
         }
         #logo {
-        	width: 24px;
-        	height: 24px;
-        	margin: 3px;
-			float: left;
-			background-image: url('pic/logo.png');
-			background-size: cover;
+            width: 24px;
+            height: 24px;
+            margin: 3px;
+            float: left;
+            background-image: url('pic/logo.png');
+            background-size: cover;
         }
         .top_menu {
-        	width: 10%;
-        	height: 100%;
-			float: left;
-			font-size: 12px;
+            width: 10%;
+            height: 100%;
+            float: left;
+            font-size: 12px;
         }
         #top_right_bar {
-        	float: right;
+            float: right;
         }
         #search_line_layout {
-        	height: 24px;
-        	margin: 3px;
-        	margin-right: 0px;
-        	float: left;
+            height: 24px;
+            margin: 3px;
+            margin-right: 0px;
+            float: left;
         }
         #search_line {
-        	width: 90px;
-        	height: 20px;
-        	border: 0px;
-        	padding: 0px;
-        	float: left;
-        	border: 1px solid #0F9C8D;
-        	border-radius: 3px;
-        	background-color: transparent;
+            width: 90px;
+            height: 20px;
+            border: 0px;
+            padding: 0px;
+            float: left;
+            border: 1px solid #0F9C8D;
+            border-radius: 3px;
+            background-color: transparent;
         }
         #search_line:hover {
-        	border-color: #16E3CD;
+            border-color: #16E3CD;
         }
-		#search_button {
-			width: 22px;
-			height: 22px;
-		}
-		.top_tool_button {
-        	width: 30px;
-        	float: left;
-        	padding: 5px;
+        #search_button {
+            width: 22px;
+            height: 22px;
+        }
+        .top_tool_button {
+            width: 30px;
+            float: left;
+            padding: 5px;
         }
         #left_tool_bar {
-        	position: absolute;
-        	width: 30px;
-        	height: 100%;
-			background: #027080;
+            position: absolute;
+            width: 30px;
+            height: 100%;
+            background: #027080;
         }
         #main_window {
-        	position: absolute;
-			width: 100%;
-			height: 100%;
+            position: absolute;
+            width: 100%;
+            height: 100%;
         }
         #svg {
             background-color: #184680;
@@ -83,49 +83,56 @@
             display: block;
         }
         #setting_box {
-        	width: 170px;
-        	height: 100%;
-        	opacity: 0.8;
-        	background-color: #0D877A;
-        	position: absolute;
-        	right: 0px;
-        	top: 0px;
-        	font-size: 10px;
-        	display: none;
+            width: 170px;
+            height: 100%;
+            opacity: 0.8;
+            background-color: #0D877A;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            font-size: 10px;
+            display: none;
         }
         circle {
-        	cursor: move;
-        	stroke-opacity: 0.8;
-		    stroke-width: 2px;
-		    stroke: #fff;
+            cursor: move;
+            stroke-opacity: 0.8;
+            stroke-width: 3px;
+            stroke: white;
         }
         circle:hover {
-        	stroke-opacity: 0.5;
-        	stroke-width: 5px;
+            stroke-opacity: 0.5;
+            stroke-width: 5px;
+        }
+        .selected {
+            stroke: yellow;
         }
         line{
-		    cursor: pointer;
-		    stroke-width: 2;
-		}
+            cursor: pointer;
+            stroke: #00FFFB;
+            stroke-width: 2;
+        }
 
-		line:hover{
-		    stroke-width: 4 !important;
-		    stroke-opacity: 0.8;
-		}
-		button {
-			width: 100%;
-			height: 30px;
-			border: none;
-			color: white;
-			background-color: transparent;
-    		float: left;
-    		-webkit-transition-duration: 1s;
-    		transition-duration: 0.5s;
-		}
-		button:hover {
-			background-color: #55D6C2;
-    		color: white;
-		}
+        line:hover{
+            stroke-width: 4 !important;
+            stroke-opacity: 0.8;
+        }
+        button {
+            width: 100%;
+            height: 30px;
+            border: none;
+            color: white;
+            background-color: transparent;
+            float: left;
+            -webkit-transition-duration: 1s;
+            transition-duration: 0.5s;
+        }
+        button:hover {
+            background-color: #55D6C2;
+            color: white;
+        }
+        text {
+            fill: white;
+        }
         #tooltip {
             position:absolute;
             width: 40px;
@@ -145,213 +152,246 @@
             line-height: 10px;
         }
         input[type="range"] {
-        	display: block;
-        	-webkit-appearance: none;
-        	background-color: #bdc3c7;
-        	background-size: 20% 80%;
-        	width: 100%;
-        	height: 4px;
-        	border-radius: 5px;
-        	margin: 0 auto;
-        	outline: 0;
+            display: block;
+            -webkit-appearance: none;
+            background-color: #bdc3c7;
+            background-size: 20% 80%;
+            width: 100%;
+            height: 4px;
+            border-radius: 5px;
+            margin: 0 auto;
+            outline: 0;
         }
-		input[type="range"]::-webkit-slider-thumb {
-			-webkit-appearance: none;
-			background-color: #e74c3c;
-			width: 8px;
-			height: 8px;
-			border-radius: 50%;
-			border: 2px solid white;
-			cursor: pointer;
-			transition: 0.3s ease-in-out;
-			}
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            background-color: #e74c3c;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+            }
+    </style>
+    <style type="text/css">
+        table {
+            font-family: verdana,arial,sans-serif;
+            font-size:11px;
+            color:#333333;
+            border-width: 1px;
+            border-color: #999999;
+            border-collapse: collapse;
+        }
     </style>
 </head>
 <body>
-	<div id="top_tool_bar">
-		<div id="logo"></div>
-		<button id="upload_data" class="top_menu"><i class="fa fa-upload"></i> 上传数据</button>
-		<button id="download_data" class="top_menu"><i class="fa fa-download"></i> 导出数据</button>
-		<button id="download_data" class="top_menu"><i class="fa fa-share"></i> 导出图片</button>
-		<div id="top_right_bar">
-			<div id="search_line_layout">
-				<input type="text" name="" id="search_line">
-				<button id="search_button"><i class="fa fa-search"></i></button>
-			</div>
-			<button class="top_tool_button" id="resize"><i class="fa fa-expand"></i></button>
-			<button class="top_tool_button" id="setting_button"><i class="fa fa-gear"></i></button>
-		</div>	
-	</div>
-	<div id="main_window">
-		<div id="left_tool_bar">
-			<button id="zoom_out"><i class="fa fa-plus-circle"></i></button>
-			<button id="zoom_in"><i class="fa fa-minus-circle"></i></button>
-			<button id="zoom_reset"><i class="fa fa-arrows-h"></i></button>
-		</div>
-		<svg id="svg"></svg>
-		<div id="setting_box">
-			<div id="setting_box_header">自定义设置<i class="fa fa-arrow-right"></i></div>
-				<table id="setting_box_content">
-					<tbody>
-						<tr>
-							<td>节点间斥力</td>
-							<td>
-								<input type="range" name="points" id="strength" min="0" max="100" />
-							</td>
-						</tr>
-						<tr>
-							<td>节点大小</td>
-							<td>
-								<input type="range" name="points" id="node_size" min="0" max="4" step="0.1" />
-							</td>
-						</tr>
-						<tr>
-							<td>节点透明度</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>节点颜色</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>节点轮廓宽度</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>边长度</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>边颜色</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>边透明度</td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-	</div>
-	<div id="tooltip" class="hidden">
-	    <p><strong>This Node is:</strong></p>
-	    <p><span id="tooltip_value">100</span></p>
-	</div>
-	<script type="text/javascript">
-		// 节点数据
-		var nodes = [
-		  { id: "mammal", group: 0, label: "Mammals", level: 1 , weight: 1},
-		  { id: "dog"   , group: 0, label: "Dogs"   , level: 2 , weight: 2},
-		  { id: "cat"   , group: 0, label: "Cats"   , level: 2 , weight: 3},
-		  { id: "fox"   , group: 0, label: "Foxes"  , level: 2 , weight: 4},
-		  { id: "elk"   , group: 0, label: "Elk"    , level: 2 , weight: 5},
-		  { id: "insect", group: 1, label: "Insects", level: 1 , weight: 6},
-		  { id: "ant"   , group: 1, label: "Ants"   , level: 2 , weight: 1},
-		  { id: "bee"   , group: 1, label: "Bees"   , level: 2 , weight: 2},
-		  { id: "fish"  , group: 2, label: "Fish"   , level: 1 , weight: 3},
-		  { id: "carp"  , group: 2, label: "Carp"   , level: 2 , weight: 6},
-		  { id: "pike"  , group: 2, label: "Pikes"  , level: 2 , weight: 7}
-		]
+    <div id="top_tool_bar">
+        <div id="logo"></div>
+        <button id="upload_data" class="top_menu"><i class="fa fa-upload"></i> 上传数据</button>
+        <button id="download_data" class="top_menu"><i class="fa fa-download"></i> 导出数据</button>
+        <button id="download_img" class="top_menu"><i class="fa fa-share"></i> 导出图片</button>
+        <div id="top_right_bar">
+            <div id="search_line_layout">
+                <input type="text" name="" id="search_line">
+                <button id="search_button"><i class="fa fa-search"></i></button>
+            </div>
+            <button class="top_tool_button" id="resize"><i class="fa fa-expand"></i></button>
+            <button class="top_tool_button" id="setting_button"><i class="fa fa-gear"></i></button>
+        </div>  
+    </div>
+    <div id="main_window">
+        <div id="left_tool_bar">
+            <button id="zoom_out"><i class="fa fa-plus-circle"></i></button>
+            <button id="zoom_in"><i class="fa fa-minus-circle"></i></button>
+            <button id="zoom_reset"><i class="fa fa-arrows-h"></i></button>
+        </div>
+        <svg id="svg"></svg>
+        <div id="setting_box">
+            <div id="setting_box_header">自定义设置<i class="fa fa-arrow-right"></i></div>
+                <table id="setting_box_content">
+                    <tbody>
+                        <tr>
+                            <td>节点大小</td>
+                            <td>
+                                <input type="range" name="points" id="node_size" min="0" max="4" step="0.1" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>节点透明度</td>
+                            <td>
+                                <input type="range" name="points" id="node_opacity" min="0" max="1" step="0.02" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>节点颜色</td>
+                            <td>
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>节点轮廓宽度</td>
+                            <td>
+                                <input type="range" name="points" id="node_stroke" min="0" max="10" step="0.1" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>边长度</td>
+                            <td>
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>边颜色</td>
+                            <td>
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>边透明度</td>
+                            <td>
+                                <input type="range" name="points" id="line_opacity" min="0" max="1" step="0.02" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    </div>
+    <div id="tooltip" class="hidden">
+        <p><strong>This Node is:</strong></p>
+        <p><span id="tooltip_value">100</span></p>
+    </div>
+    <script type="text/javascript">
+        // 节点数据
+        var nodes = [
+          { id: "mammal", group: 0, label: "Mammals", level: 1 , weight: 1},
+          { id: "dog"   , group: 0, label: "Dogs"   , level: 2 , weight: 2},
+          { id: "cat"   , group: 0, label: "Cats"   , level: 2 , weight: 3},
+          { id: "fox"   , group: 0, label: "Foxes"  , level: 2 , weight: 4},
+          { id: "elk"   , group: 0, label: "Elk"    , level: 2 , weight: 5},
+          { id: "insect", group: 1, label: "Insects", level: 1 , weight: 6},
+          { id: "ant"   , group: 1, label: "Ants"   , level: 2 , weight: 1},
+          { id: "bee"   , group: 1, label: "Bees"   , level: 2 , weight: 2},
+          { id: "fish"  , group: 2, label: "Fish"   , level: 1 , weight: 3},
+          { id: "carp"  , group: 2, label: "Carp"   , level: 2 , weight: 6},
+          { id: "pike"  , group: 2, label: "Pikes"  , level: 2 , weight: 7}
+        ]
 
-		// 边数据
-		var links = [
-		  { target: "mammal", source: "dog" , strength: 0.7 },
-		  { target: "mammal", source: "cat" , strength: 0.7 },
-		  { target: "mammal", source: "fox" , strength: 0.7 },
-		  { target: "mammal", source: "elk" , strength: 0.7 },
-		  { target: "insect", source: "ant" , strength: 0.7 },
-		  { target: "insect", source: "bee" , strength: 0.7 },
-		  { target: "fish"  , source: "carp", strength: 0.7 },
-		  { target: "fish"  , source: "pike", strength: 0.7 },
-		  { target: "cat"   , source: "elk" , strength: 0.1 },
-		  { target: "carp"  , source: "ant" , strength: 0.1 },
-		  { target: "elk"   , source: "bee" , strength: 0.1 },
-		  { target: "dog"   , source: "cat" , strength: 0.1 },
-		  { target: "fox"   , source: "ant" , strength: 0.1 },
-		  { target: "pike"  , source: "cat" , strength: 0.1 }
-		]
+        // 边数据
+        var links = [
+          { target: "mammal", source: "dog" , strength: 0.7 },
+          { target: "mammal", source: "cat" , strength: 0.7 },
+          { target: "mammal", source: "fox" , strength: 0.7 },
+          { target: "mammal", source: "elk" , strength: 0.7 },
+          { target: "insect", source: "ant" , strength: 0.7 },
+          { target: "insect", source: "bee" , strength: 0.7 },
+          { target: "fish"  , source: "carp", strength: 0.7 },
+          { target: "fish"  , source: "pike", strength: 0.7 },
+          { target: "cat"   , source: "elk" , strength: 0.1 },
+          { target: "carp"  , source: "ant" , strength: 0.1 },
+          { target: "elk"   , source: "bee" , strength: 0.1 },
+          { target: "dog"   , source: "cat" , strength: 0.1 },
+          { target: "fox"   , source: "ant" , strength: 0.1 },
+          { target: "pike"  , source: "cat" , strength: 0.1 }
+        ]
 
-		// 
-		function getNeighbors(node) {
-		  return links.reduce(function (neighbors, link) {
-		      if (link.target.id === node.id) {
-		        neighbors.push(link.source.id)
-		      } else if (link.source.id === node.id) {
-		        neighbors.push(link.target.id)
-		      }
-		      return neighbors
-		    },
-		    [node.id]
-		  )
-		}
+        // 
+        function getNeighbors(node) {
+          return links.reduce(function (neighbors, link) {
+              if (link.target.id === node.id) {
+                neighbors.push(link.source.id)
+              } else if (link.source.id === node.id) {
+                neighbors.push(link.target.id)
+              }
+              return neighbors
+            },
+            [node.id]
+          )
+        }
 
-		function isNeighborLink(node, link) {
-		  return link.target.id === node.id || link.source.id === node.id
-		}
-
-
-		function getNodeColor(node, neighbors) {
-		  if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
-		    return node.level === 1 ? 'blue' : 'green'
-		  }
-
-		  return node.level === 1 ? 'red' : 'gray'
-		}
+        function isNeighborLink(node, link) {
+          return link.target.id === node.id || link.source.id === node.id;
+        }
 
 
-		function getLinkColor(node, link) {
-		  return isNeighborLink(node, link) ? 'green' : '#E5E5E5'
-		}
+        function getNodeColor(node, neighbors) {
+          if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
+            return node.level === 1 ? 'blue' : 'green';
+          }
 
-		function getTextColor(node, neighbors) {
-		  return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'green' : 'black'
-		}
+          return node.level === 1 ? 'red' : 'gray';
+        }
 
-		var width = window.innerWidth
-		var height = window.innerHeight
+        function getLinkColor(node, link) {
+          return isNeighborLink(node, link) ? 'yellow' : 'yellow';
+        }
 
-		var svg = d3.select('svg')
-		svg.attr('width', width).attr('height', height)
+        function getTextColor(node, neighbors) {
+          return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'white' : 'black';
+        }
 
-		// simulation setup with all forces
-		var linkForce = d3
-		  .forceLink()
-		  .id(function (link) { return link.id })
-		  .strength(function (link) { return link.strength })
+        var width = window.innerWidth
+        var height = window.innerHeight
 
-		var simulation = d3
-		  .forceSimulation()
-		  .force('link', linkForce)
-		  .force('charge', d3.forceManyBody().strength(-120))
-		  .force('center', d3.forceCenter(width / 2, height / 2))
+        var svg = d3.select('svg');
 
-		// 托拽开始、 结束、 每一帧
-		var dragDrop = d3.drag().on('start', function (node) {
-		  node.fx = node.x;
-		  node.fy = node.y;
-		}).on('drag', function (node) {
-		  simulation.alphaTarget(0.7).restart();
-		  node.fx = d3.event.x;
-		  node.fy = d3.event.y;
-		}).on('end', function (node) {
-		  if (!d3.event.active) {
-		    simulation.alphaTarget(0);
-		  }
-		})
+        svg.attr('width', width).attr('height', height);
 
-		function selectNode(selectedNode) {
-		  var neighbors = getNeighbors(selectedNode)
+        // simulation setup with all forces
+        var linkForce = d3
+          .forceLink()
+          .id(function (link) { return link.id })
+          .strength(function (link) { return link.strength });
 
-		  // we modify the styles to highlight selected nodes
-		  nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
-		  textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
-		  linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
-		}
+        var simulation = d3
+          .forceSimulation()
+          .force('link', linkForce)
+          .force('charge', d3.forceManyBody().strength(-120))
+          .force('center', d3.forceCenter(width / 2, height / 2))
+          .on("end", function () {
+            simulation.force("center", null);
+          });
 
-		// 悬浮显示节点信息
-		function hoverNode(hoverNode) {
-			console.log(hoverNode);
-		    // 设置提示条的x,y坐标
+        // 托拽开始、 结束、 每一帧
+        // var dragDrop = d3.drag().on('start', function (node) {
+        //   node.fx = node.x;
+        //   node.fy = node.y;
+        // }).on('drag', function (node) {
+        //   simulation.alphaTarget(0).restart();
+        //   node.fx = d3.event.x;
+        //   node.fy = d3.event.y;
+        // }).on('end', function (node) {
+        //   if (!d3.event.active) {
+        //     simulation.alphaTarget(0);
+        //   }
+        // })
+
+        // 重写托拽
+        // function drag(d) {
+        //     d.x = d3.event.x;
+        //     d.y = d3.event.y;
+        //     d3.select(this).attr("cx", d.x).attr("cy", d.y);
+        //     linkElements.filter(function(l) { return l.source.id === d.id; }).attr("x1", d.x).attr("y1", d.y);
+        //     linkElements.filter(function(l) { return l.target.id === d.id; }).attr("x2", d.x).attr("y2", d.y);
+        //     textElements.filter(function(t) { return t.id === d.id; }).attr("x", d.x).attr("y", d.y);
+
+        // }
+
+        function drag(d) {
+            nudge(d3.event.dx, d3.event.dy);
+        }
+
+        // function selectNode(selectedNode) {
+        //   var neighbors = getNeighbors(selectedNode)
+
+        //   // we modify the styles to highlight selected nodes
+        //   nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
+        //   textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
+        //   linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
+        // }
+
+        // 悬浮显示节点信息
+        function hoverNode(hoverNode) {
+            // 设置提示条的x,y坐标
             xPosition = d3.event.x;
             yPosition = d3.event.y;
             // 更新提示条位置和值
@@ -362,150 +402,220 @@
               .text(hoverNode.label);
             // 显示提示条
             d3.select("#tooltip").classed("hidden",false);
-		}
-		// 离开隐藏节点信息
-		function leaveNode(leaveNode) {
+        }
+        // 离开隐藏节点信息
+        function leaveNode(leaveNode) {
             d3.select("#tooltip").classed("hidden",true);
-		}
+        }
 
-		// 双击解除锁定状态
-		function lockNode(lockNode){
-			lockNode.fx = null;
-			lockNode.fy = null;
-		}
+        // // 双击解除锁定状态
+        // function lockNode(lockNode){
+        //     lockNode.fx = null;
+        //     lockNode.fy = null;
+        // }
 
-		// 滚轮缩放并屏蔽双击缩放
-		var zoom = d3.zoom()
-					.scaleExtent([1, 10])
-					.on("zoom", zoomed);
-		svg.call(zoom)
-		   .on('dblclick.zoom', null);
-		function zoomed() {
-			svg.selectAll("g").attr("transform", d3.event.transform);
-		}
-		// 按钮缩放
-		d3.select("#zoom_out").on("click", function() {
-			zoom.scaleBy(svg, 2);
-		});		
-		d3.select("#zoom_in").on("click", function() {
-			zoom.scaleBy(svg, 0.5);
-		});		
-		d3.select("#zoom_reset").on("click", function() {
-			svg.call(zoom.transform, d3.zoomIdentity);
-		});
+        // // 滚轮缩放并屏蔽双击缩放
+        // var zoom = d3.zoom()
+        //          .scaleExtent([1, 10])
+        //          .on("zoom", zoomed);
+        // svg.call(zoom)
+        //    .on('dblclick.zoom', null);
+        // function zoomed() {
+        //  svg.selectAll("g").attr("transform", d3.event.transform);
+        // }
+        // // 按钮缩放
+        // d3.select("#zoom_out").on("click", function() {
+        //  zoom.scaleBy(svg, 2);
+        // });      
+        // d3.select("#zoom_in").on("click", function() {
+        //  zoom.scaleBy(svg, 0.5);
+        // });      
+        // d3.select("#zoom_reset").on("click", function() {
+        //  svg.call(zoom.transform, d3.zoomIdentity);
+        // });
+        var brush = svg.append("g")
+            .attr("class", "brush");
 
-		var linkElements = svg.append("g")
-		  .attr("class", "links")
-		  .selectAll("line")
-		  .data(links)
-		  .enter().append("line")
-		  .attr("stroke-width", 1)
-		  .attr("stroke", "rgba(50, 50, 50, 0.2)")
+        var linkElements = svg.append("g")
+          .attr("class", "links")
+          .selectAll("line")
+          .data(links)
+          .enter().append("line")
 
-		var nodeElements = svg.append("g")
-		  .attr("class", "nodes")
-		  .selectAll("circle")
-		  .data(nodes)
-		  .enter().append("circle")
-		    .attr("r", function(node, i){
-		    	return node.weight * 2;
-		    })
-		    .attr("fill", getNodeColor)
-		    .call(dragDrop)
-		    .on('click', selectNode)
-		    .on("dblclick", lockNode)
-		    .on("mouseover", hoverNode)
-		    .on("mouseout", leaveNode);
+        var nodeElements = svg.append("g")
+          .attr("class", "nodes")
+          .selectAll("circle")
+          .data(nodes)
+          .enter().append("circle")
+            .attr("r", function(node, i){
+                return node.weight * 2;
+            })
+            .attr("fill", getNodeColor)
+            .on("click", click)
+            .call(d3.drag().on("drag", drag));
+            
+            // .on('click', selectNode)
+            // .on("dblclick", lockNode)
+            // .on("mouseover", hoverNode)
+            // .on("mouseout", leaveNode);
 
-		var textElements = svg.append("g")
-		  .attr("class", "texts")
-		  .selectAll("text")
-		  .data(nodes)
-		  .enter().append("text")
-		    .text(function (node) { return  node.label })
-			  .attr("font-size", 15)
-			  .attr("dx", 15)
-		    .attr("dy", 4)
+        function click(node) {
+            d3.select(this).classed("selected", node.selected = !node.selected);
+        }
 
-		simulation.nodes(nodes).on('tick', () => {
-		  nodeElements
-		    .attr('cx', function (node) { return node.x })
-		    .attr('cy', function (node) { return node.y })
-		  textElements
-		    .attr('x', function (node) { return node.x })
-		    .attr('y', function (node) { return node.y })
-		  linkElements
-		    .attr('x1', function (link) { return link.source.x })
-		    .attr('y1', function (link) { return link.source.y })
-		    .attr('x2', function (link) { return link.target.x })
-		    .attr('y2', function (link) { return link.target.y })
-		})
+        var textElements = svg.append("g")
+          .attr("class", "texts")
+          .selectAll("text")
+          .data(nodes)
+          .enter().append("text")
+          .text(function (node) { return  node.label })
+          .attr("font-size", 13)
+          .attr("dx", 15)
+          .attr("dy", 4);
 
-		simulation.force("link").links(links);
-	</script>
-	<script type="text/javascript">
-		d3.select("#setting_button").on("click", changeShowState);
-		var setting_box = d3.select("#setting_box");
-		var isShow = false;
-		function changeShowState() {
-			isShow = !isShow;
-			if (isShow) {
-				setting_box.style("display", "block");
-			}
-			else {
-				setting_box.style("display", "none");
-			}
-			console.log(isShow);
-		}
-	</script>
-	<script type="text/javascript">
-		d3.select("#resize").on("click", resize);
-		var check = true;
-		var resize_button = d3.select("#resize").select("i");
-		function resize() {
-			if (check) {
-				enterFullScreen()
-				resize_button.attr("class","fa fa-compress");
-			}
-			else {
-				exitFullScreen()
-				resize_button.attr("class","fa fa-expand");
-			}
-			check = !check;
-		}
-		//进入全屏
-	    function enterFullScreen() {
-	        var de = document.documentElement;
-	        if (de.requestFullscreen) {
-	            de.requestFullscreen();
-	        } else if (de.mozRequestFullScreen) {
-	            de.mozRequestFullScreen();
-	        } else if (de.webkitRequestFullScreen) {
-	            de.webkitRequestFullScreen();
-	        }
-	    }
-	    //退出全屏
-	    function exitFullScreen() {
-	        var de = document;
-	        if (de.exitFullscreen) {
-	            de.exitFullscreen();
-	        } else if (de.mozCancelFullScreen) {
-	            de.mozCancelFullScreen();
-	        } else if (de.webkitCancelFullScreen) {
-	            de.webkitCancelFullScreen();
-	        }
-	    }
-	</script>
-	<script type="text/javascript">
-		var changeSizeSlider = d3.select("#node_size");
-		changeSizeSlider.on("input propertychange", changeSize);
-		function changeSize() {
-			node_size = this.value;
-			nodeElements.attr("r", function(node, i){
-		    	return node.weight * node_size;
-		    })
-		}
-		
-	</script>
+        simulation.nodes(nodes).on('tick', () => {
+          nodeElements
+            .attr('cx', function (node) { return node.x })
+            .attr('cy', function (node) { return node.y })
+          textElements
+            .attr('x', function (node) { return node.x })
+            .attr('y', function (node) { return node.y })
+          linkElements
+            .attr('x1', function (link) { return link.source.x })
+            .attr('y1', function (link) { return link.source.y })
+            .attr('x2', function (link) { return link.target.x })
+            .attr('y2', function (link) { return link.target.y })
+        })
+
+        simulation.force("link").links(links);
+    </script>
+    <script type="text/javascript">
+        d3.select("#setting_button").on("click", changeShowState);
+        var setting_box = d3.select("#setting_box");
+        var isShow = false;
+        function changeShowState() {
+            isShow = !isShow;
+            if (isShow) {
+                setting_box.style("display", "block");
+            }
+            else {
+                setting_box.style("display", "none");
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        d3.select("#resize").on("click", resize);
+        var check = true;
+        var resize_button = d3.select("#resize").select("i");
+        function resize() {
+            if (check) {
+                enterFullScreen()
+                resize_button.attr("class","fa fa-compress");
+            }
+            else {
+                exitFullScreen()
+                resize_button.attr("class","fa fa-expand");
+            }
+            check = !check;
+        }
+        //进入全屏
+        function enterFullScreen() {
+            var de = document.documentElement;
+            if (de.requestFullscreen) {
+                de.requestFullscreen();
+            } else if (de.mozRequestFullScreen) {
+                de.mozRequestFullScreen();
+            } else if (de.webkitRequestFullScreen) {
+                de.webkitRequestFullScreen();
+            }
+        }
+        //退出全屏
+        function exitFullScreen() {
+            var de = document;
+            if (de.exitFullscreen) {
+                de.exitFullscreen();
+            } else if (de.mozCancelFullScreen) {
+                de.mozCancelFullScreen();
+            } else if (de.webkitCancelFullScreen) {
+                de.webkitCancelFullScreen();
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        d3.select("#node_size").on("input propertychange", function() {
+            var size = this.value
+            nodeElements.attr("r", function(node, i){
+                return node.weight * size;
+            })
+        });
+    </script>
+    <script type="text/javascript">
+        // 导出图片
+        d3.select("#download_img").on("ciick", download);
+        var download = function() {
+            var link = document.createElement('a');
+            link.download = 'network.png';
+            link.href = document.getElementById('#svg').toDataURL();
+            link.click();
+        }
+    </script>
+    <script type="text/javascript">
+        nodes.forEach(function(d) {
+            d.selected = false;
+            d.previouslySelected = false;
+        });
+        
+        brush.call(d3.brush()
+            .extent([[0, 0], [width, height]])
+            .on("start", brushstarted)
+            .on("brush", brushed)
+            .on("end", brushended));
+        
+      function brushstarted() {
+        if (d3.event.sourceEvent.type !== "end") {
+            nodeElements.classed("selected", false);
+            nodes.map(function(node) {
+                node.selected = false;
+            });
+        }
+      }
+
+      function brushed() {
+        if (d3.event.sourceEvent.type !== "end") {
+          var selection = d3.event.selection;
+          nodeElements.classed("selected", function(d) {
+            return d.selected = d.previouslySelected ^
+                (selection != null
+                && selection[0][0] <= d.x && d.x < selection[1][0]
+                && selection[0][1] <= d.y && d.y < selection[1][1]);
+          });
+        }
+      }
+
+      function brushended() {
+        if (d3.event.selection != null) {
+          d3.select(this).call(d3.event.target.move, null);
+        }
+      }
+
+      function nudge(dx, dy) {
+            nodeElements.filter(function(d) { return d.selected; })
+              .attr("cx", function(d) { return d.x += dx; })
+              .attr("cy", function(d) { return d.y += dy; })
+
+            textElements.filter(function(d) { return d.selected; })
+              .attr("x", function(d) { return d.x; })
+              .attr("y", function(d) { return d.y; })
+
+            linkElements.filter(function(d) { return d.source.selected; })
+              .attr("x1", function(d) { return d.source.x; })
+              .attr("y1", function(d) { return d.source.y; });
+
+            linkElements.filter(function(d) { return d.target.selected; })
+              .attr("x2", function(d) { return d.target.x; })
+              .attr("y2", function(d) { return d.target.y; });
+        }
+
+    </script>
 </body>
 </html>

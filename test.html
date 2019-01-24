@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Demo</title>
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+
+<body>
+      <svg width="300" height="300"></svg>
+      <br/>
+      <button id="reset">Reset zoom</button>
+      <button id="zoom">Zoom</button>
+    <button id="translateX">Translate</button>
+      <script>
+    let svg = d3.select("svg"),
+          width = +svg.attr("width"),
+          height = +svg.attr("height");
+          
+    let g = svg.append("g");
+    
+    g.append("text")
+          .attr("x", width/2)
+          .attr("y", height/2)
+          .text("Text");
+    
+    let zoom = d3.zoom()
+          .on("zoom", function(){ // zoom事件
+              console.log(`Zoom: ${d3.zoomTransform(svg.node())}`);
+              console.log(`D3: : ${d3.event.transform}`);
+              g.attr("transform", d3.zoomTransform(svg.node()));
+          });
+
+    svg.call(zoom);
+
+    d3.select("#reset")
+          .on("click", function(d){
+            svg.call(zoom.transform, d3.zoomIdentity);
+        });
+    d3.select("#zoom")
+        .on("click", function(d) {
+            zoom.scaleBy(svg, 0.9); // 执行该方法后 会触发zoom事件
+            let tran = d3.zoomTransform(svg.node());
+            // svg.attr("transform", `translate(${tran.x},${tran.y}),scale(${tran.k})`); // 您可以手动地更新
+            console.log(tran);
+        });
+    d3.select("#translateX")
+        .on("click", function(d) {
+            zoom.translateBy(svg, 10, 0);
+            let tran = d3.zoomTransform(svg.node());
+            // svg.attr("transform", `translate(${tran.x},${tran.y}),scale(${tran.k})`);
+            console.log(tran);
+        });
+      </script>
+</body>
+
+</html>
