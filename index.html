@@ -263,35 +263,49 @@
     <script type="text/javascript">
         // 节点数据
         var nodes = [
-          { id: "mammal", group: 0, label: "Mammals", level: 1 , weight: 1},
-          { id: "dog"   , group: 0, label: "Dogs"   , level: 2 , weight: 2},
-          { id: "cat"   , group: 0, label: "Cats"   , level: 2 , weight: 3},
-          { id: "fox"   , group: 0, label: "Foxes"  , level: 2 , weight: 4},
-          { id: "elk"   , group: 0, label: "Elk"    , level: 2 , weight: 5},
-          { id: "insect", group: 1, label: "Insects", level: 1 , weight: 6},
-          { id: "ant"   , group: 1, label: "Ants"   , level: 2 , weight: 1},
-          { id: "bee"   , group: 1, label: "Bees"   , level: 2 , weight: 2},
-          { id: "fish"  , group: 2, label: "Fish"   , level: 1 , weight: 3},
-          { id: "carp"  , group: 2, label: "Carp"   , level: 2 , weight: 6},
-          { id: "pike"  , group: 2, label: "Pikes"  , level: 2 , weight: 7}
+          { id: "0"   , group: 0, label: "Mammals", level: 1 , weight: 1},
+          { id: "1"   , group: 0, label: "Dogs"   , level: 2 , weight: 1},
+          { id: "2"   , group: 0, label: "Cats"   , level: 2 , weight: 5},
+          { id: "3"   , group: 0, label: "Foxes"  , level: 2 , weight: 4},
+          { id: "4"   , group: 0, label: "Elk"    , level: 2 , weight: 8},
+          { id: "5"   , group: 1, label: "Insects", level: 1 , weight: 6},
+          { id: "6"   , group: 1, label: "Ants"   , level: 2 , weight: 1},
+          { id: "7"   , group: 1, label: "Bees"   , level: 2 , weight: 2},
+          { id: "8"   , group: 2, label: "Fish"   , level: 1 , weight: 3},
+          { id: "9"   , group: 2, label: "Carp"   , level: 2 , weight: 6},
+          { id: "10"  , group: 3, label: "Pikes"  , level: 2 , weight: 7},
+          { id: "11"  , group: 3, label: "Hello"  , level: 2 , weight: 8},
+          { id: "12"  , group: 3, label: "Tom"  , level: 2 , weight: 10},
+          { id: "13"  , group: 3, label: "Marry"  , level: 2 , weight: 10},
+          { id: "14"  , group: 3, label: "Jack"  , level: 2 , weight: 3},
+          { id: "15"  , group: 3, label: "Dzt"  , level: 2 , weight: 1},
+          { id: "16"  , group: 3, label: "Leeswi"  , level: 2 , weight: 2}
         ]
 
         // 边数据
         var links = [
-          { target: "mammal", source: "dog" , strength: 0.7 },
-          { target: "mammal", source: "cat" , strength: 0.7 },
-          { target: "mammal", source: "fox" , strength: 0.7 },
-          { target: "mammal", source: "elk" , strength: 0.7 },
-          { target: "insect", source: "ant" , strength: 0.7 },
-          { target: "insect", source: "bee" , strength: 0.7 },
-          { target: "fish"  , source: "carp", strength: 0.7 },
-          { target: "fish"  , source: "pike", strength: 0.7 },
-          { target: "cat"   , source: "elk" , strength: 0.1 },
-          { target: "carp"  , source: "ant" , strength: 0.1 },
-          { target: "elk"   , source: "bee" , strength: 0.1 },
-          { target: "dog"   , source: "cat" , strength: 0.1 },
-          { target: "fox"   , source: "ant" , strength: 0.1 },
-          { target: "pike"  , source: "cat" , strength: 0.1 }
+          { target: "0", source: "1" , strength: 0.7 },
+          { target: "1", source: "8" , strength: 0.7 },
+          { target: "16", source: "5" , strength: 0.7 },
+          { target: "2", source: "7" , strength: 0.7 },
+          { target: "8", source: "1" , strength: 0.7 },
+          { target: "9", source: "3" , strength: 0.7 },
+          { target: "6"  , source: "6", strength: 0.7 },
+          { target: "13"  , source: "12", strength: 0.7 },
+          { target: "2"   , source: "11" , strength: 0.1 },
+          { target: "5"  , source: "3" , strength: 0.1 },
+          { target: "12"   , source: "2" , strength: 0.1 },
+          { target: "13"   , source: "11" , strength: 0.1 },
+          { target: "14"   , source: "16" , strength: 0.1 },
+          { target: "4"   , source: "2" , strength: 0.1 },
+          { target: "5"   , source: "1" , strength: 0.1 },
+          { target: "7"   , source: "2" , strength: 0.1 },
+          { target: "8"   , source: "3" , strength: 0.1 },
+          { target: "15"  , source: "3" , strength: 0.1 },
+          { target: "10"  , source: "11" , strength: 0.1 },
+          { target: "4"  , source: "3" , strength: 0.1 },
+          { target: "6"  , source: "8" , strength: 0.1 },
+          { target: "5"  , source: "10" , strength: 0.1 }
         ]
 
         // 
@@ -347,6 +361,7 @@
           .force('link', linkForce)
           .force('charge', d3.forceManyBody().strength(-120))
           .force('center', d3.forceCenter(width / 2, height / 2))
+          .alphaDecay(0.06)
           .on("end", function () {
             simulation.force("center", null);
           });
@@ -449,18 +464,24 @@
           .enter().append("circle")
             .attr("r", function(node, i){
                 return node.weight * 2;
-            })
+            })            
             .attr("fill", getNodeColor)
-            .on("click", click)
+            .on("mousedown", mousedowned)
             .call(d3.drag().on("drag", drag));
-            
+
             // .on('click', selectNode)
             // .on("dblclick", lockNode)
             // .on("mouseover", hoverNode)
             // .on("mouseout", leaveNode);
 
-        function click(node) {
-            d3.select(this).classed("selected", node.selected = !node.selected);
+        function mousedowned(node) {
+            console.log(123);
+            if (node.selected){
+                return;
+            }
+            else{
+                d3.select(this).classed("selected", node.selected = true);
+            }
         }
 
         var textElements = svg.append("g")
