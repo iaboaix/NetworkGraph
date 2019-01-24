@@ -16,7 +16,7 @@ headers = { 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,ima
 			'Accept-Language': 'zh-CN,zh;q=0.9',
 			'Cache-Control': 'max-age=0',
 			'Connection': 'keep-alive',
-			'Cookie': 'Ecp_ClientId=8190123090300518126; Ecp_IpLoginFail=190123119.103.167.178; ASP.NET_SessionId=vtfgnzug5v2b3r01o3mzcolk; SID_kns=011114; cnkiUserKey=0d154fa5-21a5-4ba6-0a27-d0f40219f4fc; SID=011104; _pk_ref=%5B%22%22%2C%22%22%2C1548205701%2C%22http%3A%2F%2Fwww.cnki.net%2F%22%5D; _pk_ses=*; KNS_DisplayModel=listmode@SCDB; KNS_SortType=CFLS%21%28%25e8%25a2%25ab%25e5%25bc%2595%25e9%25a2%2591%25e6%25ac%25a1%252c%2527INTEGER%2527%29+desc; RsPerPage=20',
+			'Cookie': 'Ecp_ClientId=8190123090300518126; ASP.NET_SessionId=vtfgnzug5v2b3r01o3mzcolk; SID_kns=011114; cnkiUserKey=0d154fa5-21a5-4ba6-0a27-d0f40219f4fc; SID=011104; KNS_DisplayModel=listmode@SCDB; RsPerPage=50; _pk_ref=%5B%22%22%2C%22%22%2C1548294701%2C%22http%3A%2F%2Fwww.cnki.net%2F%22%5D; _pk_ses=*; Ecp_IpLoginFail=190124119.103.15.41; KNS_SortType=CFLS%21%28%25e8%25a2%25ab%25e5%25bc%2595%25e9%25a2%2591%25e6%25ac%25a1%252c%2527INTEGER%2527%29+desc',
 			'Host': 'nvsm.cnki.net',
 			'Upgrade-Insecure-Requests': '1',
 			'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.10 Safari/537.36'}
