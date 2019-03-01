@@ -4,6 +4,7 @@
 <head>
     <title>数据可视化</title>
     <script type="text/javascript" src="js/d3.min.js"></script>
+    <script type="text/javascript" src="saveSvgAsPng.js"></script>
     <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
     <style type="text/css">
         html, body {
@@ -95,6 +96,9 @@
         }
         #setting_box_content {
             font-size: 15px;
+        }
+        .book {
+            background-image: url(pic/book.png);
         }
         circle {
             cursor: move;
@@ -227,7 +231,9 @@
         <div id="left_tool_bar">
             <button id="zoom_out" title="放大"><i class="fa fa-plus-circle"></i></button>
             <button id="zoom_in" title="缩小"><i class="fa fa-minus-circle"></i></button>
-            <button id="zoom_reset" title="重置"><i class="fa fa-arrows-h"></i></button>
+            <button id="zoom_reset" title="1：1"><i class="fa fa-arrows-h"></i></button>
+            <button id="reset" title="重新布局"><i class="fa fa-refresh"></i></button>
+            <button id="label_switch" title="标签提示开关"><i class="fa fa-toggle-off"></i></button>
         </div>
         <svg id="svg"></svg>
         <div id="setting_box">
@@ -293,62 +299,90 @@
             <div class="color_item" style="background-color: #4C4A48"></div>
         </div>
         <div id="color_others">
-            <div style="font-size: 15px">更多颜色&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="color"/></div>
+            <div style="font-size: 15px">更多颜色&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="color" id="color_select" /></div>
             
         </div>
     </div>
 
     <script type="text/javascript">
-        // 节点数据
-        var nodes = [
-          { id: "0"   , group: 0, label: "Mammals", level: 1 , weight: 1},
-          { id: "1"   , group: 0, label: "Dogs"   , level: 2 , weight: 1},
-          { id: "2"   , group: 0, label: "Cats"   , level: 2 , weight: 5},
-          { id: "3"   , group: 0, label: "Foxes"  , level: 2 , weight: 4},
-          { id: "4"   , group: 0, label: "Elk"    , level: 2 , weight: 8},
-          { id: "5"   , group: 1, label: "Insects", level: 1 , weight: 6},
-          { id: "6"   , group: 1, label: "Ants"   , level: 2 , weight: 1},
-          { id: "7"   , group: 1, label: "Bees"   , level: 2 , weight: 2},
-          { id: "8"   , group: 2, label: "Fish"   , level: 1 , weight: 3},
-          { id: "9"   , group: 2, label: "Carp"   , level: 2 , weight: 6},
-          { id: "10"  , group: 3, label: "Pikes"  , level: 2 , weight: 7},
-          { id: "11"  , group: 3, label: "Hello"  , level: 2 , weight: 8},
-          { id: "12"  , group: 3, label: "Tom"  , level: 2 , weight: 10},
-          { id: "13"  , group: 3, label: "Marry"  , level: 2 , weight: 10},
-          { id: "14"  , group: 3, label: "Jack"  , level: 2 , weight: 3},
-          { id: "15"  , group: 3, label: "Dzt"  , level: 2 , weight: 1},
-          { id: "16"  , group: 3, label: "Leeswi"  , level: 2 , weight: 2}
-        ]
+        // // 节点数据
+        // var nodes = [
+        //   { id: "0"   , group: 0, label: "Mammals", level: 1 , weight: 1},
+        //   { id: "1"   , group: 0, label: "Dogs"   , level: 2 , weight: 1},
+        //   { id: "2"   , group: 0, label: "Cats"   , level: 2 , weight: 5},
+        //   { id: "3"   , group: 0, label: "Foxes"  , level: 2 , weight: 4},
+        //   { id: "4"   , group: 0, label: "Elk"    , level: 2 , weight: 8},
+        //   { id: "5"   , group: 1, label: "Insects", level: 1 , weight: 6},
+        //   { id: "6"   , group: 1, label: "Ants"   , level: 2 , weight: 1},
+        //   { id: "7"   , group: 1, label: "Bees"   , level: 2 , weight: 2},
+        //   { id: "8"   , group: 2, label: "Fish"   , level: 1 , weight: 3},
+        //   { id: "9"   , group: 2, label: "Carp"   , level: 2 , weight: 6},
+        //   { id: "10"  , group: 3, label: "Pikes"  , level: 2 , weight: 7},
+        //   { id: "11"  , group: 3, label: "Hello"  , level: 2 , weight: 8},
+        //   { id: "12"  , group: 3, label: "Tom"  , level: 2 , weight: 10},
+        //   { id: "13"  , group: 3, label: "Marry"  , level: 2 , weight: 10},
+        //   { id: "14"  , group: 3, label: "Jack"  , level: 2 , weight: 3},
+        //   { id: "15"  , group: 3, label: "Dzt"  , level: 2 , weight: 1},
+        //   { id: "16"  , group: 3, label: "Leeswi"  , level: 2 , weight: 2}
+        // ]
 
-        // 边数据
-        var links = [
-          { target: "0", source: "1" , strength: 0.7 },
-          { target: "1", source: "8" , strength: 0.7 },
-          { target: "16", source: "5" , strength: 0.7 },
-          { target: "2", source: "7" , strength: 0.7 },
-          { target: "8", source: "1" , strength: 0.7 },
-          { target: "9", source: "3" , strength: 0.7 },
-          { target: "6"  , source: "6", strength: 0.7 },
-          { target: "13"  , source: "12", strength: 0.7 },
-          { target: "2"   , source: "11" , strength: 0.1 },
-          { target: "5"  , source: "3" , strength: 0.1 },
-          { target: "12"   , source: "2" , strength: 0.1 },
-          { target: "13"   , source: "11" , strength: 0.1 },
-          { target: "14"   , source: "16" , strength: 0.1 },
-          { target: "4"   , source: "2" , strength: 0.1 },
-          { target: "5"   , source: "1" , strength: 0.1 },
-          { target: "7"   , source: "2" , strength: 0.1 },
-          { target: "8"   , source: "3" , strength: 0.1 },
-          { target: "15"  , source: "3" , strength: 0.1 },
-          { target: "10"  , source: "11" , strength: 0.1 },
-          { target: "4"  , source: "3" , strength: 0.1 },
-          { target: "6"  , source: "8" , strength: 0.1 },
-          { target: "5"  , source: "10" , strength: 0.1 }
-        ]
+        // // 边数据
+        // var links = [
+        //   { target: "0", source: "1" , strength: 0.7 },
+        //   { target: "1", source: "8" , strength: 0.7 },
+        //   { target: "16", source: "5" , strength: 0.7 },
+        //   { target: "2", source: "7" , strength: 0.7 },
+        //   { target: "8", source: "1" , strength: 0.7 },
+        //   { target: "9", source: "3" , strength: 0.7 },
+        //   { target: "6"  , source: "6", strength: 0.7 },
+        //   { target: "13"  , source: "12", strength: 0.7 },
+        //   { target: "2"   , source: "11" , strength: 0.1 },
+        //   { target: "5"  , source: "3" , strength: 0.1 },
+        //   { target: "12"   , source: "2" , strength: 0.1 },
+        //   { target: "13"   , source: "11" , strength: 0.1 },
+        //   { target: "14"   , source: "16" , strength: 0.1 },
+        //   { target: "4"   , source: "2" , strength: 0.1 },
+        //   { target: "5"   , source: "1" , strength: 0.1 },
+        //   { target: "7"   , source: "2" , strength: 0.1 },
+        //   { target: "8"   , source: "3" , strength: 0.1 },
+        //   { target: "15"  , source: "3" , strength: 0.1 },
+        //   { target: "10"  , source: "11" , strength: 0.1 },
+        //   { target: "4"  , source: "3" , strength: 0.1 },
+        //   { target: "6"  , source: "8" , strength: 0.1 },
+        //   { target: "5"  , source: "10" , strength: 0.1 }
+        // ]
+        var data = {
+            "nodes": [
+                  { "id": "支撑智能电网的信息通信体系", "label": "支撑智能电网的信息通信体系", "level": 1 , "weight": 1},
+                  { "id": "可重构信息通信基础网络体系研究", "label": "可重构信息通信基础网络体系研究"   , "level": 2 , "weight": 2},
+                  { "id": "软件定义的能源互联网信息通信技术研究", "label": "软件定义的能源互联网信息通信技术研究"   , "level": 2 , "weight": 3},
+                  { "id": "未来信息通信网络发展战略思考(三)", "label": "未来信息通信网络发展战略思考(三)", "level": 2 , "weight": 4},
+                  { "id": "电力和信息通信系统混合仿真方法综述", "label": "电力和信息通信系统混合仿真方法综述"    , "level": 2 , "weight": 5},
+                  { "id": "信息通信技术与教师专业发展——UNESCO2006亚太教育技术地区研讨会综述", "label": "信息通信技术与教师专业发展——UNESCO2006亚太教育技术地区研讨会综述", "level": 1 , "weight": 6},
+                  { "id": "能源互联网信息通信关键技术综述", "label": "Ants"   , "level": 2 , "weight": 1},
+                  { "id": "日本信息通信政策研究及其对中国的启示(Ⅱ)——日本信息通信政策评价及对我国的启示"   , "label": "日本信息通信政策研究及其对中国的启示(Ⅱ)——日本信息通信政策评价及对我国的启示"   , "level": 2 , "weight": 2},
+                  { "id": "基于信息通信融合的电力业务模型研究", "label": "基于信息通信融合的电力业务模型研究"   , "level": 1 , "weight": 3},
+                  { "id": "高速多媒体信息通信"  , "label": "高速多媒体信息通信"   , "level": 2 , "weight": 6},
+                  { "id": "信息通信技术、金融包容与农村经济增长"  , "label": "信息通信技术、金融包容与农村经济增长"  , "level": 2 , "weight": 7}
+                ],
 
+            "links": [
+                  { "source": "支撑智能电网的信息通信体系" , "target": "可重构信息通信基础网络体系研究", "strength": 0.7 },
+                  { "source": "支撑智能电网的信息通信体系" , "target": "软件定义的能源互联网信息通信技术研究", "strength": 0.7 },
+                  { "source": "可重构信息通信基础网络体系研究" , "target": "未来信息通信网络发展战略思考(三)", "strength": 0.7 },
+                  { "source": "未来信息通信网络发展战略思考(三)" , "target": "电力和信息通信系统混合仿真方法综述", "strength": 0.7 },
+                  { "source": "电力和信息通信系统混合仿真方法综述" , "target": "信息通信技术与教师专业发展——UNESCO2006亚太教育技术地区研讨会综述", "strength": 0.7 },
+                  { "source": "电力和信息通信系统混合仿真方法综述" , "target": "能源互联网信息通信关键技术综述", "strength": 0.7 },
+                  { "source": "电力和信息通信系统混合仿真方法综述" , "target": "日本信息通信政策研究及其对中国的启示(Ⅱ)——日本信息通信政策评价及对我国的启示", "strength": 0.7 },
+                  { "source": "能源互联网信息通信关键技术综述" , "target": "日本信息通信政策研究及其对中国的启示(Ⅱ)——日本信息通信政策评价及对我国的启示", "strength": 0.7 },
+                  { "source": "能源互联网信息通信关键技术综述" , "target": "基于信息通信融合的电力业务模型研究", "strength": 0.7 },
+                  { "source": "能源互联网信息通信关键技术综述" , "target": "高速多媒体信息通信", "strength": 0.7 },
+                  { "source": "能源互联网信息通信关键技术综述" , "target": "信息通信技术、金融包容与农村经济增长", "strength": 0.7 },
+                ]
+        }
         // 
         function getNeighbors(node) {
-          return links.reduce(function (neighbors, link) {
+          return data.links.reduce(function (neighbors, link) {
               if (link.target.id === node.id) {
                 neighbors.push(link.source.id)
               } else if (link.source.id === node.id) {
@@ -397,12 +431,12 @@
         var simulation = d3
           .forceSimulation()
           .force('link', linkForce)
-          .force('charge', d3.forceManyBody().strength(-120))
-          .force('center', d3.forceCenter(width / 2, height / 2))
-          .alphaDecay(0.06)
-          .on("end", function () {
-            simulation.force("center", null);
-          });
+          .force('charge', d3.forceManyBody().strength(-300))
+          .force('center', d3.forceCenter(width / 2, height / 2));
+        // .alphaDecay(0.06)
+        // .on("end", function () {
+        //   simulation.force("center", null);
+        // })
 
         // 托拽开始、 结束、 每一帧
         // var dragDrop = d3.drag().on('start', function (node) {
@@ -452,26 +486,6 @@
         //     lockNode.fx = null;
         //     lockNode.fy = null;
         // }
-
-        // 滚轮缩放并屏蔽双击缩放
-        var zoom = d3.zoom()
-                 .scaleExtent([1, 10])
-                 .on("zoom", zoomed);
-        svg.call(zoom)
-           .on('dblclick.zoom', null);
-        function zoomed() {
-         svg.selectAll("g").attr("transform", d3.event.transform);
-        }
-        // 按钮缩放
-        d3.select("#zoom_out").on("click", function() {
-         zoom.scaleBy(svg, 2);
-        });      
-        d3.select("#zoom_in").on("click", function() {
-         zoom.scaleBy(svg, 0.5);
-        });      
-        d3.select("#zoom_reset").on("click", function() {
-         svg.call(zoom.transform, d3.zoomIdentity);
-        });
         var brush = svg.append("g")
             .attr("class", "brush")
             .attr("width", width)
@@ -480,25 +494,32 @@
         var linkElements = svg.append("g")
           .attr("class", "links")
           .selectAll("line")
-          .data(links)
+          .data(data.links)
           .enter().append("line")
 
         var nodeElements = svg.append("g")
           .attr("class", "nodes")
           .selectAll("circle")
-          .data(nodes)
+          .data(data.nodes)
           .enter().append("circle")
             .attr("r", function(node, i){
                 return node.weight * 2;
             })            
             .on("mousedown", mousedowned)
-            .call(d3.drag().on("drag", drag))
-            .on("mouseover", hoverNode);
+            .on("mouseover", hoverNode)
+            .call(d3.drag().on("drag", drag));
 
             // .on('click', selectNode)
             // .on("dblclick", lockNode)
             // .attr("fill", getNodeColor)
             // .on("mouseout", leaveNode);
+
+        // nodeElements.append("image")
+        //             .style("width", 100)
+        //             .style("height", 100)
+        //             .attr("xlink:href",function(d){
+        //                 return "pic/book.png";
+        //             });
 
         // 掠过显示节点信息
         function hoverNode(hover_node) {
@@ -529,14 +550,15 @@
         var textElements = svg.append("g")
           .attr("class", "texts")
           .selectAll("text")
-          .data(nodes)
+          .data(data.nodes)
           .enter().append("text")
           .text(function (node) { return  node.label })
+          .style("display", "none")
           .attr("font-size", 13)
           .attr("dx", 15)
           .attr("dy", 4);
 
-        simulation.nodes(nodes).on('tick', () => {
+        simulation.nodes(data.nodes).on('tick', () => {
           nodeElements
             .attr('cx', function (node) { return node.x })
             .attr('cy', function (node) { return node.y })
@@ -550,7 +572,7 @@
             .attr('y2', function (link) { return link.target.y })
         })
 
-        simulation.force("link").links(links);
+        simulation.force("link").links(data.links);
     </script>
     <script type="text/javascript">
         d3.select("#setting_button").on("click", changeShowState);
@@ -611,6 +633,7 @@
         }
     </script>
     <script type="text/javascript">
+        // 调整图参数
         d3.select("#node_size").on("input propertychange", function() {
             var size = this.value
             nodeElements.attr("r", function(node, i){
@@ -620,16 +643,42 @@
     </script>
     <script type="text/javascript">
         // 导出图片
-        d3.select("#download_img").on("ciick", download);
+        d3.select("#download_img").on("click", download);
         var download = function() {
-            var link = document.createElement('a');
-            link.download = 'network.png';
-            link.href = document.getElementById('#svg').toDataURL();
-            link.click();
-        }
+            //首先将svg专成xml文件形式
+            var doctype = '<?xml version="1.0" standalone="no"?>' 
+              + '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
+            // serialize our SVG XML to a string. 
+            var source = (new XMLSerializer()).serializeToString(d3.select('svg').node());
+
+            // create a file blob of our SVG. 
+            var blob = new Blob([ doctype + source], { type: 'image/svg+xml;charset=utf-8' }); 
+            var url = window.URL.createObjectURL(blob); 
+            var downloadImg=document.createElement("img"); 
+                downloadImg.src=url; 
+                downloadImg.onload=function(){//当onload之后再画，否则导出时为空白
+
+            //2.将svg转成canvas 
+            var canvas=document.createElement("canvas"); 
+                    canvas.width=width; 
+                    canvas.height=height; 
+                var ctx=canvas.getContext('2d'); 
+                    ctx.drawImage(downloadImg,0,0);
+
+                    canvas.toBlob(function(blob) { 
+                            saveAs( 
+                                  blob 
+                                , "1.png"//保存文件名称 
+                            ); 
+                        }, "image/png"); 
+                }
+
+            }; 
+
     </script>
     <script type="text/javascript">
-        nodes.forEach(function(d) {
+        // 框选功能
+        data.nodes.forEach(function(d) {
             d.selected = false;
             d.previouslySelected = false;
         });
@@ -643,7 +692,7 @@
       function brushstarted() {
         if (d3.event.sourceEvent.type !== "end") {
             nodeElements.classed("selected", false);
-            nodes.map(function(node) {
+            data.nodes.map(function(node) {
                 node.selected = false;
             });
         }
@@ -694,6 +743,51 @@
             nodeElements.filter(function(d) { return d.selected; })
                 .attr("fill", d3.select(this).style("background-color"));
         }
+        d3.select("#color_select").on("change", function () {
+            console.log(this.value);
+            nodeElements.filter(function(d) { return d.selected; })
+                .attr("fill", this.value);
+        });
+    </script>
+    <script type="text/javascript">
+        // 左侧工具栏功能实现
+        var zoom = d3.zoom()
+                 .scaleExtent([1, 10])
+                 .on("zoom", zoomed);
+        svg.call(zoom)
+           .on('dblclick.zoom', null);
+        function zoomed() {
+         svg.selectAll("g").attr("transform", d3.event.transform);
+        }
+        // 按钮缩放
+        d3.select("#zoom_out").on("click", function() {
+         zoom.scaleBy(svg, 2);
+        });      
+        d3.select("#zoom_in").on("click", function() {
+         zoom.scaleBy(svg, 0.5);
+        });      
+        d3.select("#zoom_reset").on("click", function() {
+         svg.call(zoom.transform, d3.zoomIdentity);
+        });
+        // 重置布局
+        d3.select("#reset").on("click", function() {
+            simulation.force('center', d3.forceCenter(width / 2, height / 2));
+            simulation.restart();
+        });
+        // 标签显示开关功能实现
+        var is_show_label = false;
+        var label_switch_button = d3.select("#label_switch");
+        label_switch_button.on("click", function() {
+            if (is_show_label) {
+                label_switch_button.select("i").attr("class","fa fa-toggle-off");
+                textElements.style("display", "none");
+            }
+            else {
+                label_switch_button.select("i").attr("class","fa fa-toggle-on");
+                textElements.style("display", "block");
+            }
+            is_show_label = !is_show_label;
+        })
     </script>
 </body>
 </html>
