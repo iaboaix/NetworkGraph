@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+    .container{width:100px;height:100px;position:absolute;top:200px;left:200px;}
+    </style>
+</head>
+<body>
+
+<div class="container" id="container"></div>
+<script>
+	//创建一个<svg>元素，并在其中绘制一个饼状图
+    function pieChart(data){
+    	var width=100;//饼状图形区域的宽
+    	var height=100;//饼状图形区域的高
+    	var cx=49;//圆心位置
+    	var cy=49;
+    	var r=48;//圆半径
+        var svgns="http://www.w3.org/2000/svg";
+        //创建一个<svg>元素
+        var chart=document.createElementNS(svgns,"svg");
+        chart.setAttribute("width",width);
+        chart.setAttribute("height",height);
+        chart.setAttribute("viewBox","0 0 "+width+" "+height);
+        //饼块大小
+        var angels=1/data.length*Math.PI*2;
+        //饼状图的分片
+        starttangle=0;
+        for(var i=0;i<data.length;i++){
+            var endangle=starttangle+angels;
+            //以12点钟方向为0°,顺时针方向角度递增
+            var x1=cx+r*Math.sin(starttangle);
+            var y1=cy-r*Math.cos(starttangle);
+            var x2=cx+r*Math.sin(endangle);
+            var y2=cy-r*Math.cos(endangle);
+            //角度大于半圆
+            var big=0;
+            if(endangle-starttangle>Math.PI) big=1;
+            var path=document.createElementNS(svgns,"path");
+            //路径信息
+            var d="M "+cx+","+cy+ //从圆心开始
+                " L "+x1+","+y1+   //画一条到(x1,y1)的线段
+                " A "+r+","+r+     //再画一条半径为r的弧
+                " 0 "+big+" 1 "+    // 弧的详细信息
+                x2+","+y2+    //弧到(x2,y2)结束
+                " Z";   //d当前路径到(cx,cy)结束
+            //path元素的属性
+            path.setAttribute("d",d);   //设置路径
+            path.setAttribute("fill",matchInfo[i][1]); //设置楔的颜色
+            path.setAttribute("stroke","black");  //外边框
+            path.setAttribute("stroke-width","0"); //外边框
+            chart.appendChild(path); 
+            //当前楔的结束就是下一个楔的开始
+            starttangle=endangle;
+        }
+        return chart;
+    }
+	var matchInfo=[["destory1","red"],["destory2","orange"],["destory3","yellow"],["destory4","green"]];
+	window.onload=function(){
+		var value=[[0,1,2],[0,1]];
+		var containers=document.getElementById("container");
+		for (var i=0;i<value.length;i++){
+			containers.appendChild(pieChart(value[i]));
+		}
+	};
+</script>
+</body>
+</html>
