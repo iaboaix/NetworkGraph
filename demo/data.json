@@ -1,0 +1,102 @@
+{
+    "nodes": [
+        {
+            "id": 1,
+            "name": "刘琪",
+            "ntype": "Human"
+        },
+        {
+            "id": 3,
+            "name": "许开辰",
+            "ntype": "Human"
+        },
+        {
+            "id": 4,
+            "name": "便利蜂企业管理咨询（上海）有限公司",
+            "ntype": "Company"
+        },
+        {
+            "id": 2,
+            "name": "邻久企业管理服务（天津）有限公司",
+            "ntype": "Company"
+        }
+    ],
+    "relations": [
+        {
+            "id": 10,
+            "startNode": 1,
+            "endNode": 2,
+            "label": "法人",
+            "type": "OWN"
+        },
+        {
+            "id": 11,
+            "startNode": 1,
+            "endNode": 4,
+            "label": "法人",
+            "type": "OWN"
+        },
+        {
+            "id": 12,
+            "startNode": 1,
+            "endNode": 4,
+            "label": "执行董事",
+            "type": "SERVE"
+        },
+        {
+            "id": 13,
+            "startNode": 1,
+            "endNode": 4,
+            "label": "监事",
+            "type": "SERVE"
+        },
+        {
+            "id": 14,
+            "startNode": 1,
+            "endNode": 4,
+            "label": "总经理",
+            "type": "SERVE"
+        },
+        {
+            "id": 25, 
+            "startNode": 3,
+            "endNode": 4,
+            "label": "总经理",
+            "type": "SERVE"
+        },
+        {
+            "id": 26, 
+            "startNode": 3,
+            "endNode": 4,
+            "label": "执行董事",
+            "type": "SERVE"
+        },
+        {
+            "id": 27, 
+            "startNode": 2,
+            "endNode": 4,
+            "label": "参股",
+            "type": "INVEST_C"
+        },{
+            "id": 22, 
+            "startNode": 3,
+            "endNode": 2,
+            "label": "总经理",
+            "type": "SERVE"
+        },
+        {
+            "id": 23, 
+            "startNode": 3,
+            "endNode": 2,
+            "label": "执行董事",
+            "type": "SERVE"
+        },
+        {
+            "id": 24, 
+            "startNode": 3,
+            "endNode": 4,
+            "label": "监事",
+            "type": "SERVE"
+        }
+    ]
+}

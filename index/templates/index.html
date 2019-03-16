@@ -4,6 +4,7 @@
 <head>
     {% load staticfiles %}
     <title>数据可视化</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="{% static 'js/d3.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/fullScreen.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/font-awesome-4.7.0/css/font-awesome.min.css' %}">
@@ -11,7 +12,7 @@
 </head>
 <body>
     <div id="top_tool_bar">
-        <div id="logo"></div>
+        <div id="logo" style="background-image: url({% static 'image/logo.png' %});"></div>
         <button id="upload_data" class="top_menu"><i class="fa fa-upload"></i> 上传数据</button>
         <button id="download_data" class="top_menu"><i class="fa fa-download"></i> 导出数据</button>
         <button id="download_img" class="top_menu"><i class="fa fa-share"></i> 导出图片</button>
@@ -30,6 +31,7 @@
             <button id="zoom_in" title="缩小"><i class="fa fa-minus-circle"></i></button>
             <button id="zoom_reset" title="1：1"><i class="fa fa-arrows-h"></i></button>
             <button id="reset" title="重新布局"><i class="fa fa-refresh"></i></button>
+            <button id="brush_mode" title="框选模式"><i class="fa fa-crop"></i></button>
             <button id="label_switch" title="标签提示开关"><i class="fa fa-toggle-off"></i></button>
         </div>
         <svg id="svg"></svg>
@@ -61,12 +63,13 @@
                     <tr>
                         <td>连接强度</td>
                         <td>
+                            <input type="range" name="points" id="link_strength" min="0" max="1" step="0.1" value="0.7" />
                         </td>
                     </tr>
                     <tr>
                         <td>边颜色</td>
                         <td>
-                            
+                            <input type="color" name="points" id="line_color" value="#00FFFB">
                         </td>
                     </tr>
                     <tr>
@@ -99,9 +102,23 @@
         </div>
         <div id="color_others" style="font-size: 15px">
             更多颜色&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <input type="color" id="color_select" />
+            <input type="color" id="node_color" />
+        </div>
+    </div>
+    <div id="upload_layout">
+        <div id="upload_top_layout">
+            <div id="file_title">导入json数据</div>
+            <div id="file_close">×</div>
+        </div>
+        <div id="info_file"></div>
+        <input type="file" id="file_input" multiple="multiple"/>
+        <button id="select_file" class="file_button">选择文件</button>
+        <div>
+            <button id="upload_button" class="file_button">上传</button>
+            <button id="close_button" class="file_button">关闭</button>
         </div>
     </div>
     <script type="text/javascript" src="{% static 'js/networkGraph.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/operation.js' %}"></script>
 </body>
 </html>

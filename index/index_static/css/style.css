@@ -18,7 +18,6 @@ html, body {
     height: 24px;
     margin: 3px;
     float: left;
-    background-image: url({% static 'image/logo.png' %});
     background-size: cover;
 }
 .top_menu {
@@ -63,6 +62,9 @@ html, body {
     width: 30px;
     height: 100%;
     background: #027080;
+}
+.on {
+    background-color: #34D2DE;
 }
 #main_window {
     position: absolute;
@@ -110,8 +112,12 @@ circle:hover {
     stroke-opacity: 0.5;
     stroke-width: 5px;
 }
-.selected {
+.selected circle {
     stroke: yellow;
+}
+text {
+    pointer-events: none;
+    text-anchor: middle;
 }
 line{
     cursor: pointer;
@@ -138,6 +144,8 @@ button:hover {
 }
 text {
     fill: white;
+    display: none;
+    user-select: none;
 }
 #node_info {
     color:  black;
@@ -183,6 +191,20 @@ text {
 #color_others {
     color: black;
 }
+#line_color{
+    width: 100%;
+}
+input[type="color"] {
+    border: 0; 
+    outline:none
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+    background-color:#ffffff;
+}
+input[type="color"]::-webkit-color-swatch {
+    position: relative;
+}
+
 input[type="range"] {
     display: block;
     -webkit-appearance: none;
@@ -204,3 +226,77 @@ input[type="range"]::-webkit-slider-thumb {
     cursor: pointer;
     transition: 0.3s ease-in-out;
     }
+#upload_layout {
+    width: 300px;
+    height: 180px;
+    position: absolute;
+    top: 330px;
+    left: 630px;
+    background-color: steelblue;
+    border-radius: 4px;
+    font-size: 15px;
+    text-align: center;
+    padding: 10px;
+    display: none;
+    cursor: move;
+}
+#file_title {
+    float: left;
+}
+#file_close {
+    float: right;
+    cursor: pointer;
+}
+#file_close:hover {
+    color: black;
+}
+#info_file {
+    margin-top: 30px;
+    width: 95%;
+    border-radius: 5px;
+    height: 80px;
+    border:1px solid #ccc;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+#select_file {
+    margin: 5px 0px 5px 0px;
+}
+input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 0px;
+    height: 0px;
+}
+.file_button {
+    background-color: #027090;
+    color: white;
+}
+#upload_button {
+    width: 45%;
+    float: left;
+}
+#close_button {
+    width: 45%;
+    float: right;
+    background-color: white;
+    color: black;
+}
+#file_item {
+    height: 100%;
+}
+#file_name {
+    float: left;
+    height: 100%;
+    line-height: 80px;
+    text-align: center;
+    margin-left: 3px; 
+}
+#state {
+    height: 100%;
+    float: right;
+    line-height: 80px;
+    margin-right: 3px; 
+    color: red;
+}

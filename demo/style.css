@@ -1,0 +1,40 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#canvas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+svg {
+  background: rgb(245, 245, 245);
+}
+
+text {
+  font: Microsoft YaHei;
+  pointer-events: none;
+  user-select: none;
+}
+
+.link {
+  stroke-opacity: 1;
+  stroke-width: 0.8;
+}
+
+.link-active {
+  stroke-opacity: 1;
+  stroke-width: 3;
+}
+
+.linetext {
+  font-family: Microsoft YaHei;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
