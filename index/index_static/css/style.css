@@ -4,6 +4,10 @@ html, body {
     border: 0px;
     overflow: hidden;
     color: white;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
 }
 #top_tool_bar {
     width: 100%;
@@ -114,17 +118,14 @@ circle:hover {
 }
 .selected circle {
     stroke: yellow;
+    stroke-width: 5px;
 }
-text {
-    pointer-events: none;
-    text-anchor: middle;
-}
-line{
+.line{
     cursor: pointer;
     stroke: #00FFFB;
     stroke-width: 1px;
 }
-line:hover{
+.line:hover{
     stroke-width: 4px !important;
     stroke-opacity: 0.8;
 }
@@ -146,6 +147,8 @@ text {
     fill: white;
     display: none;
     user-select: none;
+    pointer-events: none;
+    text-anchor: middle;
 }
 #node_info {
     color:  black;
@@ -167,16 +170,32 @@ text {
     font-size: 15px;
     line-height: 10px;
 }
+#function_box {
+    color: black;
+    position:absolute;
+    width: 250px;
+    height: 120px;
+    left: 32px;
+    bottom: 0px;
+    opacity: 0.5;
+    background-color: #68C994;
+}
 #color_box {
+    color: black;
+    background-color: #68C994;
     position:absolute;
     display: grid;
-    grid-template-rows: 3fr 1fr; 
+    grid-template-rows: 1fr 3fr 1fr; 
     width: 250px;
-    height: 100px;
-    left: 30px;
+    height: 120px;
+    left: 284px;
     bottom: 0px;
-    background-color: white;
     opacity: 0.5;
+}
+#box_title {
+    height: 24px;
+    text-align: center;
+    background-color: #05887A;
 }
 #color_items {
     padding: 2px;
@@ -186,9 +205,50 @@ text {
 }
 .color_item {
     margin: 1px;
+    border-radius: 4px;
 }
-
 #color_others {
+    font-size: 15px;
+    line-height: 24px;
+}
+#node_color {
+    border: 2px;
+    float: right;
+    width: 60%;
+    height: 18px;
+}::-webkit-color-swatch-wrapper { 
+    padding: 0;
+}
+#functions {
+    height: 96px;
+    line-height: 21px;
+}
+#fun_layout {
+    text-align: center;
+    font-size: 14px;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    border-style: none none solid none;
+}
+.fun_title {
+    line-height: 48px;
+}
+#node_fun {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+.node_fun_button {
+    background-color: #72c6d8;
+    color: black;
+    height: auto;
+    width: 99%;
+    margin: 1px;
+    transition-duration: 0.5s;
+    border-radius: 3px;
+}
+.node_fun_button:hover {
+    background-color: #7dfbf5;
     color: black;
 }
 #line_color{

@@ -447,7 +447,6 @@ function textBreaking(d3text, text) {
 }
 
 function getLineTextDx(d) {
-
     const sr = nodeConf.radius[d.source.ntype];
     const sx = d.source.x;
     const sy = d.source.y;

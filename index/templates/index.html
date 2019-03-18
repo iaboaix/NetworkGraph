@@ -32,7 +32,8 @@
             <button id="zoom_reset" title="1：1"><i class="fa fa-arrows-h"></i></button>
             <button id="reset" title="重新布局"><i class="fa fa-refresh"></i></button>
             <button id="brush_mode" title="框选模式"><i class="fa fa-crop"></i></button>
-            <button id="label_switch" title="标签提示开关"><i class="fa fa-toggle-off"></i></button>
+            <button id="node_switch" title="节点提示开关"><i class="fa fa-toggle-off"></i></button>
+            <button id="link_switch" title="关系提示开关"><i class="fa fa-toggle-off"></i></button>
         </div>
         <svg id="svg"></svg>
         <div id="setting_box">
@@ -85,26 +86,51 @@
     <div id="node_info" class="hidden">
         <p><strong>节点属性:</strong></p>
     </div>
-    <div id="color_box">
-        <div id="color_items">
-            <div class="color_item" style="background-color: #FFB900"></div>
-            <div class="color_item" style="background-color: #E74856"></div>
-            <div class="color_item" style="background-color: #0078D7"></div>
-            <div class="color_item" style="background-color: #0099BC"></div>
-            <div class="color_item" style="background-color: #7A7574"></div>
-            <div class="color_item" style="background-color: #767676"></div>
-            <div class="color_item" style="background-color: #FF8C00"></div>
-            <div class="color_item" style="background-color: #E81123"></div>
-            <div class="color_item" style="background-color: #0063B1"></div>
-            <div class="color_item" style="background-color: #2D7D9A"></div>
-            <div class="color_item" style="background-color: #5D5A58"></div>
-            <div class="color_item" style="background-color: #4C4A48"></div>
+    <div id="tool_box">
+        <div id="function_box">
+            <div id="box_title">功能区</div>
+            <div id="functions">
+                <div id="fun_layout">
+                    <div class="fun_title">点选取</div>
+                    <div id="node_fun">
+                        <button class="node_fun_button" id="selecct_correlation">选 取 关 联</button>
+                        <button class="node_fun_button" id="select_childs">选取子节点</button>
+                        <button class="node_fun_button" id="select_parents">选取父节点</button>
+                        <button class="node_fun_button" id="select_same_type">选取同类型</button>
+                    </div>
+                </div>
+                <div id="fun_layout">
+                    <div class="fun_title">边选取</div>
+                    <div id="node_fun">
+                        <button class="node_fun_button">选 取 关 联</button>
+                        <button class="node_fun_button">选取子节点</button>
+                        <button class="node_fun_button">选取父节点</button>
+                        <button class="node_fun_button">选取同类型</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="color_others" style="font-size: 15px">
-            更多颜色&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <input type="color" id="node_color" />
+        <div id="color_box">
+            <div id="box_title">调色区</div>
+            <div id="color_items">
+                <div class="color_item" style="background-color: #FFB900"></div>
+                <div class="color_item" style="background-color: #E74856"></div>
+                <div class="color_item" style="background-color: #0078D7"></div>
+                <div class="color_item" style="background-color: #0099BC"></div>
+                <div class="color_item" style="background-color: #7A7574"></div>
+                <div class="color_item" style="background-color: #767676"></div>
+                <div class="color_item" style="background-color: #FF8C00"></div>
+                <div class="color_item" style="background-color: #E81123"></div>
+                <div class="color_item" style="background-color: #0063B1"></div>
+                <div class="color_item" style="background-color: #2D7D9A"></div>
+                <div class="color_item" style="background-color: #5D5A58"></div>
+                <div class="color_item" style="background-color: #4C4A48"></div>
+            </div>
+            <div id="color_others">&nbsp&nbsp其他颜色<input type="color" id="node_color" />
+            </div>
         </div>
     </div>
+        
     <div id="upload_layout">
         <div id="upload_top_layout">
             <div id="file_title">导入json数据</div>
