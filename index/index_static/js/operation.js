@@ -1,3 +1,9 @@
+// 屏蔽右键菜单
+document.oncontextmenu=function(ev){
+	ev.preventDefault();
+}
+
+// 上传数据功能
 var upload_layout = d3.select("#upload_layout");
 d3.select("#upload_data")
 	.on("click", function() {
@@ -42,4 +48,9 @@ d3.select("#file_input")
 		file_item.append("div")
 			.attr("id", "state")
 			.text("等待上传");
+	})
+// 下载图片
+d3.select("#download_img")
+	.on("click", function() {
+		saveSvgAsPng(document.getElementById("svg"), "networkGraph.png");
 	})

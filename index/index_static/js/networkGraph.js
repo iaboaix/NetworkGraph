@@ -15,9 +15,9 @@ d3.json("static/5g.json").then(function(data) {
 	  .style("display", "none");
 
 
-	var container = d3.select("g")
-	  .append("g")
-	  .attr("class", "container");
+    var container = d3.select("g")
+  	  .append("g")
+  	  .attr("class", "container");
 
     var linkElements = container.append("g")
       .attr("class", "link_layout")
@@ -25,10 +25,16 @@ d3.json("static/5g.json").then(function(data) {
       .data(data.links)
       .enter()
       .append("path")
+      .on("mouseover", hoverLink)
       .attr('class', 'line')
       .attr("id", function( link, i ){
       	return 'link-' + i;
       });
+
+    var drag = d3.drag()
+	    .on('start', dragstartFn)
+	    .on('drag', dragFn)
+	    .on('end', dragendFn);
 
     var nodeElements = container.append("g")
       .attr("class", "node_layout")
@@ -36,18 +42,14 @@ d3.json("static/5g.json").then(function(data) {
       .data(data.nodes)
       .enter()
       .append("g")
-      .attr("class", "node")
-      .attr('cx', node => node.x)
-      .attr('cy', node => node.y)
-     //  .on('dragstart', dragstartFn)
-	    // .on('drag', dragFn)
-	    // .on('dragend', dragendFn);
+      .attr("class", "node")      
+      .call(drag);
 
     nodeElements.append("circle")
       .attr("r", function () { return 16; })
       .on("mousedown", mousedowned)
-      .on("mouseup", mouseuped)
-      .on("mouseover", hoverNode)
+      // .on("mouseup", mouseuped)
+      .on("mouseover", hoverNode);
       // .call(d3.drag().on("drag", function(node) {
       //   nodeElements.filter(function(d) { return d.selected; })
       //   	.each(function (node) {
@@ -99,14 +101,14 @@ d3.json("static/5g.json").then(function(data) {
 
 
       simulation.nodes(data.nodes).on('tick', () => {
-	        nodeElements.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")" })
-	        linkElements.attr("d", function(link) {	return genLinkPath(link); })
-	 		lineTextElements.attr('dx', link => getLineTextDx(link));
+	        nodeElements.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")" });
+	        linkElements.attr("d", function(link) {	return genLinkPath(link); });
+	 		linkTextElements.attr('dx', link => getLineTextDx(link));
 	 		})
 	      .force("link").links(data.links);
 
 	// 连线的文字
-    const lineTextElements = container.append('g')
+    const linkTextElements = container.append('g')
     	.attr("class", "text_layout")
     	.selectAll('.linetext')
         .data(data.links)
@@ -117,7 +119,7 @@ d3.json("static/5g.json").then(function(data) {
         .attr('dx', function(link) { return getLineTextDx(link) })
         .attr("dy", 5);
 
-     lineTextElements.append('textPath')
+     linkTextElements.append('textPath')
      	.attr('xlink:href', function (link, i) {
      		return '#link-' + i;
      	})
@@ -160,27 +162,50 @@ d3.json("static/5g.json").then(function(data) {
         }
     }
 
-    var ctrl = false;
-    function mousedowned(node) {
-      node.selected = true;
-      d3.select(this.parentNode).classed("selected", true);
-      d3.event.stopPropagation();
+    // 掠过显示关系信息
+    function hoverLink(hover_link) {
+        var link_info = d3.select("#link_info")
+                          .style("display", "block");
+        link_info.selectAll(".info").remove();
+        for(var item in hover_link){
+            // if(['x', 'y', 'vx', 'vy', 'index', 'selected', 'previouslySelected']
+            //     .indexOf(item.toString()) != -1) {
+            //     continue;
+            // }
+        var temp = link_info.append('p')
+                    .attr("class", "info")
+        if (item != "source" && item != "target") {
+            temp.text(item + ": " + hover_link[item]);
+        }
+        else {
+            temp.text(item + ": " + hover_link[item]["label"]);
+        }                    
+        }
     }
 
-    function mouseuped(node) {
-      if (d3.event.ctrlKey) {
-      	ctrl = true;
-        return
-      }
-      else {
-        node.selected = false;
-        ctrl = false;
-        d3.select(this.parentNode).classed("selected", false);
-      }
+    function mousedowned(node) {
+      console.log("mousedown")
+      node.selected = true;
+      d3.select(this.parentNode).classed("selected", true);
+      // d3.event.stopPropagation()
     }
+
+    // function mouseuped(node) {
+    //   console.log("mouseup")
+    //   if (d3.event.ctrlKey) {
+    //   	ctrl = true;
+    //     return
+    //   }
+    //   else {
+    //     node.selected = false;
+    //     ctrl = false;
+    //     d3.select(this.parentNode).classed("selected", false);
+    //   }
+    // }
     
     svg.on("click", function() {
-      if (!ctrl) {
+      console.log("svg click")
+      if (!d3.event.ctrlKey) {
 	      d3.selectAll(".selected")
 	        .classed("selected", false);
 	      nodeElements.filter(function(d) {
@@ -282,7 +307,8 @@ d3.json("static/5g.json").then(function(data) {
     //         textElements.style("display", "block");
     //     }
     //     node_text_state = !node_text_state;
-    // })    
+    // })
+
     // 节点标签显示开关功能实现
     var node_text_state = false;
     var node_switch = d3.select("#node_switch");
@@ -348,6 +374,35 @@ d3.json("static/5g.json").then(function(data) {
             return line_stroke_width;
         });
     });
+
+    // 右键菜单
+    // 定义菜单选项
+    var userMenuData = [
+      [
+        {
+          text: "查询子节点",
+          func: function() {
+            // id为节点id
+            var id = Number($(this).attr("id"));
+            c = d3.select(this).datum().label
+            alert("你想查" + c);
+          }
+        },
+        {
+          text: "删除",
+          func: function() {
+            var id = Number($(this).attr("id"));
+            alert("你想", "删除");
+          }
+        }
+      ]
+    ];
+
+    // 事件监听方式添加事件绑定
+    $("#svg").smartMenu(userMenuData, {
+      name: "chatRightControl",
+      container: "g.node"
+    });
     
     // 颜色标记
     d3.selectAll(".color_item")
@@ -398,13 +453,13 @@ d3.json("static/5g.json").then(function(data) {
     function getNeighbors() {
     	var neighbors = [];
     	selected_nodes = data.nodes.filter(function (node) {return node.selected});
-		data.links.forEach(function (link) {
-			selected_nodes.forEach(function (node) {
-				if(node.id === link.target.id) { neighbors.push(link.source.id) }
-				else if (node.id === link.source.id) { neighbors.push(link.target.id) }
-			})
-		})
-		return neighbors
+  		data.links.forEach(function (link) {
+  			selected_nodes.forEach(function (node) {
+  				if(node.id === link.target.id) { neighbors.push(link.source.id) }
+  				else if (node.id === link.source.id) { neighbors.push(link.target.id) }
+  			})
+  		})
+		  return neighbors
 	}
     d3.select("#selecct_correlation")
       .on("click", selecct_correlation);
@@ -417,25 +472,35 @@ d3.json("static/5g.json").then(function(data) {
     		}
     	})
 	}
+
+	function dragstartFn(d) {
+		console.log("drag start")
+	    draging = true;
+	    d3.event.sourceEvent.stopPropagation();
+	}
+
+	function dragFn(node) {
+		console.log("draging")
+	    draging = true;
+
+	    nodeElements.filter(function(d) { return d.selected; })
+			.each(function (node) {
+				node.x += d3.event.dx;
+				node.y += d3.event.dy;
+				d3.select(this)
+				  .attr("transform", "translate(" + node.x + "," + node.y + ")");
+			})
+	    linkElements.attr("d", function(link) {	return genLinkPath(link); })
+ 		linkTextElements.attr('dx', link => getLineTextDx(link));
+	}
+	function dragendFn(node) {		
+	    draging = false;
+	 	if (!d3.event.sourceEvent.ctrlKey) {
+	        node.selected = false;
+	        d3.select(this).classed("selected", false);
+	      }
+		}
 })
-
-function dragstartFn(d) {
-    draging = true;
-    d3.event.sourceEvent.stopPropagation();
-    force.start();
-}
-
-function dragFn(d) {
-    draging = true;
-    d3.select(this)
-        .attr('cx', d.x = d3.event.x)
-        .attr('cy', d.y = d3.event.y);
-}
-
-function dragendFn(d) {
-    draging = false;
-    force.stop();  
-}
 
 function textBreaking(d3text, text) {
     const len = text.length;

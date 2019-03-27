@@ -7,8 +7,13 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="{% static 'js/d3.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/fullScreen.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/saveSvgAsPng.js' %}"></script>
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+	<script type="text/javascript" src="{% static 'js/smartMenu.js' %}"></script>
+
     <link rel="stylesheet" href="{% static 'css/font-awesome-4.7.0/css/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}"></style>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/smartMenu.css' %}" >
 </head>
 <body>
     <div id="top_tool_bar">
@@ -83,12 +88,18 @@
             </table>
         </div>
     </div>
-    <div id="node_info" class="hidden">
-        <p><strong>节点属性:</strong></p>
+    <div id="info_layout">
+	    <div id="node_info" class="hidden">
+	        <p><strong>节点属性:</strong></p>
+	    </div>
+	    <div id="link_info" class="hidden">
+	        <p><strong>关系属性:</strong></p>
+	    </div>
     </div>
+
     <div id="tool_box">
         <div id="function_box">
-            <div id="box_title">功能区</div>
+            <div id="box_title">选取区</div>
             <div id="functions">
                 <div id="fun_layout">
                     <div class="fun_title">点选取</div>

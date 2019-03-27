@@ -118,7 +118,7 @@ circle:hover {
 }
 .selected circle {
     stroke: yellow;
-    stroke-width: 5px;
+    stroke-width: 2px;
 }
 .line{
     cursor: pointer;
@@ -150,9 +150,9 @@ text {
     pointer-events: none;
     text-anchor: middle;
 }
-#node_info {
+#info_layout {
     color:  black;
-    position:absolute;
+    position: absolute;
     width: 250px;
     height: auto;
     left: 30px;
@@ -163,12 +163,10 @@ text {
     border-radius: 4px;
     pointer-events: none;
     opacity: 0.5;
-    display: none;
 }
-#node_info p {
+#info_layout p {
     font-family: sans-serif;
     font-size: 15px;
-    line-height: 10px;
 }
 #function_box {
     color: black;
