@@ -98,6 +98,9 @@ html, body {
     line-height: 38px;
     background: #027080;
 }
+.node_layout {
+    fill-rule: inherit;
+}
 table{
     width: 100%;
 }
