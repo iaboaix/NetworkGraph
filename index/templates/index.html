@@ -36,13 +36,13 @@
             <button id="zoom_reset" title="1：1"><i class="fa fa-arrows-h"></i></button>
             <button id="reset" title="重新布局"><i class="fa fa-refresh"></i></button>
             <button id="brush_mode" title="框选模式"><i class="fa fa-crop"></i></button>
-            <button id="node_switch" title="节点提示开关"><i class="fa fa-toggle-off"></i></button>
-            <button id="link_switch" title="关系提示开关"><i class="fa fa-toggle-off"></i></button>
         </div>
-        <svg id="svg"></svg>
+        <svg id="svg">
+        	<g id="container"></g>
+        </svg>
         <div id="setting_box">
             <div id="setting_box_header">
-                自定义设置&nbsp&nbsp
+                &nbsp&nbsp自定义设置&nbsp&nbsp
                 <i class="fa fa-arrow-right" id="hide_setting"></i>
             </div>
             <table id="setting_box_content">
@@ -83,6 +83,24 @@
                             <input type="range" name="points" id="line_stroke_width" min="0" max="5" step="0.1" value="1" />
                         </td>
                     </tr>
+                    <tr>
+                        <td>节点提示开关</td>
+                        <td>
+                            <button id="node_switch" title="节点提示开关"><i class="fa fa-toggle-off"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>关系提示开关</td>
+                        <td>
+                            <button id="link_switch" title="关系提示开关"><i class="fa fa-toggle-off"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>箭头显示开关</td>
+                        <td>
+                            <button id="marker_switch" title="箭头提示开关"><i class="fa fa-toggle-off"></i></button>
+                        </td>
+                    </tr>                    
                 </tbody>
             </table>
         </div>

@@ -11,17 +11,10 @@ var brush_svg = svg.append("g")
         .attr("width", width)
         .attr("height", height)
         .style("display", "none");
-// var a = []
+
+var container = d3.select("#container");
+
 d3.json("static/5g.json").then(function(data) {
-    // for (var node in data.nodes) {
-    //         console.log(data.nodes[node])
-
-    //     a.push(data.nodes[node])
-    // }
-
-    var container = d3.select("g")
-        .append("g")
-        .attr("class", "container");
 
     brushEvent = d3.brush()
         .extent([[0, 0], [width, height]])
@@ -37,24 +30,44 @@ d3.json("static/5g.json").then(function(data) {
         .on('drag', dragFn)
         .on('end', dragendFn);
 
+    // 连线对象
     var linkElements = container.append("g")
         .attr("class", "link_layout")
-        .selectAll(".line")
+        .selectAll("path")
         .data(data.links)
         .enter()
         .append("path")
         .attr('class', 'line')
         .attr("id", function( link, i ){ return 'link-' + i; })
+        .on("mousedown", selectLink)
         .on("mouseover", hoverLink);
 
+    // 箭头
+    var marker = d3.select(".link_layout")
+        .append("marker")
+        .attr("id", "resolved")
+        .attr("markerUnits", "userSpaceOnUse")
+        .attr("viewBox", "0 -5 10 10")//坐标系的区域
+        .attr("refX", 24)//箭头坐标
+        .attr("refY", 0)
+        .attr("markerWidth", 12)//标识的大小
+        .attr("markerHeight", 12)
+        .attr("orient", "auto")//绘制方向，可设定为：auto（自动确认方向）和 角度值
+        .attr("stroke-width",2)//箭头宽度
+        .append("path")
+        .attr("d", "M2,0 L0,-3 L9,0 L0,3 M2,0 L0,3")//箭头的路径
+        .attr("fill","green")
+        .style("opacity", "0");//箭头颜色
+
+    // 节点对象
     var nodeElements = container.append("g")
-      .attr("class", "node_layout")
-      .selectAll(".node")
-      .data(data.nodes)
-      .enter()
-      .append("g")
-      .attr("class", "node")      
-      .call(drag);
+        .attr("class", "node_layout")
+        .selectAll(".node")
+        .data(data.nodes)
+        .enter()
+        .append("g")
+        .attr("class", "node")      
+        .call(drag);
 
     nodeElements.append("circle")
         .attr("r", function () { return 16; })
@@ -154,7 +167,7 @@ d3.json("static/5g.json").then(function(data) {
             }
         })
 
-    // 节点标签显示开关功能实现
+    // 节点标签显示开关
     var node_text_state = false;
     var node_switch = d3.select("#node_switch");
     var node_text = d3.selectAll(".node_text");
@@ -171,7 +184,7 @@ d3.json("static/5g.json").then(function(data) {
         node_text_state = !node_text_state;
     });
 
-    // 关系标签显示开关功能实现
+    // 关系标签显示开关
     var link_text_state = false;
     var link_switch = d3.select("#link_switch");
     var link_text = d3.selectAll(".link_text");
@@ -188,13 +201,30 @@ d3.json("static/5g.json").then(function(data) {
         link_text_state = !link_text_state;
     });
 
+    // 箭头显示开关
+    var marker_state = false;
+    var marker_switch = d3.select("#marker_switch");
+
+    marker_switch.on("click", function() {
+        if (marker_state) {
+            marker_switch.select("i").attr("class","fa fa-toggle-off");
+            marker.style("opacity", "0");
+        }
+        else {
+            marker_switch.select("i").attr("class","fa fa-toggle-on");
+            marker.style("opacity", "1");
+        }
+        marker_state = !marker_state;
+    });
+
     // 创建节点
     d3.select("#creat_node").on("click", function () {
         svg.style("cursor", "crosshair");
         svg.on("click.add-node", function () {
             svg.style("cursor", "default");
             alert("创建节点");
-        })
+            svg.on("click.add-node", null);
+        });
     });
 
     // 调整图参数
@@ -225,7 +255,7 @@ d3.json("static/5g.json").then(function(data) {
     });
 
     d3.select("#line_color").on("change", function() {
-    	d3.selectAll(".line").style("stroke", this.value);
+    	d3.selectAll("path").style("stroke", this.value);
     });
 
     d3.select("#line_stroke_width").on("input propertychange", function() {
@@ -252,19 +282,19 @@ d3.json("static/5g.json").then(function(data) {
             },
             {
                 text: "删除",
-                // func: function() {
-                //     data.links.push({"source": data.nodes[1], "target": data.nodes[2], "strength": 0.7, "label": "test"})
-                //     linkElements
-                //         .data(data.links)
-                //         .enter()
-                //         .append("path")
-                //         .attr('class', 'line')
-                //         .attr("id", function( link, i ){ return 'link-' + i; })
-                //         .on("mouseover", hoverLink)
-                //         ;
-                //     simulation.alpha(1).restart();
-                //     console.log(data.links)
-                // }
+                func: function() {
+                    data.links.push({"source": data.nodes[1], "target": data.nodes[2], "strength": 0.7, "label": "test"})
+                    linkElements
+                        .data(data.links)
+                        .enter()
+                        .append("path")
+                        .attr('class', 'line')
+                        .attr("id", function( link, i ){ return 'link-' + i; })
+                        .on("mouseover", hoverLink)
+                        ;
+                    simulation.alpha(1).restart();
+                    console.log(data.links)
+                }
             }
         ]
     ];
@@ -277,13 +307,9 @@ d3.json("static/5g.json").then(function(data) {
 
     function draw() {
         nodeElements.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")" });
-        linkElements.attr("d", function(link) { return genLinkPath(link); });
+        linkElements.attr("d", function(link) { return genLinkPath(link); })
+            .attr("marker-end", "url(#resolved)");
         linkTextElements.attr("dx", function(link) { return getLineTextDx(link); });
-    }
-
-    function selectNode(node) {
-        node.selected = true;
-        d3.select(this.parentNode).classed("selected", true);
     }
 
     // 缩放功能实现
@@ -507,6 +533,12 @@ function hoverNode(node) {
     }
 }
 
+// 点击选中节点
+function selectNode(node) {
+    node.selected = true;
+    d3.select(this.parentNode).classed("selected", true);
+}
+
 // 掠过显示关系信息
 function hoverLink(link) {
     var link_info = d3.select("#link_info")
@@ -526,4 +558,10 @@ function hoverLink(link) {
         temp.text(key + ": " + link[key]["label"]);
     }                    
     }
+}
+
+// 点击选中边
+function selectLink(link) {
+    link.selected = true;
+    d3.select(this).classed("selected", true);
 }

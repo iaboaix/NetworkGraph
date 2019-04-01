@@ -82,7 +82,7 @@ html, body {
     display: block;
 }
 #setting_box {
-    width: 250px;
+    width: 280px;
     background-color: #0D877A;
     position: absolute;
     right: 0px;
@@ -98,11 +98,13 @@ html, body {
     line-height: 38px;
     background: #027080;
 }
+table{
+    width: 100%;
+}
 tbody td {
-    width: auto;
     font-size: 12px;
     background-color: #027090;
-    border: 2px solid #FFFFFF;
+    border: 1px solid #FFFFFF;
     padding: 9px;
 }
 circle {
@@ -120,14 +122,18 @@ circle:hover {
     stroke: yellow;
     stroke-width: 2px;
 }
-.line{
+path{
     cursor: pointer;
     stroke: #00FFFB;
     stroke-width: 1px;
 }
-.line:hover{
+path:hover{
     stroke-width: 4px !important;
     stroke-opacity: 0.8;
+}
+.selected path{
+    stroke: yellow;
+    stroke-width: 4px !important;
 }
 button {
     width: 100%;
