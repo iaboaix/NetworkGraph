@@ -4,11 +4,10 @@
 <head>
     {% load staticfiles %}
     <title>数据可视化</title>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="{% static 'js/d3.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/fullScreen.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/saveSvgAsPng.js' %}"></script>
-	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/smartMenu.js' %}"></script>
 
     <link rel="stylesheet" href="{% static 'css/font-awesome-4.7.0/css/font-awesome.min.css' %}">
@@ -98,25 +97,25 @@
     </div>
 
     <div id="tool_box">
-        <div id="function_box">
-            <div id="box_title">选取区</div>
+        <div id="select_box">
+            <div id="box_title">选择区</div>
             <div id="functions">
                 <div id="fun_layout">
                     <div class="fun_title">点选取</div>
-                    <div id="node_fun">
-                        <button class="node_fun_button" id="selecct_correlation">选 取 关 联</button>
-                        <button class="node_fun_button" id="select_childs">选取子节点</button>
-                        <button class="node_fun_button" id="select_parents">选取父节点</button>
-                        <button class="node_fun_button" id="select_same_type">选取同类型</button>
+                    <div class="node_fun">
+                        <button class="select_button" id="selecct_correlation">选 取 关 联</button>
+                        <button class="select_button" id="select_childs">选取子节点</button>
+                        <button class="select_button" id="select_parents">选取父节点</button>
+                        <button class="select_button" id="select_same_type">选取同类型</button>
                     </div>
                 </div>
                 <div id="fun_layout">
                     <div class="fun_title">边选取</div>
-                    <div id="node_fun">
-                        <button class="node_fun_button">选 取 关 联</button>
-                        <button class="node_fun_button">选取子节点</button>
-                        <button class="node_fun_button">选取父节点</button>
-                        <button class="node_fun_button">选取同类型</button>
+                    <div class="node_fun">
+                        <button class="select_button">选 取 关 联</button>
+                        <button class="select_button">选取子节点</button>
+                        <button class="select_button">选取父节点</button>
+                        <button class="select_button">选取同类型</button>
                     </div>
                 </div>
             </div>
@@ -140,6 +139,15 @@
             <div id="color_others">&nbsp&nbsp其他颜色<input type="color" id="node_color" />
             </div>
         </div>
+        <div id="function_box">
+    		<div id="box_title">功能区</div>
+    		<div id="fun_items">
+    			<button class="fun_button" id="creat_node">创建节点</button>
+    			<button class="fun_button" id="delete_node">删除节点</button>
+    			<button class="fun_button" id="creat_link">创建关系</button>
+    			<button class="fun_button" id="delete_link">删除关系</button>
+    		</div>
+    	</div>
     </div>
         
     <div id="upload_layout">

@@ -1,40 +1,51 @@
 var width = window.innerWidth
 var height = window.innerHeight
 
+var svg = d3.select('#svg')
+    .attr('width', width)
+    .attr('height', height);
+
+var brush_svg = svg.append("g")
+        .append("g")
+        .attr("class", "brush_svg")
+        .attr("width", width)
+        .attr("height", height)
+        .style("display", "none");
+// var a = []
 d3.json("static/5g.json").then(function(data) {
+    // for (var node in data.nodes) {
+    //         console.log(data.nodes[node])
 
-	var svg = d3.select('#svg')
-            .attr('width', width)
-            .attr('height', height);
-
-	var brush = svg.append("g")
-	  .append("g")
-	  .attr("class", "brush")
-	  .attr("width", width)
-	  .attr("height", height)
-	  .style("display", "none");
-
+    //     a.push(data.nodes[node])
+    // }
 
     var container = d3.select("g")
-  	  .append("g")
-  	  .attr("class", "container");
+        .append("g")
+        .attr("class", "container");
+
+    brushEvent = d3.brush()
+        .extent([[0, 0], [width, height]])
+        .on("start", brushStarted)
+        .on("brush", brushed)
+        .on("end", brushEnded);
+
+    brush_svg.call(brushEvent);
+
+    // 定义托拽
+    var drag = d3.drag()
+        .on('start', dragstartFn)
+        .on('drag', dragFn)
+        .on('end', dragendFn);
 
     var linkElements = container.append("g")
-      .attr("class", "link_layout")
-      .selectAll(".line")
-      .data(data.links)
-      .enter()
-      .append("path")
-      .on("mouseover", hoverLink)
-      .attr('class', 'line')
-      .attr("id", function( link, i ){
-      	return 'link-' + i;
-      });
-
-    var drag = d3.drag()
-	    .on('start', dragstartFn)
-	    .on('drag', dragFn)
-	    .on('end', dragendFn);
+        .attr("class", "link_layout")
+        .selectAll(".line")
+        .data(data.links)
+        .enter()
+        .append("path")
+        .attr('class', 'line')
+        .attr("id", function( link, i ){ return 'link-' + i; })
+        .on("mouseover", hoverLink);
 
     var nodeElements = container.append("g")
       .attr("class", "node_layout")
@@ -46,29 +57,9 @@ d3.json("static/5g.json").then(function(data) {
       .call(drag);
 
     nodeElements.append("circle")
-      .attr("r", function () { return 16; })
-      .on("mousedown", mousedowned)
-      // .on("mouseup", mouseuped)
-      .on("mouseover", hoverNode);
-      // .call(d3.drag().on("drag", function(node) {
-      //   nodeElements.filter(function(d) { return d.selected; })
-      //   	.each(function (node) {
-      //   		node.x += d3.event.dx;
-      //   		node.y += d3.event.dy;
-      //   		d3.select(this)
-      //   		  .attr("transform", "translate(" + node.x + "," + node.y + ")");
-      //   	})
-
-
-      //   linkElements.filter(function(d) { return d.source.selected; })
-      //     .attr("x1", function(d) { return d.source.x; })
-      //     .attr("y1", function(d) { return d.source.y; });
-
-      //   linkElements.filter(function(d) { return d.target.selected; })
-      //     .attr("x2", function(d) { return d.target.x; })
-      //     .attr("y2", function(d) { return d.target.y; });
-      // }
-      // ));
+        .attr("r", function () { return 16; })
+        .on("mousedown", selectNode)
+        .on("mouseover", hoverNode);
 
     nodeElements.append("text")
     	.attr("class", "node_text")
@@ -78,176 +69,48 @@ d3.json("static/5g.json").then(function(data) {
         	return textBreaking(d3.select(this), node.label);
         });
 
-    // var textElements = svg.append("g")
-    //   .attr("class", "text_layout")
-    //   .selectAll("g")
-    //   .data(data.nodes)
-    //   .enter().append("text")
-    //   .text(function (node) { return  node.label })
-    //   .style("display", "none")
-    //   .attr("font-size", 4);
-
-    var linkForce = d3
-      .forceLink()
-      .id(function (link) { return link.id })
-      .strength(0.7);
-
-    var simulation = d3
-      .forceSimulation()
-      .force('link', linkForce)
-      .force('charge', d3.forceManyBody().strength(-300))
-      .force('center', d3.forceCenter(width / 2 + 150, height / 2))
-      .alpha(1);
-
-
-      simulation.nodes(data.nodes).on('tick', () => {
-	        nodeElements.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")" });
-	        linkElements.attr("d", function(link) {	return genLinkPath(link); });
-	 		linkTextElements.attr('dx', link => getLineTextDx(link));
-	 		})
-	      .force("link").links(data.links);
-
-	// 连线的文字
-    const linkTextElements = container.append('g')
-    	.attr("class", "text_layout")
-    	.selectAll('.linetext')
+    // 连线的文字
+    var linkTextElements = container.append('g')
+        .attr("class", "text_layout")
+        .selectAll('.linetext')
         .data(data.links)
         .enter()
         .append('text')
         .style('font-size', 10)
-        .attr('class', 'link_text')
-        .attr('dx', function(link) { return getLineTextDx(link) })
-        .attr("dy", 5);
+        .attr('class', 'link_text');
 
-     linkTextElements.append('textPath')
-     	.attr('xlink:href', function (link, i) {
-     		return '#link-' + i;
-     	})
+    linkTextElements.append('textPath')
+        .attr('xlink:href', function (link, i) {
+            return '#link-' + i;
+        })
         .text(link => link.label);
 
-    // function isNeighborLink(node, link) {
-    //   return link.target.id === node.id || link.source.id === node.id;
-    // }
+    var linkForce = d3
+        .forceLink()
+        .id(function (link) { return link.id })
+        .strength(0.7);
 
+    var simulation = d3
+        .forceSimulation()
+        .velocityDecay(0.2)
+        .force('link', linkForce)
+        .force('charge', d3.forceManyBody().strength(-300))
+        .force('center', d3.forceCenter(width / 2 + 150, height / 2))
+        .alpha(2);
 
-    // function getNodeColor(node, neighbors) {
-    //   if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
-    //     return node.level === 1 ? 'blue' : 'green';
-    //   }
-
-    //   return node.level === 1 ? 'red' : 'gray';
-    // }
-
-    // function getLinkColor(node, link) {
-    //   return isNeighborLink(node, link) ? 'yellow' : 'yellow';
-    // }
-
-    // function getTextColor(node, neighbors) {
-    //   return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'white' : 'black';
-    // }
-    
-    // 掠过显示节点信息
-    function hoverNode(hover_node) {
-        var node_info = d3.select("#node_info")
-                          .style("display", "block");
-        node_info.selectAll(".info").remove();
-        for(var item in hover_node){
-            if(['x', 'y', 'vx', 'vy', 'index', 'selected', 'previouslySelected']
-                .indexOf(item.toString()) != -1) {
-                continue;
-            }
-            node_info.append('p')
-                     .attr("class", "info")
-                     .text(item + ": " + hover_node[item]);
-        }
-    }
-
-    // 掠过显示关系信息
-    function hoverLink(hover_link) {
-        var link_info = d3.select("#link_info")
-                          .style("display", "block");
-        link_info.selectAll(".info").remove();
-        for(var item in hover_link){
-            // if(['x', 'y', 'vx', 'vy', 'index', 'selected', 'previouslySelected']
-            //     .indexOf(item.toString()) != -1) {
-            //     continue;
-            // }
-        var temp = link_info.append('p')
-                    .attr("class", "info")
-        if (item != "source" && item != "target") {
-            temp.text(item + ": " + hover_link[item]);
-        }
-        else {
-            temp.text(item + ": " + hover_link[item]["label"]);
-        }                    
-        }
-    }
-
-    function mousedowned(node) {
-      console.log("mousedown")
-      node.selected = true;
-      d3.select(this.parentNode).classed("selected", true);
-      // d3.event.stopPropagation()
-    }
-
-    // function mouseuped(node) {
-    //   console.log("mouseup")
-    //   if (d3.event.ctrlKey) {
-    //   	ctrl = true;
-    //     return
-    //   }
-    //   else {
-    //     node.selected = false;
-    //     ctrl = false;
-    //     d3.select(this.parentNode).classed("selected", false);
-    //   }
-    // }
+    simulation.nodes(data.nodes)
+        .on('tick', draw)
+        .force("link").links(data.links);
     
     svg.on("click", function() {
-      console.log("svg click")
-      if (!d3.event.ctrlKey) {
-	      d3.selectAll(".selected")
-	        .classed("selected", false);
-	      nodeElements.filter(function(d) {
-	          d.selected = false;
-	      });
-      }
-    })
-
-    function brushstarted() {
-      if (d3.event.sourceEvent.type !== "end") {
-        nodeElements.classed("selected", false);
-        data.nodes.map(function(node) {
-          node.selected = false;
-        });
-      }
-    }
-
-    function brushed() {
-      if (d3.event.sourceEvent.type !== "end") {
-        var selection = d3.event.selection;
-        nodeElements.classed("selected", function(d) {
-          return d.selected = d.previouslySelected ^
-            (selection != null
-            && selection[0][0] <= d.x && d.x < selection[1][0]
-            && selection[0][1] <= d.y && d.y < selection[1][1]);
-        });
-      }
-    }
-
-    function brushended() {
-        if (d3.event.selection != null) {
-          d3.select(this).call(d3.event.target.move, null);
+        if (!d3.event.ctrlKey) {
+            d3.selectAll(".selected")
+                .classed("selected", false);
+            nodeElements.filter(function(d) {
+                d.selected = false;
+            });
         }
-    }
-
-    brushEvent = d3.brush()
-        .extent([[0, 0], [width, height]])
-        .on("start", brushstarted)
-        .on("brush", brushed)
-        .on("end", brushended);
-
-    brush.call(brushEvent);
+    })
 
     // 框选功能
     data.nodes.forEach(function(d) {
@@ -255,64 +118,47 @@ d3.json("static/5g.json").then(function(data) {
         d.previouslySelected = false;
     });
 
-    // 缩放功能实现
-    function zoomed() {
-      container.attr("transform", d3.event.transform);
-    }
-
-    svg.call(d3.zoom().scaleExtent([0.1, 10]).on("zoom", zoomed))
-       .on('dblclick.zoom', null);
+    // svg缩放
+    var zoom = d3.zoom().scaleExtent([0.1, 10]).on("zoom", zoomed);
+    svg.call(zoom).on('dblclick.zoom', null);
 
     d3.select("#zoom_out").on("click", function() {
        zoom.scaleBy(container, 2);
     });      
+
     d3.select("#zoom_in").on("click", function() {
        zoom.scaleBy(container, 0.5);
     });      
+
     d3.select("#zoom_reset").on("click", function() {
        container.call(zoom.transform, d3.zoomIdentity);
     });
 
-    // 重置布局
+    // 重新布局
     d3.select("#reset").on("click", function() {
-        simulation.force('center', d3.forceCenter(width / 2, height / 2));
-        simulation.restart();
+        simulation.alpha(1).restart();
     });
 
     // 框选模式
     var isBrush = false;
     d3.select("#brush_mode")
-      .on("click", function () {
-        isBrush = !isBrush;
-        if (isBrush) {
-          d3.select(this).classed("on", true);
-          brush.style("display", "block");
-        }
-        else {
-          d3.select(this).classed("on", false);
-          brush.style("display", "none");
-        }
-      })
-
-    // 标签显示开关功能实现
-    // var node_text_state = false;
-    // var label_switch_button = d3.select("#label_switch");
-    // label_switch_button.on("click", function() {
-    //     if (node_text_state) {
-    //         label_switch_button.select("i").attr("class","fa fa-toggle-off");
-    //         textElements.style("display", "none");
-    //     }
-    //     else {
-    //         label_switch_button.select("i").attr("class","fa fa-toggle-on");
-    //         textElements.style("display", "block");
-    //     }
-    //     node_text_state = !node_text_state;
-    // })
+        .on("click", function () {
+            isBrush = !isBrush;
+            if (isBrush) {
+                d3.select(this).classed("on", true);
+                brush_svg.style("display", "block");
+            }
+            else {
+                d3.select(this).classed("on", false);
+                brush_svg.style("display", "none");
+            }
+        })
 
     // 节点标签显示开关功能实现
     var node_text_state = false;
     var node_switch = d3.select("#node_switch");
     var node_text = d3.selectAll(".node_text");
+
     node_switch.on("click", function() {
         if (node_text_state) {
             node_switch.select("i").attr("class","fa fa-toggle-off");
@@ -323,12 +169,13 @@ d3.json("static/5g.json").then(function(data) {
             node_text.style("display", "block");
         }
         node_text_state = !node_text_state;
-    })
+    });
 
     // 关系标签显示开关功能实现
     var link_text_state = false;
     var link_switch = d3.select("#link_switch");
     var link_text = d3.selectAll(".link_text");
+
     link_switch.on("click", function() {
         if (link_text_state) {
             link_switch.select("i").attr("class","fa fa-toggle-off");
@@ -339,8 +186,16 @@ d3.json("static/5g.json").then(function(data) {
             link_text.style("display", "block");
         }
         link_text_state = !link_text_state;
-    })
+    });
 
+    // 创建节点
+    d3.select("#creat_node").on("click", function () {
+        svg.style("cursor", "crosshair");
+        svg.on("click.add-node", function () {
+            svg.style("cursor", "default");
+            alert("创建节点");
+        })
+    });
 
     // 调整图参数
     d3.select("#node_size").on("input propertychange", function() {
@@ -349,25 +204,30 @@ d3.json("static/5g.json").then(function(data) {
             return size;
         });
     });
+
     d3.select("#node_opacity").on("input propertychange", function() {
         var opacity = this.value;
         nodeElements.style("opacity", function(node, i){
             return opacity;
         });
-    });        
+    });      
+
     d3.select("#node_stroke").on("input propertychange", function() {
         var stroke_width = this.value;
         nodeElements.selectAll("circle").style("stroke-width", function(node, i){
             return stroke_width;
         });
     });
+
     d3.select("#link_strength").on("input propertychange", function() {
     	simulation.force("link").strength(+this.value);
 	    simulation.alpha(1).restart();
     });
+
     d3.select("#line_color").on("change", function() {
     	d3.selectAll(".line").style("stroke", this.value);
     });
+
     d3.select("#line_stroke_width").on("input propertychange", function() {
         var line_stroke_width = this.value;
         linkElements.style("stroke-width", function(node, i){
@@ -375,27 +235,38 @@ d3.json("static/5g.json").then(function(data) {
         });
     });
 
-    // 右键菜单
     // 定义菜单选项
     var userMenuData = [
-      [
-        {
-          text: "查询子节点",
-          func: function() {
-            // id为节点id
-            var id = Number($(this).attr("id"));
-            c = d3.select(this).datum().label
-            alert("你想查" + c);
-          }
-        },
-        {
-          text: "删除",
-          func: function() {
-            var id = Number($(this).attr("id"));
-            alert("你想", "删除");
-          }
-        }
-      ]
+        [
+            {
+                text: "展开节点",
+                func: function() {
+                // id为节点id
+                var id = Number($(this).attr("id"));
+                c = d3.select(this).datum().label
+                alert("你想查" + c);
+                }
+            },
+            {
+                text: "收起节点",
+            },
+            {
+                text: "删除",
+                // func: function() {
+                //     data.links.push({"source": data.nodes[1], "target": data.nodes[2], "strength": 0.7, "label": "test"})
+                //     linkElements
+                //         .data(data.links)
+                //         .enter()
+                //         .append("path")
+                //         .attr('class', 'line')
+                //         .attr("id", function( link, i ){ return 'link-' + i; })
+                //         .on("mouseover", hoverLink)
+                //         ;
+                //     simulation.alpha(1).restart();
+                //     console.log(data.links)
+                // }
+            }
+        ]
     ];
 
     // 事件监听方式添加事件绑定
@@ -403,18 +274,37 @@ d3.json("static/5g.json").then(function(data) {
       name: "chatRightControl",
       container: "g.node"
     });
+
+    function draw() {
+        nodeElements.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")" });
+        linkElements.attr("d", function(link) { return genLinkPath(link); });
+        linkTextElements.attr("dx", function(link) { return getLineTextDx(link); });
+    }
+
+    function selectNode(node) {
+        node.selected = true;
+        d3.select(this.parentNode).classed("selected", true);
+    }
+
+    // 缩放功能实现
+    function zoomed() {
+        container.attr("transform", d3.event.transform);
+    }
     
     // 颜色标记
     d3.selectAll(".color_item")
       .on("click", changeColor);
+
     function changeColor() {
         nodeElements.filter(function(d) { return d.selected; })
             .attr("fill", d3.select(this).style("background-color"));
     }
+
     d3.select("#node_color").on("change", function () {
         nodeElements.filter(function(d) { return d.selected; })
             .attr("fill", this.value);
     });
+
     d3.select("#setting_button").on("click", changeShowState);
     var setting_box = d3.select("#setting_box");
     var hide_setting = d3.select("#hide_setting")
@@ -461,8 +351,10 @@ d3.json("static/5g.json").then(function(data) {
   		})
 		  return neighbors
 	}
+
     d3.select("#selecct_correlation")
-      .on("click", selecct_correlation);
+        .on("click", selecct_correlation);
+
     function selecct_correlation() {
     	neighbors = getNeighbors()
     	d3.selectAll(".node").each(function(node) {
@@ -474,15 +366,12 @@ d3.json("static/5g.json").then(function(data) {
 	}
 
 	function dragstartFn(d) {
-		console.log("drag start")
 	    draging = true;
 	    d3.event.sourceEvent.stopPropagation();
 	}
 
 	function dragFn(node) {
-		console.log("draging")
 	    draging = true;
-
 	    nodeElements.filter(function(d) { return d.selected; })
 			.each(function (node) {
 				node.x += d3.event.dx;
@@ -491,17 +380,47 @@ d3.json("static/5g.json").then(function(data) {
 				  .attr("transform", "translate(" + node.x + "," + node.y + ")");
 			})
 	    linkElements.attr("d", function(link) {	return genLinkPath(link); })
- 		linkTextElements.attr('dx', link => getLineTextDx(link));
+ 		linkTextElements.attr("dx", function(link) { return getLineTextDx(link) });
 	}
+
 	function dragendFn(node) {		
 	    draging = false;
 	 	if (!d3.event.sourceEvent.ctrlKey) {
 	        node.selected = false;
 	        d3.select(this).classed("selected", false);
-	      }
-		}
-})
+	    }
+	}
 
+    function brushStarted() {
+        if (d3.event.sourceEvent.type !== "end") {
+            nodeElements.classed("selected", false);
+            data.nodes.map(function(node) {
+                node.selected = false;
+            });
+        }
+    }
+
+    function brushed() {
+      if (d3.event.sourceEvent.type !== "end") {
+        var selection = d3.event.selection;
+        nodeElements.classed("selected", function(d) {
+          return d.selected = d.previouslySelected ^
+            (selection != null
+            && selection[0][0] <= d.x && d.x < selection[1][0]
+            && selection[0][1] <= d.y && d.y < selection[1][1]);
+        });
+      }
+    }
+
+    function brushEnded() {
+        if (d3.event.selection != null) {
+          d3.select(this).call(d3.event.target.move, null);
+        }
+    }
+})
+// setTimeout(function() {
+//     console.log
+// }, 100);
 function textBreaking(d3text, text) {
     const len = text.length;
     if (len <= 4) {
@@ -556,19 +475,55 @@ function genLinkPath(link) {
     return 'M' + sx + ',' + sy + ' L' + tx + ',' + ty;
 }
 
-function getLineTextDx(d) {
+function getLineTextDx(link) {
 
-    const sx = d.source.x;
-    const sy = d.source.y;
-    const tx = d.target.x;
-    const ty = d.target.y;
+    const sx = link.source.x;
+    const sy = link.source.y;
+    const tx = link.target.x;
+    const ty = link.target.y;
 
     const distance = Math.sqrt(Math.pow(tx - sx, 2) + Math.pow(ty - sy, 2));
 
-    // const textLength = d.label.length;
-    const textLength = d.label.length;
+    // const textLength = link.label.length;
+    const textLength = link.label.length;
     const deviation = 8; // 调整误差
     const dx = (distance - 3 * textLength) / 2;
 
     return dx;
+}
+
+// 掠过显示节点信息
+function hoverNode(node) {
+    var node_info = d3.select("#node_info")
+        .style("display", "block");
+    node_info.selectAll(".info").remove();
+    for (var key in node) {
+        if (['x', 'y', 'vx', 'vy', 'index', 'selected', 'previouslySelected'].indexOf(key.toString()) != -1) {
+            continue;
+        }
+        node_info.append('p')
+            .attr("class", "info")
+            .text(key + ": " + node[key]);
+    }
+}
+
+// 掠过显示关系信息
+function hoverLink(link) {
+    var link_info = d3.select("#link_info")
+                      .style("display", "block");
+    link_info.selectAll(".info").remove();
+    for(var key in link){
+        // if(['x', 'y', 'vx', 'vy', 'index', 'selected', 'previouslySelected']
+        //     .indexOf(item.toString()) != -1) {
+        //     continue;
+        // }
+    var temp = link_info.append('p')
+                .attr("class", "info")
+    if (key != "source" && key != "target") {
+        temp.text(key + ": " + link[key]);
+    }
+    else {
+        temp.text(key + ": " + link[key]["label"]);
+    }                    
+    }
 }

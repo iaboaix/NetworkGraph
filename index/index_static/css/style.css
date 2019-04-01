@@ -168,7 +168,10 @@ text {
     font-family: sans-serif;
     font-size: 15px;
 }
-#function_box {
+#tool_box {
+    color: black;
+}
+#select_box {
     color: black;
     position:absolute;
     width: 250px;
@@ -189,6 +192,16 @@ text {
     left: 284px;
     bottom: 0px;
     opacity: 0.5;
+}
+#function_box {
+    color: black;
+    position:absolute;
+    width: 125px;
+    height: 120px;
+    left: 536px;
+    bottom: 0px;
+    opacity: 0.5;
+    background-color: #68C994;
 }
 #box_title {
     height: 24px;
@@ -221,6 +234,9 @@ text {
     height: 96px;
     line-height: 21px;
 }
+#fun_items {
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+}
 #fun_layout {
     text-align: center;
     font-size: 14px;
@@ -231,12 +247,24 @@ text {
 .fun_title {
     line-height: 48px;
 }
-#node_fun {
+.node_fun {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
 }
-.node_fun_button {
+.fun_button {
+    background-color: #72c6d8;
+    color: black;
+    height: 22px;
+    margin-bottom: 1px;
+    transition-duration: 0.5s;
+    border-radius: 3px;
+}
+.fun_button:hover {
+    background-color: #7dfbf5;
+    color: black;
+}
+.select_button {
     background-color: #72c6d8;
     color: black;
     height: auto;
@@ -245,7 +273,7 @@ text {
     transition-duration: 0.5s;
     border-radius: 3px;
 }
-.node_fun_button:hover {
+.select_button:hover {
     background-color: #7dfbf5;
     color: black;
 }

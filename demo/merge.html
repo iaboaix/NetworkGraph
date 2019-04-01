@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        [role=entity]{
+            fill:rgb(44, 160, 44)
+        }
+        [role=concept]{
+            fill:rgb(0, 112, 192)
+        }
+    </style>
+    <script src="./d3.min.js"></script>
+</head>
+<body>
+<svg width="960" height="500"></svg>
+</body>
+<script type="text/javascript">
+    var nodes = [
+        { name: "北京",role:"entity"},
+        { name: "天津",role:"entity"},
+        { name: "地区",role:"concept"},
+        { name: "单位",role:"concept"},
+        { name: "单位住址",role:"concept"},
+        { name: "单位类型",role:"concept"},
+        { name: "民营",role:"entity"}
+    ];
+ 
+    var links = [  { source : 0  , target: 2 } , { source : 1  , target: 2 } ,
+        { source : 3  , target: 2 } , { source : 3  , target: 4 } ,
+        { source : 3  , target: 5 } , { source : 6  , target: 5 }
+    ];
+ 
+    var width = 1024;
+    var height = 738;
+    var svg = d3.select("svg")
+        .attr("width",width)
+        .attr("height",height);
+    var circle_radius = 30;
+ 
+    // 通过布局来转换数据，然后进行绘制
+    var simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).distance(200))
+        .force("charge",d3.forceManyBody().strength(-100))
+        .force("center",d3.forceCenter(width/2, height/2));
+ 
+    var color = d3.scaleOrdinal(d3.schemeCategory20);
+    // 绘制线
+    var svg_links = svg.selectAll("path")
+        .data(links)
+        .enter()
+        .append("path")
+        .style("stroke","#ccc")
+        .style("stroke-width",3);
+ 
+    //节点对象
+    var svg_nodes = svg.selectAll("circle")
+        .data(nodes)
+        .enter()
+        .append("circle")
+        .attr("r",circle_radius)
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
+    /**
+     * 节点（开始）拖拽事件
+     */
+    function dragstarted(d) {
+        if (!d3.event.active)
+            simulation.alphaTarget(0.002).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+    }
+ 
+    /**
+     * 节点拖拽事件
+     */
+    function dragged(d) {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+    }
+ 
+    /**
+     * 节点（结束）拖拽事件
+     */
+    function dragended(d) {
+        if (!d3.event.active)
+            simulation.alphaTarget(0);
+    }
+    //节点描述
+    var svg_text = svg.selectAll("text")
+        .data(nodes)
+        .enter()
+        .append("text")
+        .style("fill","#000")
+        .attr("dominant-baseline","middle")
+        .attr("text-anchor", "middle")//在圆圈中加上数据
+        .text(function(d){return d.name;});
+ 
+    //箭头
+    var marker=
+        svg.append("marker")
+            .attr("id", "resolved")
+            .attr("markerUnits","userSpaceOnUse")
+            .attr("viewBox", "0 -5 10 10")//坐标系的区域
+            .attr("refX",34)//箭头坐标
+            .attr("refY", -1)
+            .attr("markerWidth", 12)//标识的大小
+            .attr("markerHeight", 12)
+            .attr("orient", "auto")//绘制方向，可设定为：auto（自动确认方向）和 角度值
+            .attr("stroke-width",2)//箭头宽度
+            .append("path")
+            .attr("d", "M0,-5L10,0L0,5")//箭头的路径
+            .attr('fill','#000000');//箭头颜色
+ 
+ 
+    function draw(){
+        svg_nodes
+            .attr("cx",function(d){return d.x;})
+            .attr("cy",function(d){return d.y;})
+            .attr("role",function (d) {
+                return d.role;
+            });
+ 
+        svg_text
+            .attr("x", function(d){ return d.x; })
+            .attr("y", function(d){ return d.y; });
+ 
+        svg_links
+            .attr("d",function(d){
+                return 'M '+d.source.x+' '+d.source.y+' L '+ d.target.x +' '+d.target.y
+            })
+            .attr("marker-end", "url(#resolved)");
+    }
+    simulation.on("tick",draw);
+    svg.call(d3.zoom().scaleExtent([0.05, 8]).on('zoom', () => {
+        // 保存当前缩放的属性值
+        var transform = d3.event.transform;
+        svg_nodes.attr('transform', transform);
+        svg_links.attr("transform",transform);
+        svg_text.attr("transform",transform);
+    })).on('dblclick.zoom', null);
+ 
+    //动态添加节点
+    var e = { name: "河北",role:"entity"};
+    var f =  {source : 7  , target: 2};
+    d3.timeout(function(){
+        nodes.push(e);
+        links.push(f);
+        restart()
+    }, 4000);
+    function restart() {
+        // Apply the general update pattern to the nodes.
+        // Apply the general update pattern to the links.
+        svg_links = svg_links
+            .data(links, (d) => { return d.source.name + "-" + d.target.name; });
+ 
+        svg_links = svg_links.enter()
+            .append("path")
+            .style("stroke","#ccc")
+            .style("stroke-width",3)
+            .merge(svg_links);
+ 
+        svg_nodes = svg_nodes
+            .data(nodes, (d) => d.name)
+            .enter()
+            .append("circle")
+            .attr("r",circle_radius)
+            .merge(svg_nodes).call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+        var dom = document.querySelectorAll("circle");
+        for (let len = dom.length, i = 0; i < len; i++) {
+            if (d3.select(dom[i]). select('circle').empty()) {
+                svg_nodes.append("circle")
+                    .attr("fill", (d) => color(d.name))
+                    .attr("r", 30);
+            }
+        }
+        //节点描述
+        svg_text = svg_text
+            .data(nodes,(d) => d.name)
+            .enter()
+            .append("text")
+            .style("fill","#000")
+            .attr("dominant-baseline","middle")
+            .attr("text-anchor", "middle")//在圆圈中加上数据
+            .text(function(d){return d.name;}).merge(svg_text);
+        // svg_text = svg_text.data()
+        // Update and restart the simulation.
+        simulation.nodes(nodes);
+        simulation.force("link").links(links);
+        simulation.alpha(1).restart();
+    }
+</script>
+</html>
