@@ -81,6 +81,12 @@ html, body {
     height: 100%;
     display: block;
 }
+.cursor_delete {
+    cursor: url('../image/delete.ico'), auto;
+}
+.cursor_add {
+    cursor: crosshair;
+}
 #setting_box {
     width: 280px;
     background-color: #0D877A;
@@ -166,8 +172,8 @@ button:hover {
 }
 text {
     fill: white;
-    display: none;
-    user-select: none;
+/*     display: none;
+ */    user-select: none;
     pointer-events: none;
     text-anchor: middle;
 }

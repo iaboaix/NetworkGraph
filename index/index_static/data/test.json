@@ -8,10 +8,11 @@
 		{"id": 5, "label": "经济影响"}
 	],
 	"links": [
-		{"source": 0, "target": 1, "strength": 0.7, "label": "test"},
-		{"source": 0, "target": 2, "strength": 0.7, "label": "test"},
-		{"source": 0, "target": 3, "strength": 0.7, "label": "test"},
-		{"source": 0, "target": 4, "strength": 0.7, "label": "test"},
-		{"source": 0, "target": 5, "strength": 0.7, "label": "test"}
+		{"source": 0, "target": 1, "strength": 0.7, "label": "5g-技术"},
+		{"source": 0, "target": 2, "strength": 0.7, "label": "5g-能力"},
+		{"source": 0, "target": 3, "strength": 0.7, "label": "5g-场景"},
+		{"source": 0, "target": 4, "strength": 0.7, "label": "5g-架构"},
+		{"source": 0, "target": 5, "strength": 0.7, "label": "5g-影响"},
+		{"source": 5, "target": 0, "strength": 0.7, "label": "影响-5g"}
 	]
 }
