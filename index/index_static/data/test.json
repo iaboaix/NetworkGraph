@@ -1,0 +1,17 @@
+﻿{
+	"nodes": [
+		{"id": 0, "label": "5G"},
+		{"id": 1, "label": "关键技术"},
+		{"id": 2, "label": "关键能力"},
+		{"id": 3, "label": "应用场景"},
+		{"id": 4, "label": "网络架构"},
+		{"id": 5, "label": "经济影响"}
+	],
+	"links": [
+		{"source": 0, "target": 1, "strength": 0.7, "label": "test"},
+		{"source": 0, "target": 2, "strength": 0.7, "label": "test"},
+		{"source": 0, "target": 3, "strength": 0.7, "label": "test"},
+		{"source": 0, "target": 4, "strength": 0.7, "label": "test"},
+		{"source": 0, "target": 5, "strength": 0.7, "label": "test"}
+	]
+}

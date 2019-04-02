@@ -101,12 +101,24 @@ html, body {
 .node_layout {
     fill-rule: inherit;
 }
+#attr_table {
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: none;
+}
+button.left_button {
+    float: left;
+    width: 50%;
+}
 table{
     width: 100%;
+    background-color: #027090;
 }
 tbody td {
     font-size: 12px;
-    background-color: #027090;
     border: 1px solid #FFFFFF;
     padding: 9px;
 }

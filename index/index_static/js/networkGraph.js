@@ -14,7 +14,7 @@ var brush_svg = svg.append("g")
 
 var container = d3.select("#container");
 
-d3.json("static/5g.json").then(function(data) {
+d3.json("static/data/test.json").then(function(data) {
 
     brushEvent = d3.brush()
         .extent([[0, 0], [width, height]])
@@ -61,13 +61,13 @@ d3.json("static/5g.json").then(function(data) {
 
     // 节点对象
     var nodeElements = container.append("g")
-        .attr("class", "node_layout")
+        .attr("id", "node_layout")
         .selectAll(".node")
         .data(data.nodes)
         .enter()
         .append("g")
-        .attr("class", "node")      
-        .call(drag);
+        .attr("class", "node");
+    nodeElements.call(drag);
 
     nodeElements.append("circle")
         .attr("r", function () { return 16; })
@@ -223,23 +223,69 @@ d3.json("static/5g.json").then(function(data) {
     }
 
     d3.select("#creat_node").on("click", function () {
-        svg.style("cursor", "crosshair");
-        svg.on("click.create-node", function () {
-            svg.style("cursor", "default");
-            temp_node = d3.select(".node_layout")
-                .append("g")
-                .attr("transform", function() {
-                    console.log(d3.event)
-                    x = d3.event.x;
-                    y = d3.event.y - 30;
-                    return "translate(" + x + "," + y + ")";
-                });
-            temp_node.append("circle")
-                .attr("r", function () { return 16; })
-                .on("mousedown", selectNode)
-                .on("mouseover", hoverNode);
-            svg.on("click.create-node", null);
-        });
+    	let attr_table = d3.select("#attr_table")
+    		.style("display", "block");
+    	let attr_tbody = attr_table.select("tbody");
+    	attr_tbody.selectAll("*").remove();
+    	attr_tbody.append("tr")
+    		.append("td")
+    		.text("节点属性设置")
+    		.attr("colspan", 2)
+    		.style("text-align", "center");
+    	for (let attr in data.nodes[0])	{
+    		if (['x', 'y', 'vx', 'vy', 'index', 'selected', 'previouslySelected'].indexOf(attr) > -1) {
+    			continue;
+    		}
+    		else {
+    			let cur_td = attr_tbody.append("tr");
+    			cur_td.append("td")
+    				.text(attr);
+    			cur_td.append("td")
+    				.append("input");
+    		}
+    	}
+    	let button_layout = attr_tbody.append("tr")
+    		.append("td")
+    		.attr("colspan", 2)
+    		.append("div");
+
+		button_layout.append("button")
+			.text("确认")
+			.attr("class", "left_button")
+			.on("click", function() {
+				attr_table.style("display", "none");
+				svg.style("cursor", "crosshair");
+				svg.on("click.create-node", function () {
+		            temp_node = d3.select("#node_layout")
+		            	.selectAll(".new_node")
+		            	.data([{"id": 6, "label": "测试节点"}])
+		            	.enter()
+		                .append("g")
+		                .attr("class", "node")
+		                .attr("transform", function() {
+		                    x = d3.event.x;
+		                    y = d3.event.y - 30;
+		                    return "translate(" + x + "," + y + ")";
+		                })
+		            nodeElements = nodeElements.merge(temp_node)
+		            temp_node.call(drag);
+					console.log(temp_node)
+		            console.log(nodeElements)
+		            data.nodes.push({"id": 6, "label": "测试节点"})
+		            temp_node.append("circle")
+		                .attr("r", function () { return 16; })
+		                .on("mousedown", selectNode)
+		                .on("mouseover", hoverNode);
+		            svg.on("click.create-node", null);
+					svg.style("cursor", "default");
+				});
+			});
+		button_layout.append("button")
+			.text("取消")
+			.attr("class", "left_button")
+			.on("click", function() {
+				attr_table.style("display", "none");
+        	});
     });
 
     // 调整图参数
@@ -355,7 +401,7 @@ d3.json("static/5g.json").then(function(data) {
 
         // 节点对象
         var nodeElements = container.append("g")
-            .attr("class", "node_layout")
+            .attr("id", "node_layout")
             .selectAll(".node")
             .data(data.nodes)
             .enter()
