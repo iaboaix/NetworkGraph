@@ -6,7 +6,6 @@ var svg = d3.select('#svg')
     .attr('height', height);
 
 var brush_svg = svg.append("g")
-        .append("g")
         .attr("class", "brush_svg")
         .attr("width", width)
         .attr("height", height)
@@ -15,14 +14,6 @@ var brush_svg = svg.append("g")
 var container = d3.select("#container");
 
 d3.json("static/data/test.json").then(function(data) {
-
-    brushEvent = d3.brush()
-        .extent([[0, 0], [width, height]])
-        .on("start", brushStarted)
-        .on("brush", brushed)
-        .on("end", brushEnded);
-
-    brush_svg.call(brushEvent);
 
 	let temp_layout = container.append("g")
 	        .attr("class", "temp_layout");
@@ -65,7 +56,7 @@ d3.json("static/data/test.json").then(function(data) {
 	        .on("mouseover.hover-link", hoverLink);
 
 	    // 连线的文字
-	    var linkTextElements = text_layout.selectAll('text')
+	    let linkTextElements = text_layout.selectAll('text')
 	        .data(data.links);
 	    linkTextElements.exit().remove();
 	    linkTextElements = linkTextElements.enter()
@@ -99,14 +90,15 @@ d3.json("static/data/test.json").then(function(data) {
 	        	return textBreaking(d3.select(this), node.label);
 	        });
 
-	    var linkForce = d3
+	    let linkForce = d3
 	        .forceLink()
 	        .id(function (link) { return link.id })
 	        .strength(0.7);
 
-	    var simulation = d3
+	    let simulation = d3
 	        .forceSimulation()
-	        .velocityDecay(0.2)
+	        .velocityDecay(0.1)
+	        .alphaMin(0.05)
 	        .force('link', linkForce)
 	        .force('charge', d3.forceManyBody().strength(-300))
 	        .force('center', d3.forceCenter(width / 2 + 150, height / 2))
@@ -135,7 +127,7 @@ d3.json("static/data/test.json").then(function(data) {
 	    });
 
 	    // 定义托拽
-	    var drag = d3.drag()
+	    let drag = d3.drag()
 	        .on('start', dragstartFn)
 	        .on('drag', dragFn)
 	        .on('end', dragendFn);
@@ -163,7 +155,6 @@ d3.json("static/data/test.json").then(function(data) {
 		        d3.select(this).classed("selected", false);
 		    }
 		}
-
 
 	    // 定义菜单选项
 	    var userMenuData = [
@@ -326,9 +317,11 @@ d3.json("static/data/test.json").then(function(data) {
     					drag_line.attr("x1", node.x)
     						.attr("y1", node.y);
     					svg.on("mousemove.add-link", function() {
-    						console.log(container.attr("transform"))
-    						drag_line.attr("x2", d3.event.x)
-    							.attr("y2", d3.event.y - 30);
+    						translate_scale = getTranslateAndScale();
+    						scale = translate_scale.scale;
+    						translate = translate_scale.translate;
+    						drag_line.attr("x2", (d3.event.x - translate[0]) / scale)
+    							.attr("y2", ((d3.event.y - 30) - translate[1]) / scale);
     						drag_line.style("opacity", 1);
     					})
     					d3.selectAll(".node")
@@ -348,16 +341,59 @@ d3.json("static/data/test.json").then(function(data) {
     					})
     				});
     		})
+
+    	// 框选功能
+	    data.nodes.forEach(function(d) {
+	        d.selected = false;
+	        d.previouslySelected = false;
+	    });
+
+	    brushEvent = d3.brush()
+	        .extent([[0, 0], [width, height]])
+	        .on("start", brushStarted)
+	        .on("brush", brushed)
+	        .on("end", brushEnded);
+
+	    brush_svg.call(brushEvent);
+
+	    function brushStarted() {
+	        if (d3.event.sourceEvent.type !== "end") {
+	            nodeElements.classed("selected", false);
+	            data.nodes.map(function(node) {
+	                node.selected = false;
+	            });
+	        }
+	    }
+
+	    function brushed() {
+	      if (d3.event.sourceEvent.type !== "end") {
+	        var selection = d3.event.selection;
+	        nodeElements.classed("selected", function(d) {
+	          return d.selected = d.previouslySelected ^
+	            (selection != null
+	            && selection[0][0] <= d.x && d.x < selection[1][0]
+	            && selection[0][1] <= d.y && d.y < selection[1][1]);
+	        });
+	      }
+	    }
+
+	    function brushEnded() {
+	        if (d3.event.selection != null) {
+	          d3.select(this).call(d3.event.target.move, null);
+	        }
+	    }
     }
-    // 框选功能
-    data.nodes.forEach(function(d) {
-        d.selected = false;
-        d.previouslySelected = false;
-    });
 
     // svg缩放
-    var zoom = d3.zoom().scaleExtent([0.1, 10]).on("zoom", zoomed);
-    svg.call(zoom).on('dblclick.zoom', null);
+    // var zoom = d3.zoom()
+    // 	.scaleExtent([0.1, 10])
+    // 	.on("zoom", zoomed);
+    // svg.call(zoom)
+    // 	.on('dblclick.zoom', null);
+    svg.call(d3.zoom().on("zoom", function () {
+    	container.attr("transform", d3.event.transform);
+    	brush_svg.attr("transform", d3.event.transform);
+    }))
 
     d3.select("#zoom_out").on("click", function() {
        zoom.scaleBy(container, 2);
@@ -549,46 +585,16 @@ d3.json("static/data/test.json").then(function(data) {
         .on("click", selecct_correlation);
 
     function selecct_correlation() {
-    	neighbors = getNeighbors()
+    	neighbors = getNeighbors();
     	d3.selectAll(".node").each(function(node) {
     		if(neighbors.indexOf(node.id) > -1) {
     			d3.select(this).classed("selected", true);
     			node.selected = true;
     		}
-    	})
+    	});
 	}
-
-
-    function brushStarted() {
-        if (d3.event.sourceEvent.type !== "end") {
-            nodeElements.classed("selected", false);
-            data.nodes.map(function(node) {
-                node.selected = false;
-            });
-        }
-    }
-
-    function brushed() {
-      if (d3.event.sourceEvent.type !== "end") {
-        var selection = d3.event.selection;
-        nodeElements.classed("selected", function(d) {
-          return d.selected = d.previouslySelected ^
-            (selection != null
-            && selection[0][0] <= d.x && d.x < selection[1][0]
-            && selection[0][1] <= d.y && d.y < selection[1][1]);
-        });
-      }
-    }
-
-    function brushEnded() {
-        if (d3.event.selection != null) {
-          d3.select(this).call(d3.event.target.move, null);
-        }
-    }
 })
-// setTimeout(function() {
-//     console.log
-// }, 100);
+
 function textBreaking(d3text, text) {
     const len = text.length;
     if (len <= 4) {
@@ -705,4 +711,13 @@ function hoverLink(link) {
 function selectLink(link) {
     link.selected = true;
     d3.select(this).classed("selected", true);
+}
+
+//获取transform
+function getTranslateAndScale() {
+    let transform = container.attr("transform");
+    let matchArr = transform && /translate/.test(transform) && /scale/.test(transform) && transform.match(/translate\(([^\)]+)\)\s?scale\(([^\)]+)/);
+    let translate = matchArr && matchArr[1].split(",") || [0, 0];
+    let scale = matchArr && matchArr[2] || 1;
+    return {translate, scale}
 }
