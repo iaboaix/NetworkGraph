@@ -24,14 +24,14 @@ d3.json("static/data/test.json").then(function(data) {
 
     brush_svg.call(brushEvent);
 
+	let temp_layout = container.append("g")
+	        .attr("class", "temp_layout");
     let link_layout = container.append("g")
 	        .attr("class", "link_layout");
 	let text_layout = container.append('g')
 	        .attr("class", "text_layout");
 	let node_layout = container.append("g")
 	        .attr("class", "node_layout");
-	let temp_layout = container.append("g")
-	        .attr("class", "temp_layout");
 
 	// 箭头
     var marker = container.append("marker")
@@ -61,8 +61,8 @@ d3.json("static/data/test.json").then(function(data) {
 	        .attr('class', 'line')
 	        .merge(linkElements)
 	        .attr("id", function( link, i ){ return 'link-' + i; })
-	        .on("mousedown", selectLink)
-	        .on("mouseover", hoverLink);
+	        .on("mousedown.select-link", selectLink)
+	        .on("mouseover.hover-link", hoverLink);
 
 	    // 连线的文字
 	    var linkTextElements = text_layout.selectAll('text')
@@ -88,8 +88,8 @@ d3.json("static/data/test.json").then(function(data) {
 
 	    nodeElements.append("circle")
 	        .attr("r", function () { return 16; })
-	        .on("mousedown", selectNode)
-	        .on("mouseover", hoverNode);
+	        .on("mousedown.select-node", selectNode)
+	        .on("mouseover.hover-link", hoverNode);
 
 	    nodeElements.append("text")
 	    	.attr("class", "node_text")
@@ -312,27 +312,42 @@ d3.json("static/data/test.json").then(function(data) {
     	});
 
     	// 新建关系
+		let first_node = null;
+		let second_node = null;
     	d3.select("#creat_link")
     		.on("click", function () {
-    			let mousedownNode = null;
-    			let mouseupNode = null;
     			let drag_line = temp_layout.append("line")
-    				.lower()
-    				.attr("stroke", "white")
-    				.style("stroke-width", 3);
+    				.attr("stroke", "#00FFFB")
+    				.style("stroke-width", 1)
+    				.style("opacity", "0");
     			d3.selectAll(".node")
-    				.on("click.add-link", function(node) {
-    					mousedownNode = node;
+    				.on("click.first-node", function(node) {
+    					first_node = node;
     					drag_line.attr("x1", node.x)
     						.attr("y1", node.y);
-    					svg.on("mousemove", function() {
+    					svg.on("mousemove.add-link", function() {
+    						console.log(container.attr("transform"))
     						drag_line.attr("x2", d3.event.x)
     							.attr("y2", d3.event.y - 30);
-    						console.log(123)
+    						drag_line.style("opacity", 1);
     					})
-    					d3.event.stopPropagation();
-    				})
-    		})	
+    					d3.selectAll(".node")
+							.on("click.first-node", null);
+    					d3.selectAll(".node")
+    						.on("click.second-node", function(node) {
+    						second_node = node;
+    						svg.on("mousemove.add-link", null);
+    						drag_line.attr("x2", node.x)
+    							.attr("y2", node.y);
+    						d3.selectAll(".node")
+    							.on("click.second-node", null);
+    						let new_data = {"source": first_node.id, "target": second_node.id, "strength": 0.7, "label": "5g-技术"};
+    						data.links.push(new_data);
+    						drag_line.remove();
+    						update(data);
+    					})
+    				});
+    		})
     }
     // 框选功能
     data.nodes.forEach(function(d) {
