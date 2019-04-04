@@ -84,6 +84,9 @@ html, body {
 .cursor_delete {
     cursor: url('../image/delete.ico'), auto;
 }
+.cursor_link {
+    cursor: url('../image/link.ico'), auto;
+}
 .cursor_add {
     cursor: crosshair;
 }
@@ -144,6 +147,7 @@ circle:hover {
     stroke-width: 2px;
 }
 path{
+    fill: none;
     cursor: pointer;
     stroke: #00FFFB;
     stroke-width: 1px;
@@ -172,8 +176,8 @@ button:hover {
 }
 text {
     fill: white;
-/*     display: none;
- */    user-select: none;
+    display: none;
+    user-select: none;
     pointer-events: none;
     text-anchor: middle;
 }

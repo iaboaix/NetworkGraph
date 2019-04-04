@@ -32,9 +32,12 @@
     </div>
     <div id="main_window">
         <div id="left_tool_bar">
-            <button id="zoom_out" title="放大"><i class="fa fa-plus-circle"></i></button>
-            <button id="zoom_in" title="缩小"><i class="fa fa-minus-circle"></i></button>
-            <button id="zoom_reset" title="1：1"><i class="fa fa-arrows-h"></i></button>
+<!--             <button id="zoom_out" title="放大"><i class="fa fa-plus-circle"></i></button>
+            <button id="zoom_in" title="缩小"><i class="fa fa-minus-circle"></i></button> -->
+<!--             <button id="zoom_reset" title="1：1"><i class="fa fa-arrows-h"></i></button>
+ -->            
+            <button id="rotate" title="顺时针旋转"><i class="fa fa-repeat"></i></button>
+            <button id="rerotate" title="逆时针旋转"><i class="fa fa-undo"></i></button>
             <button id="reset" title="重新布局"><i class="fa fa-refresh"></i></button>
             <button id="brush_mode" title="框选模式"><i class="fa fa-crop"></i></button>
         </div>
@@ -117,24 +120,24 @@
 
     <div id="tool_box">
         <div id="select_box">
-            <div id="box_title">选择区</div>
+            <div id="box_title">功能区</div>
             <div id="functions">
                 <div id="fun_layout">
                     <div class="fun_title">点选取</div>
                     <div class="node_fun">
-                        <button class="select_button" id="selecct_correlation">选 取 关 联</button>
+                        <button class="select_button" id="select_correlation">选 取 关 联</button>
+                        <button class="select_button" id="select_same_degree">选 取 同 级</button>
                         <button class="select_button" id="select_childs">选取子节点</button>
                         <button class="select_button" id="select_parents">选取父节点</button>
-                        <button class="select_button" id="select_same_type">选取同类型</button>
                     </div>
                 </div>
                 <div id="fun_layout">
-                    <div class="fun_title">边选取</div>
+                    <div class="fun_title">边样式</div>
                     <div class="node_fun">
-                        <button class="select_button">选 取 关 联</button>
-                        <button class="select_button">选取子节点</button>
-                        <button class="select_button">选取父节点</button>
-                        <button class="select_button">选取同类型</button>
+                        <button class="select_button" id="straight-line">直      线</button>
+                        <button class="select_button" id="bezier-curves">贝塞尔曲线</button>
+                        <button class="select_button" id="horizontal-broken-line">横  折  线</button>
+                        <button class="select_button" id="vertical-broken-line">竖  折  线</button>
                     </div>
                 </div>
             </div>
@@ -159,7 +162,7 @@
             </div>
         </div>
         <div id="function_box">
-    		<div id="box_title">功能区</div>
+    		<div id="box_title">编辑区</div>
     		<div id="fun_items">
     			<button class="fun_button" id="creat_node">创建节点</button>
     			<button class="fun_button" id="delete_node">删除节点</button>
