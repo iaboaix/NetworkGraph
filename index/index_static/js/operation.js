@@ -4,13 +4,12 @@ document.oncontextmenu=function(ev){
 }
 
 // 上传数据功能
-var upload_layout = d3.select("#upload_layout");
-d3.select("#upload_data")
+var upload_layout = d3.select("#upload-layout");
+d3.select("#upload-data")
 	.on("click", function() {
 		upload_layout.style("display", "block");
 	});
 var offset_x, offset_y, isdown = false;
-var upload_layout = d3.select("#upload_layout");
 upload_layout.on("mousedown", function() {
 		offset_x = event.pageX - this.offsetLeft;
 		offset_y = event.pageY- this.offsetTop;
@@ -25,25 +24,25 @@ upload_layout.on("mousedown", function() {
 	.on("mouseup", function() {
 		isdown = false;
 	});
-d3.select("#close_button")
+d3.select("#close-button")
 	.on("click", function() {
 		upload_layout.style("display", "none");
 	});
-d3.select("#file_close")
+d3.select("#file-close")
 	.on("click", function() {
 		upload_layout.style("display", "none");
 	});
-d3.select("#select_file")
+d3.select("#select-file")
 	.on("click", function() {
-		document.getElementById("file_input").click();
+		document.getElementById("file-input").click();
 	});
-d3.select("#file_input")
+d3.select("#file-input")
 	.on("input propertychange", function() {
-		var file_item = d3.select("#info_file")
+		var file_item = d3.select("#info-file")
 							.append("div")
-							.attr("id", "file_item");
+							.attr("id", "file-item");
 		file_item.append("div")
-			.attr("id", "file_name")
+			.attr("id", "file-name")
 			.text(this.value);
 		file_item.append("div")
 			.attr("id", "state")

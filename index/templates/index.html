@@ -14,178 +14,175 @@
     <link rel="stylesheet" href="{% static 'css/font-awesome-4.7.0/css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/smartMenu.css' %}" >
+    <link rel="shortcut icon" href="{% static 'image/logo.ico' %}" type="image/x-icon" />
 </head>
 <body>
-    <div id="top_tool_bar">
-        <div id="logo" style="background-image: url({% static 'image/logo.png' %});"></div>
-        <button id="upload_data" class="top_menu"><i class="fa fa-upload"></i> 上传数据</button>
-        <button id="download_data" class="top_menu"><i class="fa fa-download"></i> 导出数据</button>
-        <button id="download_img" class="top_menu"><i class="fa fa-share"></i> 导出图片</button>
-        <div id="top_right_bar">
-            <div id="search_line_layout">
-                <input type="text" name="" id="search_line">
-                <button id="search_button"><i class="fa fa-search"></i></button>
+    <svg id="svg"><g id="container"></g></svg>
+    <div id="top-tool-bar">
+        <div id="logo"></div>
+        <button class="top-menu-item" id="upload-data"><i class="fa fa-upload"></i> 上传数据</button>
+        <button class="top-menu-item" id="download-data"><i class="fa fa-download"></i> 导出数据</button>
+        <button class="top-menu-item" id="download-img"><i class="fa fa-share"></i> 导出图片</button>
+        <div id="top-right-bar">
+            <div id="search-line-layout">
+                <input type="text" name="" id="search-line">
+                <button id="search-button"><i class="fa fa-search"></i></button>
             </div>
-            <button class="top_tool_button" id="resize"><i class="fa fa-expand"></i></button>
-            <button class="top_tool_button" id="setting_button"><i class="fa fa-gear"></i></button>
+            <button class="top-tool-button" id="screen-button"><i class="fa fa-expand" id="screen-switch"></i></button>
+            <button class="top-tool-button" id="setting-button"><i class="fa fa-gear"></i></button>
         </div>  
     </div>
-    <div id="main_window">
-        <div id="left_tool_bar">
-<!--             <button id="zoom_out" title="放大"><i class="fa fa-plus-circle"></i></button>
-            <button id="zoom_in" title="缩小"><i class="fa fa-minus-circle"></i></button> -->
-<!--             <button id="zoom_reset" title="1：1"><i class="fa fa-arrows-h"></i></button>
- -->            
-            <button id="rotate" title="顺时针旋转"><i class="fa fa-repeat"></i></button>
-            <button id="rerotate" title="逆时针旋转"><i class="fa fa-undo"></i></button>
-            <button id="reset" title="重新布局"><i class="fa fa-refresh"></i></button>
-            <button id="brush_mode" title="框选模式"><i class="fa fa-crop"></i></button>
+    <div id="left-tool-bar">
+        <button id="zoom-out" title="放大"><i class="fa fa-plus-circle"></i></button>
+        <button id="zoom-in" title="缩小"><i class="fa fa-minus-circle"></i></button>
+        <button id="zoom-reset" title="1：1"><i class="fa fa-arrows-h"></i></button>
+        <button id="rotate" title="顺时针旋转"><i class="fa fa-repeat"></i></button>
+        <button id="rerotate" title="逆时针旋转"><i class="fa fa-undo"></i></button>
+        <button id="reset" title="重新布局"><i class="fa fa-refresh"></i></button>
+        <button id="brush-mode" title="框选模式"><i class="fa fa-crop"></i></button>
+    </div>
+    <div id="setting-box">
+        <div id="setting-box-header">
+            &nbsp&nbsp自定义设置&nbsp&nbsp
+            <i class="fa fa-arrow-right" id="setting-button"></i>
         </div>
-        <svg id="svg">
-        	<g id="container"></g>
-        </svg>
-        <div id="setting_box">
-            <div id="setting_box_header">
-                &nbsp&nbsp自定义设置&nbsp&nbsp
-                <i class="fa fa-arrow-right" id="hide_setting"></i>
-            </div>
-            <table id="setting_box_content">
-                <tbody>
-                    <tr>
-                        <td>节点大小</td>
-                        <td>
-                            <input type="range" name="points" id="node_size" min="0" max="20" step="0.1" value="12" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>节点透明度</td>
-                        <td>
-                            <input type="range" name="points" id="node_opacity" min="0" max="1" step="0.02" value="0.8" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>节点轮廓宽度</td>
-                        <td>
-                            <input type="range" name="points" id="node_stroke" min="0" max="5" step="0.1" value="1" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>连接强度</td>
-                        <td>
-                            <input type="range" name="points" id="link_strength" min="0" max="1" step="0.1" value="0.7" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>边颜色</td>
-                        <td>
-                            <input type="color" name="points" id="line_color" value="#00FFFB">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>边宽度</td>
-                        <td>
-                            <input type="range" name="points" id="line_stroke_width" min="0" max="5" step="0.1" value="1" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>节点提示开关</td>
-                        <td>
-                            <button id="node_switch" title="节点提示开关"><i class="fa fa-toggle-off"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>关系提示开关</td>
-                        <td>
-                            <button id="link_switch" title="关系提示开关"><i class="fa fa-toggle-off"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>箭头显示开关</td>
-                        <td>
-                            <button id="marker_switch" title="箭头提示开关"><i class="fa fa-toggle-off"></i></button>
-                        </td>
-                    </tr>                    
-                </tbody>
-            </table>
+        <table id="setting-box-content">
+            <tbody>
+                <tr>
+                    <td>节点大小</td>
+                    <td>
+                        <input type="range" name="points" id="node-size" min="0" max="20" step="0.1" value="12" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>节点透明度</td>
+                    <td>
+                        <input type="range" name="points" id="node-opacity" min="0" max="1" step="0.02" value="0.8" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>节点轮廓宽度</td>
+                    <td>
+                        <input type="range" name="points" id="node-stroke" min="0" max="5" step="0.1" value="1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>连接强度</td>
+                    <td>
+                        <input type="range" name="points" id="link-strength" min="0" max="1" step="0.1" value="0.7" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>边颜色</td>
+                    <td>
+                        <input type="color" name="points" id="line-color" value="#00FFFB">
+                    </td>
+                </tr>
+                <tr>
+                    <td>边宽度</td>
+                    <td>
+                        <input type="range" name="points" id="line-stroke-width" min="0" max="5" step="0.1" value="1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>节点提示开关</td>
+                    <td>
+                        <button id="node-button" title="节点提示开关"><i id="node-switch" class="fa fa-toggle-off"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>关系提示开关</td>
+                    <td>
+                        <button id="link-button" title="关系提示开关"><i id="link-switch" class="fa fa-toggle-off"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>箭头显示开关</td>
+                    <td>
+                        <button id="marker-button" title="箭头提示开关"><i id="marker-switch" class="fa fa-toggle-off"></i></button>
+                    </td>
+                </tr>                    
+            </tbody>
+        </table>
+    </div>
+    <div id="info-layout">
+        <div id="node-info" class="hidden">
+            <p><strong>节点属性:</strong></p>
+        </div>
+        <div id="link-info" class="hidden">
+            <p><strong>关系属性:</strong></p>
         </div>
     </div>
-    <div id="info_layout">
-	    <div id="node_info" class="hidden">
-	        <p><strong>节点属性:</strong></p>
-	    </div>
-	    <div id="link_info" class="hidden">
-	        <p><strong>关系属性:</strong></p>
-	    </div>
-    </div>
-
-    <div id="tool_box">
-        <div id="select_box">
-            <div id="box_title">功能区</div>
+    <div id="tool-box">
+        <div id="select-box">
+            <div id="box-title">功能区</div>
             <div id="functions">
-                <div id="fun_layout">
-                    <div class="fun_title">点选取</div>
-                    <div class="node_fun">
-                        <button class="select_button" id="select_correlation">选 取 关 联</button>
-                        <button class="select_button" id="select_same_degree">选 取 同 级</button>
-                        <button class="select_button" id="select_childs">选取子节点</button>
-                        <button class="select_button" id="select_parents">选取父节点</button>
+                <div id="fun-layout">
+                    <div class="fun-title">点选取</div>
+                    <div class="node-fun">
+                        <button class="select-button" id="select-correlation">选 取 关 联</button>
+                        <button class="select-button" id="select-same-degree">选 取 同 级</button>
+                        <button class="select-button" id="select-childs">选取子节点</button>
+                        <button class="select-button" id="select-parents">选取父节点</button>
                     </div>
                 </div>
-                <div id="fun_layout">
-                    <div class="fun_title">边样式</div>
-                    <div class="node_fun">
-                        <button class="select_button" id="straight-line">直      线</button>
-                        <button class="select_button" id="bezier-curves">贝塞尔曲线</button>
-                        <button class="select_button" id="horizontal-broken-line">横  折  线</button>
-                        <button class="select_button" id="vertical-broken-line">竖  折  线</button>
+                <div id="fun-layout">
+                    <div class="fun-title">边样式</div>
+                    <div class="node-fun">
+                        <button class="select-button" id="straight-line">直&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp线</button>
+                        <button class="select-button" id="bezier-curves">贝塞尔曲线</button>
+                        <button class="select-button" id="horizontal-broken-line">横&nbsp&nbsp&nbsp&nbsp折&nbsp&nbsp&nbsp&nbsp线</button>
+                        <button class="select-button" id="vertical-broken-line">竖&nbsp&nbsp&nbsp&nbsp折&nbsp&nbsp&nbsp&nbsp线</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="color_box">
-            <div id="box_title">调色区</div>
-            <div id="color_items">
-                <div class="color_item" style="background-color: #FFB900"></div>
-                <div class="color_item" style="background-color: #E74856"></div>
-                <div class="color_item" style="background-color: #0078D7"></div>
-                <div class="color_item" style="background-color: #0099BC"></div>
-                <div class="color_item" style="background-color: #7A7574"></div>
-                <div class="color_item" style="background-color: #767676"></div>
-                <div class="color_item" style="background-color: #FF8C00"></div>
-                <div class="color_item" style="background-color: #E81123"></div>
-                <div class="color_item" style="background-color: #0063B1"></div>
-                <div class="color_item" style="background-color: #2D7D9A"></div>
-                <div class="color_item" style="background-color: #5D5A58"></div>
-                <div class="color_item" style="background-color: #4C4A48"></div>
+        <div id="color-box">
+            <div id="box-title">调色区</div>
+            <div id="color-items">
+                <div class="color-item" style="background-color: #FFB900"></div>
+                <div class="color-item" style="background-color: #E74856"></div>
+                <div class="color-item" style="background-color: #0078D7"></div>
+                <div class="color-item" style="background-color: #0099BC"></div>
+                <div class="color-item" style="background-color: #7A7574"></div>
+                <div class="color-item" style="background-color: #767676"></div>
+                <div class="color-item" style="background-color: #FF8C00"></div>
+                <div class="color-item" style="background-color: #E81123"></div>
+                <div class="color-item" style="background-color: #0063B1"></div>
+                <div class="color-item" style="background-color: #2D7D9A"></div>
+                <div class="color-item" style="background-color: #5D5A58"></div>
+                <div class="color-item" style="background-color: #4C4A48"></div>
             </div>
-            <div id="color_others">&nbsp&nbsp其他颜色<input type="color" id="node_color" />
+            <div id="color-others">&nbsp&nbsp其他颜色<input type="color" id="node-color" />
             </div>
         </div>
-        <div id="function_box">
-    		<div id="box_title">编辑区</div>
-    		<div id="fun_items">
-    			<button class="fun_button" id="creat_node">创建节点</button>
-    			<button class="fun_button" id="delete_node">删除节点</button>
-    			<button class="fun_button" id="creat_link">创建关系</button>
-    			<button class="fun_button" id="delete_link">删除关系</button>
-    		</div>
-    	</div>
+        <div id="function-box">
+            <div id="box-title">编辑区</div>
+            <div id="fun-items">
+                <button class="fun-button" id="creat-node">创建节点</button>
+                <button class="fun-button" id="delete-node">删除节点</button>
+                <button class="fun-button" id="creat-link">创建关系</button>
+                <button class="fun-button" id="delete-link">删除关系</button>
+            </div>
+        </div>
     </div>
-        
-    <div id="upload_layout">
-        <div id="upload_top_layout">
-            <div id="file_title">导入json数据</div>
-            <div id="file_close">×</div>
+    <div id="upload-layout">
+        <div id="upload-top-layout">
+            <div id="file-title">导入json数据</div>
+            <div id="file-close">×</div>
         </div>
-        <div id="info_file"></div>
-        <input type="file" id="file_input" multiple="multiple"/>
-        <button id="select_file" class="file_button">选择文件</button>
+        <div id="info-file"></div>
+        <input type="file" id="file-input" multiple="multiple"/>
+        <button id="select-file" class="file-button">选择文件</button>
         <div>
-            <button id="upload_button" class="file_button">上传</button>
-            <button id="close_button" class="file_button">关闭</button>
+            <button id="upload-button" class="file-button">上传</button>
+            <button id="close-button" class="file-button">关闭</button>
         </div>
     </div>
-    <table id="attr_table"><tbody></tbody></table>
+    <table id="attr-table"><tbody></tbody></table>
+    <script type="text/javascript">
+    	var data = {{ Dict|safe }};
+    </script>
     <script type="text/javascript" src="{% static 'js/networkGraph.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/operation.js' %}"></script>
 </body>
