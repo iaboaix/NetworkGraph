@@ -38,6 +38,13 @@ html, body {
 #top-right-bar {
     float: right;
 }
+#analyse-button {
+    width: 250px;
+    float: left;
+}
+#analyse-button i {
+    font-size: 12px;
+}
 #search-line-layout {
     height: 24px;
     margin: 3px;
@@ -111,6 +118,9 @@ html, body {
     left: 50%;
     display: none;
 }
+.switch-button i{
+    font-size: 25px;
+}
 table{
     width: 100%;
     background-color: #027090;
@@ -122,9 +132,8 @@ tbody td {
 }
 circle {
     cursor: move;
-    opacity: 0.8;    
     stroke-opacity: 0.8;
-    stroke-width: 1px;
+    stroke-width: 2px;
     stroke: white;
 }
 circle:hover {
@@ -132,8 +141,7 @@ circle:hover {
     stroke-width: 5px;
 }
 .selected circle {
-    stroke: yellow;
-    stroke-width: 2px;
+    stroke-width: 5px;
 }
 path{
     fill: none;
@@ -330,7 +338,7 @@ input[type="range"]::-webkit-slider-thumb {
     border: 3px solid white;
     cursor: pointer;
     transition: 0.3s ease-in-out;
-    }
+}
 #upload-layout {
     width: 300px;
     height: 180px;

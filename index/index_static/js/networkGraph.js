@@ -5,7 +5,8 @@ var control = {
     "link_text_state": false,
     "marker_state": false,
     "setting_state": false,
-    "screen_state": false
+    "screen_state": false,
+    "special": false
 }
 var width = window.innerWidth
 var height = window.innerHeight
@@ -17,9 +18,19 @@ var brush_svg = svg.append("g")
         .style("display", "none");
 
 var container = d3.select("#container");
+var defs_layout = container.append("defs");
+support_type.forEach(function(type) {
+    defs_layout.append("pattern")
+        .attr("id", type)
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .append("image")
+        .attr("width", 30)
+        .attr("height", 30)
+        .attr("xlink:href", "static/image/" + type + ".jpg");
+})
 // 渐变边框
-radial_gradient = container.append("defs")
-    .append("radialGradient")
+radial_gradient = defs_layout.append("radialGradient")
     .attr("id", "orange_red")
     .attr("cx", "50%")
     .attr("cy", "50%")
@@ -37,7 +48,7 @@ radial_gradient.append("stop")
     .attr("stop-color", "red");
 
 var line_type = 0;
-// d3.json("static/data/专利.json").then(function(data) {
+d3.json("static/data/TrumpFamily.json").then(function(data) {
 
     let temp_layout = container.append("g")
             .attr("class", "temp-layout");
@@ -108,9 +119,20 @@ var line_type = 0;
             .attr("class", "node");
 
         nodeElementsNew.append("circle")
-            .attr("r", function () { return 16; })
+            .attr("r", function () { return 15; })
             .on("mousedown.select-node", selectNode)
             .on("mouseover.hover-link", hoverNode);
+
+        // nodeElementsNew.append("image")
+        //     .attr("x", "-15")
+        //     .attr("y", "-15")
+        //     .attr("width", "30")
+        //     .attr("height", "30")
+        //     .attr("xlink:href", function(node) {
+        //         return "static/image/"+ node.label +".png"
+        //     })
+        //     .on("mousedown.select-node", selectNode)
+        //     .on("mouseover.hover-link", hoverNode);
 
         nodeElementsNew.append("text")
             .attr("class", "node_text")
@@ -121,6 +143,14 @@ var line_type = 0;
             })
             .style("display", control.node_text_state == true ? "block" : "none");
         nodeElements = nodeElements.merge(nodeElementsNew)
+            .attr("fill", function(node) {
+                if(control.special == true) {
+                    return (node.type != "undefined" && support_type.indexOf(node.type) > -1) ? "url(#" + node.type + ")" : "url(#default)";
+                }
+                else {
+                    return "black";
+                }
+            });
 
         let linkForce = d3.forceLink()
             .id(function (link) { return link.id })
@@ -131,12 +161,13 @@ var line_type = 0;
             .alphaMin(0.05)
             .force("link", linkForce)
             .force("charge", d3.forceManyBody().strength(-300))
-            .force("center", d3.forceCenter(width / 2 + 150, height / 2))
-            .alpha(1);
+            .force("center", d3.forceCenter((width - 30) / 2, (height - 30) / 2))
+            .force("collision", d3.forceCollide(30));
 
         simulation.nodes(data.nodes)
             .on("tick", draw)
-            .force("link").links(data.links);
+            .force("link")
+            .links(data.links);
 
         function draw() {
             nodeElements.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
@@ -278,8 +309,10 @@ var line_type = 0;
                         for (attr in new_data) {
                             new_data[attr] = document.getElementById(attr).value;
                         }
-                        new_data.x = d3.event.x;
-                        new_data.y = d3.event.y - 30;
+                        console.log(d3.event)
+                        let translate_scale_rotate = getTranslateAndScaleAndRotate();
+                        new_data.fx = d3.event.x;
+                        new_data.fy = d3.event.y;
                         data.nodes.push(new_data);
                         restart(data);
                         clearEvents();
@@ -458,7 +491,8 @@ var line_type = 0;
 
         function changeColor() {
             nodeElements.filter(function(d) { return d.selected; })
-                .attr("fill", d3.select(this).style("background-color"));
+                .select("circle")
+                .style("stroke", d3.select(this).style("background-color"));
         }
 
         d3.select("#node-color").on("change", function () {
@@ -587,7 +621,7 @@ var line_type = 0;
         });
 
         d3.select("#link-strength").on("input propertychange", function() {
-            simulation.force("link").strength(+this.value);
+            simulation.force("link").strength(this.value);
             simulation.alpha(1).restart();
         });
 
@@ -602,7 +636,13 @@ var line_type = 0;
             });
         });
 
-
+        // 切换分析模式
+        d3.select("#analyse-button")
+            .on("click", function() {
+                control.special = !control.special;
+                d3.select("#analyse-switch").attr("class", control.special == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
+                restart(data);
+            })
     }
 
     // 顺时针旋转
@@ -677,19 +717,19 @@ var line_type = 0;
 
     // 关系标签显示开关
     d3.select("#link-button")
-    .on("click", function() {
-        control.link_text_state = !control.link_text_state;
-        d3.select("#link-switch").attr("class", control.link_text_state == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
-        text_layout.selectAll("text").style("display", control.link_text_state == true ? "block" : "none");
-    });
+        .on("click", function() {
+            control.link_text_state = !control.link_text_state;
+            d3.select("#link-switch").attr("class", control.link_text_state == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
+            text_layout.selectAll("text").style("display", control.link_text_state == true ? "block" : "none");
+        });
 
     // 箭头显示开关
     d3.select("#marker-button")
-    .on("click", function() {
-        control.marker_state = !control.marker_state;
-        d3.select("#marker-switch").attr("class", control.marker_state == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
-        d3.selectAll(".marker-path").style("display", control.marker_state == true ? "block" : "none");
-    });
+        .on("click", function() {
+            control.marker_state = !control.marker_state;
+            d3.select("#marker-switch").attr("class", control.marker_state == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
+            d3.selectAll(".marker-path").style("display", control.marker_state == true ? "block" : "none");
+        });
 
     var setting_box = d3.select("#setting-box");
     d3.selectAll("#setting-button")
@@ -705,7 +745,7 @@ var line_type = 0;
             d3.select("#screen-switch").attr("class", control.screen_state == true ? "fa fa-compress" : "fa fa-expand");
             control.screen_state == true ? enterFullScreen() : exitFullScreen();
         });
-// })
+})
 
 function textBreaking(d3text, text) {
     let len = text.length;
@@ -798,6 +838,7 @@ function getLineTextDx(link) {
 
 // 掠过显示节点信息
 function hoverNode(node) {
+    console.log(node)
     var node_info = d3.select("#node-info")
         .style("display", "block");
     node_info.selectAll(".info").remove();
@@ -815,7 +856,7 @@ function hoverNode(node) {
 function selectNode(node) {
     node.selected = true;
     d3.select(this.parentNode).classed("selected", true)
-                .style("fill", "url(#orange_red)");
+                // .style("fill", "url(#orange_red)");
 }
 
 // 掠过显示关系信息
