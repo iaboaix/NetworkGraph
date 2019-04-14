@@ -1,0 +1,146 @@
+﻿id:ID,label:LABEL,label,name,life
+0,male,male,Johann Philipp Trump,1667-1707
+1,female,female,Juliana Maria Rodenroth,
+2,male,male,Johann Sebastian Trump,1699–1756
+3,female,female,Susanna Margaretha Kohl,
+4,male,male,Johann Paul Trump,1727–1792
+5,female,female,Maria Elisabetha Setzer,
+6,male,male,Charlotte Louisa Trump,1789–1833
+7,female,female,Johann Georg Heinz,
+8,male,male,John Henry Heinz,1811–1891
+9,male,male,Henry J. Heinz,1844–1919
+10,male,male,Johannes Trump,1789–1835
+11,female,female,Susanna Maria Bechtloff,
+12,male,male,Friedrich Trump,?-1876
+13,female,female,Elisabetha Trump,
+14,male,male,Maria Katharina Trump,1827-?
+15,male,male,Christian Johannes Trump,1829–1877
+16,female,female,Katharina Kober,1836–1922
+17,male,male,Johannes Trump,1860-?
+18,male,male,Katharina Trump,1861-?
+19,male,male,Jakob Trump,1863-?
+20,male,male,Sybilla Luisa Trump,1865–1931
+21,female,female,Schuster,
+22,male,male,Konrad Trump,1868–1868
+23,male,male,Friedrich Trump,1869–1918
+24,female,female,Elisabeth Christ,
+25,male,male,Elizabeth/Elisabeth Trump,1904–1961
+26,female,female,William O. Walter,
+27,male,male,William Trump Walter,1931-?
+28,female,female,Susan Walter,
+29,male,male,John W. Walter,1934-?
+30,female,female,Joan Walter,
+31,male,male,Christine/Christy Weppler,
+32,female,female,Robert/Bob Weppler,
+33,male,male,Catherine Weppler,
+34,male,male,Sarah Weppler,
+35,male,male,Lauren Weppler,
+36,male,male,Nancy Kiley,
+37,female,female,James/Jim Kiley,
+38,male,male,Emily Kiley,
+39,male,male,Matthew Kiley,
+40,male,male,Cynthia/Cindy Frey,
+41,female,female,Rod Frey,
+42,male,male,Connor Frey,
+43,male,male,Aidan Frey,
+44,male,male,Frederick Christ Trump,1905–1999
+45,female,female,Mary MacLeod,1912–2000
+46,female,female,Maryanne Trump,1937-?
+47,male,male,David Desmond,
+48,male,male,John Barry,
+49,male,male,David William Desmond,1960-?
+50,male,male,"Frederick Christ Trump, Jr.",1938–1981
+51,female,female,Linda Clapp,
+52,male,male,Frederick Christ Trump III,1963-?
+53,female,female,Lisa Beth Lorant,
+54,male,male,daughter,1992-?
+55,male,male,son,1994-?
+56,male,male,William Trump,1999-?
+57,male,male,Mary Trump,
+58,male,male,Elizabeth Joan Trump,
+59,female,female,James Walter Grau,
+60,Donald-John-Trump,Donald-John-Trump,Donald John Trump,1946-?
+61,female,female,Ivana Zelníčková,
+62,female,female,Marla Maples,
+63,female,female,Melania Knauss,1970-?
+64,male,male,Donald Trump Jr.,1977-?
+65,female,female,Vanessa Haydon,
+66,female,female,Kai Madison Trump,2007-?
+67,male,male,Donald John Trump III,2009-?
+68,male,male,Tristan Milos Trump,2012-?
+69,male,male,Spencer Frederick Trump,2013-?
+70,female,female,Chloe Sophia Trump,2014-?
+71,Ivanka-Trump,Ivanka-Trump,Ivanka Trump,1981-?
+72,male,male,Jared Kushner,
+73,male,male,Eric Trump,1984-?
+74,female,female,Lara Yunaska,
+75,male,male,Eric Luke Trump,2017-?
+76,male,male,Tiffany Trump,1993-?
+77,male,male,Barron Trump,2006-?
+78,male,male,Robert Trump,
+79,female,female,Blaine Beard,
+80,male,male,John George Trump,1907-1985
+81,female,female,Elora Sauerbrun,1913-1983
+82,male,male,John Gordon Trump,1938-2012
+83,male,male,Christine Trump Philp,
+84,male,male,Karen Trump Ingraham,
+85,male,male,Elisabetha Trump,1837-?
+86,female,female,Karl Freund,
+87,male,male,Barbara Trump,1876-?
+88,male,male,Anna Elisabetha Trump,1831-?
+89,female,female,Konrad Schwinn,
+90,us,us,United States of America,
+91,twitter,twitter,Twitter,
+92,germany,germany,Germany,
+93,美国总统,美国总统,USA president,
+94,美国副总统,美国副总统,Vice President of the United States,
+95,美国联邦,美国联邦,American Federation,
+96,美国国务院,美国国务院,The U.S. State Department,
+97,美国财政部,美国财政部,U.S. Treasury,
+98,美国国防部,美国国防部,U.S. Department of Defense,
+99,美国司法部,美国司法部,U.S. Department of Justice,
+100,美国内政部,美国内政部,U.S. Department of the Interior,
+101,美国农业部,美国农业部,The United States Department of Agriculture,
+102,美国商务部,美国商务部,U.S. Department of Commerce,
+103,美国劳工部,美国劳工部,U.S. Department of Labor,
+104,美国卫生及公共服务部,美国卫生及公共服务部,U.S. Department of Health and Public Services,
+105,美国住房及城市发展部,美国住房及城市发展部,U.S. Department of Housing and Urban Development,
+106,美国交通部,美国交通部,U.S. Department of Transportation,
+107,美国能源部,美国能源部,U.S. Department of Energy,
+108,美国教育部,美国教育部,U.S. Department of Education,
+109,美国退伍军人事务部,美国退伍军人事务部,Department of Veterans Affairs,
+110,美国国土安全部,美国国土安全部,Department of Homeland Security,
+111,,,联邦政府独立行政机构,
+112,美国中央情报局,美国中央情报局,CIA,
+113,美国期货交易管理委员会,美国期货交易管理委员会,Commodity Futures Trading Commission,
+114,美国国家环境保护局,美国国家环境保护局,Environmental Protection Agency,
+115,联邦通讯管理委员会,联邦通讯管理委员会,Federal Communications Commission,
+116,美国联邦储备理事会,美国联邦储备理事会,Fed Board,
+117,联邦贸易管理委员会,联邦贸易管理委员会,Federal Trade Commission,
+118,美国总务署,美国总务署,General Services Administration,
+119,美国国家航空航天局,美国国家航空航天局,NASA,
+120,国家档案记录署,国家档案记录署,National Archives and Records Administration,
+121,国家劳工关系委员会,国家劳工关系委员会,National Labor Relations Board,
+122,国家科学基金,国家科学基金,National Science Foundation,
+123,人事管理处,人事管理处,Office of Personnel Management,
+124,和平工作队,和平工作队,Peace Corp,
+125,小型企业总署,小型企业总署,Small Business Administration,
+126,社会保障总署,社会保障总署,Social Security Administration,
+127,证券交易监管委员会,证券交易监管委员会,Securities and Exchange Commission,
+128,美国国际发展局,美国国际发展局,United States Agency for International Development,
+129,美国国际贸易委员会,美国国际贸易委员会,United States International Trade Commission,
+130,美国邮政,美国邮政,United States Postal Service,
+131,美国邮政价格委员会,美国邮政价格委员会,Postal Rate Commission,
+132,美国国家运输安全委员会,美国国家运输安全委员会,National Transportation Security Board,
+133,美国总统办事机构,美国总统办事机构,Executive Office of the President,
+134,白宫办公厅,白宫办公厅,Germany,
+135,副总统办公室,副总统办公室,Germany,
+136,行政管理和预算局,行政管理和预算局,Germany,
+137,总统经济顾问委员会,总统经济顾问委员会,Germany,
+138,国家安全委员会,国家安全委员会,Germany,
+139,美国贸易代表办公室,美国贸易代表办公室,Germany,
+140,政策制定办公室,政策制定办公室,Germany,
+141,科学和技术政策办公室,科学和技术政策办公室,Germany,
+142,改善环境质量委员会,改善环境质量委员会,Germany,
+143,国家麻醉品控制政策办公室,国家麻醉品控制政策办公室,Germany,
+144,白宫行政办公室,白宫行政办公室,Germany,

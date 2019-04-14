@@ -1,0 +1,1 @@
+.\neo4j-admin import --nodes C:\Users\64221\Desktop\毕业设计\tools\nodes.csv --relationships C:\Users\64221\Desktop\毕业设计\tools\links.csv

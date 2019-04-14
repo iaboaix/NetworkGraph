@@ -6,32 +6,51 @@ class Neo4jToJson:
         self.graph = Graph("http://localhost:7474",username="neo4j",password="000000")
 
     def start(self):
-        results = self.graph.run("MATCH (p:Person{name: 'Lana Wachowski'})-[]->(m:Movie) " 
-                                "RETURN m.title as movie, collect(p.name) as cast LIMIT 25")
-        nodes = []
-        rels = []
-        for movie, cast in results:
-            nodes.append({"id": movie, "label":movie, "type": "movie"})
-            for name in cast:
-                actor = {"id": name, "label":name, "type": "actor"}
-                try:
-                    source = nodes.index(actor)
-                except ValueError:
-                    nodes.append(actor)
-                rels.append({"source": name, "target": movie, "label": "test"})
-        return {"nodes": nodes, "links": rels}
+        return self.query_node("Donald-John-Trump", "Donald John Trump")
 
     def expand(self, node):
-        results = self.graph.run("MATCH (p:Person)-[]->(m:Movie{title: '" + node + "'}) "
-                                "RETURN m.title as movie, p.name as cast LIMIT 25")
-        nodes = []
-        rels = []
-        for movie, cast in results:
-            actor = {"id": cast, "label":cast, "type": "actor"}
-            nodes.append(actor)
-            rels.append({"source": node, "target": cast, "label": "test"})
+        return self.query_node(node["label"], node["name"])
+
+    def query_node(self, label, name):
+        s_rels = self.graph.run("MATCH r=(n:`{0}`)-[]->() WHERE n.name = '{1}' RETURN r" \
+                    .format(label, name)).data()
+        t_rels = self.graph.run("MATCH r=(n:`{0}`)<-[]-() WHERE n.name = '{1}' RETURN r" \
+                    .format(label, name)).data()
+        nodes = list()
+        rels = list()
+        for rel in s_rels:
+            s_node = self.create_node(rel["r"].start_node)
+            t_node = self.create_node(rel["r"].end_node)
+            rel_label = list(rel["r"].relationships[0].types())[0]
+            cur_rel = {"source": s_node["id"], "target": t_node["id"], "label": rel_label};
+            if cur_rel not in rels:
+                rels.append(cur_rel)
+            if s_node not in nodes:
+                nodes.append(s_node)
+            if t_node not in nodes:
+                nodes.append(t_node)
+        for rel in t_rels:
+            s_node = self.create_node(rel["r"].end_node)
+            t_node = self.create_node(rel["r"].start_node)
+            rel_label = list(rel["r"].relationships[0].types())[0]
+            cur_rel = {"source": s_node["id"], "target": t_node["id"], "label": rel_label};
+            if cur_rel not in rels:
+                rels.append(cur_rel)
+            if s_node not in nodes:
+                nodes.append(s_node)
+            if t_node not in nodes:
+                nodes.append(t_node)
         return {"nodes": nodes, "links": rels}
+
+    def create_node(self, neo4j_node):
+        node = {"id": neo4j_node["id"], "label": neo4j_node["label"], "name": neo4j_node["name"]}
+        try:
+            node["life"] = neo4j_node["life"]
+        except:
+            pass
+        return node
+
 
 if __name__ == '__main__':
     neo4j = Neo4jToJson()
-    neo4j.post()
+    print(neo4j.start())

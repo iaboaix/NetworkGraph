@@ -5,11 +5,10 @@
     {% load staticfiles %}
     <title>数据可视化</title>
     <script type="text/javascript" src="{% static 'js/thirdPart/d3.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/fullScreen.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/thirdPart/saveSvgAsPng.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/thirdPart/jquery-3.3.1.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/thirdPart/smartMenu.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/brush.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/fullScreen.js' %}"></script>
 
     <link rel="stylesheet" href="{% static 'css/font-awesome-4.7.0/css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -24,6 +23,7 @@
         <button class="top-menu-item" id="download-data"><i class="fa fa-download"></i> 导出数据</button>
         <button class="top-menu-item" id="download-img"><i class="fa fa-share"></i> 导出图片</button>
         <div id="top-right-bar">
+        	<button id="layout-button" class="switch-button" title="切换布局模式">力布局&nbsp&nbsp&nbsp&nbsp<i id="layout-switch" class="fa fa-toggle-off"></i>&nbsp&nbsp&nbsp&nbsp圆布局</button>
         	<button id="analyse-button" class="switch-button" title="切换分析模式">数据分析&nbsp&nbsp&nbsp&nbsp<i id="analyse-switch" class="fa fa-toggle-off"></i>&nbsp&nbsp&nbsp&nbsp场景分析</button>
             <div id="search-line-layout">
                 <input type="text" name="" id="search-line">
@@ -39,7 +39,7 @@
         <button id="zoom-reset" title="1：1"><i class="fa fa-arrows-h"></i></button>
         <button id="rotate" title="顺时针旋转"><i class="fa fa-repeat"></i></button>
         <button id="rerotate" title="逆时针旋转"><i class="fa fa-undo"></i></button>
-        <button id="reset" title="重新布局"><i class="fa fa-refresh"></i></button>
+<!--         <button id="reset" title="重新布局"><i class="fa fa-refresh"></i></button> -->
         <button id="brush-mode" title="框选模式"><i class="fa fa-crop"></i></button>
     </div>
     <div id="setting-box">
@@ -52,7 +52,7 @@
                 <tr>
                     <td>节点大小</td>
                     <td>
-                        <input type="range" name="points" id="node-size" min="0" max="100" step="1" value="12" />
+                        <input type="range" name="points" id="node-size" min="0" max="50" step="1" value="15" />
                     </td>
                 </tr>
                 <tr>
@@ -68,9 +68,15 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>节点间斥力</td>
+                    <td>
+                        <input type="range" name="points" id="node-charge" min="100" max="1000" step="10" value="300" />
+                    </td>
+                </tr>
+                <tr>
                     <td>连接强度</td>
                     <td>
-                        <input type="range" name="points" id="link-strength" min="0" max="1" step="0.1" value="0.7" />
+                        <input type="range" name="points" id="link-strength" min="0" max="1" step="0.05" value="0.5" />
                     </td>
                 </tr>
                 <tr>
@@ -157,23 +163,20 @@
             <div id="color-others">&nbsp&nbsp其他颜色<input type="color" id="node-color" />
             </div>
         </div>
-        <div id="function-box">
-            <div id="box-title">编辑区</div>
-            <div id="fun-items">
-                <button class="fun-button" id="creat-node">创建节点</button>
-                <button class="fun-button" id="delete-node">删除节点</button>
-                <button class="fun-button" id="creat-link">创建关系</button>
-                <button class="fun-button" id="delete-link">删除关系</button>
-            </div>
-        </div>
+        <button id="stop-button">停止布局</button>
     </div>
     <div id="upload-layout">
         <div id="upload-top-layout">
             <div id="file-title">导入json数据</div>
             <div id="file-close">×</div>
         </div>
-        <div id="info-file"></div>
-        <input type="file" id="file-input" multiple="multiple"/>
+        <div id="info-file">
+            <div id="file-item">
+                <div id="file-name"></div>
+                <div id="file-state"></div>
+            </div>
+        </div>
+        <input type="file" id="file-input" enctype="multiple/form-data" method="post"/>
         <button id="select-file" class="file-button">选择文件</button>
         <div>
             <button id="upload-button" class="file-button">上传</button>
@@ -183,7 +186,7 @@
     <table id="attr-table"><tbody></tbody></table>
     <script type="text/javascript">
     	var data = {{ Dict|safe }};
-    	var support_type = {{ List|safe }};
+    	var support_label = {{ List|safe }};
     </script>
     <script type="text/javascript" src="{% static 'js/networkGraph.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/operation.js' %}"></script>

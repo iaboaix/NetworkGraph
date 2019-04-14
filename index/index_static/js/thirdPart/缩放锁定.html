@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+    <title>数据可视化</title>
+    <script type="text/javascript" src="d3.min.js"></script>
+    <style type="text/css">
+    	html, body {
+    		padding: 0px;
+    		margin: 0px;
+    	}
+        #svg {
+            background-color: #33B8C2;
+        }
+    </style>
+</head>
+<body>
+	<div id="main_window">
+		<svg id="svg"></svg>
+	</div>
+	<script type="text/javascript">
+		// 节点数据
+		var nodes = [
+		  { id: "mammal", group: 0, label: "Mammals", level: 1 , weight: 1},
+		  { id: "dog"   , group: 0, label: "Dogs"   , level: 2 , weight: 2},
+		  { id: "cat"   , group: 0, label: "Cats"   , level: 2 , weight: 3},
+		  { id: "fox"   , group: 0, label: "Foxes"  , level: 2 , weight: 4},
+		  { id: "elk"   , group: 0, label: "Elk"    , level: 2 , weight: 5},
+		  { id: "insect", group: 1, label: "Insects", level: 1 , weight: 6},
+		  { id: "ant"   , group: 1, label: "Ants"   , level: 2 , weight: 1},
+		  { id: "bee"   , group: 1, label: "Bees"   , level: 2 , weight: 2},
+		  { id: "fish"  , group: 2, label: "Fish"   , level: 1 , weight: 3},
+		  { id: "carp"  , group: 2, label: "Carp"   , level: 2 , weight: 6},
+		  { id: "pike"  , group: 2, label: "Pikes"  , level: 2 , weight: 7}
+		]
+		// 边数据
+		var links = [
+		  { target: "mammal", source: "dog" , strength: 0.7 },
+		  { target: "mammal", source: "cat" , strength: 0.7 },
+		  { target: "mammal", source: "fox" , strength: 0.7 },
+		  { target: "mammal", source: "elk" , strength: 0.7 },
+		  { target: "insect", source: "ant" , strength: 0.7 },
+		  { target: "insect", source: "bee" , strength: 0.7 },
+		  { target: "fish"  , source: "carp", strength: 0.7 },
+		  { target: "fish"  , source: "pike", strength: 0.7 },
+		  { target: "cat"   , source: "elk" , strength: 0.1 },
+		  { target: "carp"  , source: "ant" , strength: 0.1 },
+		  { target: "elk"   , source: "bee" , strength: 0.1 },
+		  { target: "dog"   , source: "cat" , strength: 0.1 },
+		  { target: "fox"   , source: "ant" , strength: 0.1 },
+		  { target: "pike"  , source: "cat" , strength: 0.1 }
+		]
+		var width = window.innerWidth
+		var height = window.innerHeight
+		var svg = d3.select('svg')
+		svg.attr('width', width).attr('height', height)
+		// simulation setup with all forces
+		var linkForce = d3
+		  .forceLink()
+		  .id(function (link) { return link.id })
+		  .strength(function (link) { return link.strength })
+		var simulation = d3
+		  .forceSimulation()
+		  .force('link', linkForce)
+		  .force('charge', d3.forceManyBody().strength(-120))
+		  .force('center', d3.forceCenter(width / 2, height / 2))
+		// 托拽开始、 结束、 每一帧
+		var dragDrop = d3.drag().on('start', function (node) {
+		  node.fx = node.x;
+		  node.fy = node.y;
+		}).on('drag', function (node) {
+		  simulation.alphaTarget(0.7).restart();
+		  node.fx = d3.event.x;
+		  node.fy = d3.event.y;
+		}).on('end', function (node) {
+		  if (!d3.event.active) {
+		    simulation.alphaTarget(0);
+		  }
+		})
+		// 双击解除锁定状态
+		function lockNode(lockNode){
+			lockNode.fx = null;
+			lockNode.fy = null;
+		}
+		// 滚轮缩放并屏蔽双击缩放
+		var zoom = d3.zoom()
+					.scaleExtent([1, 10])
+					.on("zoom", zoomed);
+		svg.call(zoom)
+		   .on('dblclick.zoom', null);
+		function zoomed() {
+			svg.selectAll("g").attr("transform", d3.event.transform);
+		}
+		var linkElements = svg.append("g")
+		  .attr("class", "links")
+		  .selectAll("line")
+		  .data(links)
+		  .enter().append("line")
+		  .attr("stroke-width", 1)
+		  .attr("stroke", "rgba(50, 50, 50, 0.2)")
+		var nodeElements = svg.append("g")
+		  .attr("class", "nodes")
+		  .selectAll("circle")
+		  .data(nodes)
+		  .enter().append("circle")
+		    .attr("r", function(node, i){
+		    	return node.weight * 2;
+		    })
+		    .attr("fill", "blue")
+		    .call(dragDrop)
+		    .on("dblclick", lockNode)
+		simulation.nodes(nodes).on('tick', () => {
+		  nodeElements
+		    .attr('cx', function (node) { return node.x })
+		    .attr('cy', function (node) { return node.y })
+		  linkElements
+		    .attr('x1', function (link) { return link.source.x })
+		    .attr('y1', function (link) { return link.source.y })
+		    .attr('x2', function (link) { return link.target.x })
+		    .attr('y2', function (link) { return link.target.y })
+		})
+		simulation.force("link").links(links);
+	</script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r83/three.min.js'></script>
+    <script src='https://mrdoob.github.io/stats.js/build/stats.min.js'></script>
+    <!-- without worker <script src='https://d3js.org/d3.v5.min.js'></script> -->
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id='canvas'></canvas>
+    <script id='worker' type="app/worker">  //定义worker子线程
+        importScripts('https://d3js.org/d3.v5.min.js'); //加载其他脚本
+        let width = 100, height = 100, radius = 8, count = 100
+        let nodes = []
+        let edges = []
+        const simulation = d3.forceSimulation()
+            .force('link', d3.forceLink().distance(50))
+            .force('charge', d3.forceManyBody().strength(-100).distanceMax(100))
+        onmessage = function (event) { //onmessage是一个监听函数，监听主函数发来的消息
+            switch (event.data.type) { //判断命令类型
+                case 'init': {
+                    width = event.data.width;
+                    height = event.data.height;
+                    radius = event.data.radius;
+                    count = event.data.count; //接受参数：节点数量
+                    let colorsArray = new Float32Array(count * 3); //每一个元素都是都是一个 32位（4字节） 的浮点型数据
+                    for (let i = 0; i < count; i++) {
+                        var particle = {  //自动生成节点点
+                            x: Math.random() * width,
+                            y: Math.random() * height
+                        }
+                        if (i > 0) {
+                            let sourceIndex = Math.floor(Math.random() * (nodes.length - 1))
+                            edges.push({  //自动生成关系
+                                source: sourceIndex,
+                                target: nodes.length
+                            })
+                        }
+                        nodes.push(particle);
+                        let color = d3.hsl(Math.random() * 360, 1, 0.5).rgb();
+                        colorsArray[i * 3] = color.r / 255 //随机生成颜色，三个一组，数组大小3*count
+                        colorsArray[i * 3 + 1] = color.g / 255
+                        colorsArray[i * 3 + 2] = color.b / 255
+                    }
+                    let ret = { colors: colorsArray.buffer }
+                    postMessage(ret, [ret.colors]);  //向主线程发送消息,直接转移数据的控制权
+                    simulation.nodes(nodes)
+                        .on('tick', () => {
+                            let nodesArray = new Float32Array(nodes.length * 3);//3位一组
+                            for (i in nodes) {
+                                /*
+                                nodes[i].vx = nodes[i].x < radius || nodes[i].x > width - radius ? -1 : 1
+                                nodes[i].vy = nodes[i].y < radius || nodes[i].y > height - radius ? -1 : 1
+                                nodes[i].x = Math.max(radius, Math.min(nodes[i].x, width - radius))
+                                nodes[i].y = Math.max(radius, Math.min(nodes[i].y, height - radius))
+                                */
+                                nodesArray[i * 3] = nodes[i].x;
+                                nodesArray[i * 3 + 1] = nodes[i].y;
+                            }
+                            let linksArray = new Float32Array(edges.length * 6);//6位一组
+                            for (i in edges) {
+                                linksArray[i * 6] = edges[i].source.x;
+                                linksArray[i * 6 + 1] = edges[i].source.y;
+                                linksArray[i * 6 + 3] = edges[i].target.x;
+                                linksArray[i * 6 + 4] = edges[i].target.y;
+                            }
+                            
+                            let ret = {
+                                nodes: nodesArray.buffer, //类型化数组的buffer属性，返回整段内存区域对应的ArrayBuffer对象
+                                links: linksArray.buffer
+                            }
+                            postMessage(ret, [ret.nodes, ret.links]);
+                        })
+                    simulation.force('link').links(edges)
+                }
+                case 'resize': {
+                    width = event.data.width;
+                    height = event.data.height;
+                    simulation.force('center', d3.forceCenter(width / 2, height / 2))
+                    simulation.alpha(1).restart()
+                    break;
+                }
+                case 'move': {
+                    let node = nodes[event.data.index];
+                    node.fx = event.data.fx;
+                    node.fy = event.data.fy;
+                    simulation.alphaTarget(event.data.fx ? 0.3 : 0).restart()
+                    break;
+                }
+            }
+        };
+    </script>
+    <script>
+        var stats = new Stats()  //帧数显示控件
+        stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
+        document.body.appendChild(stats.dom)
+        let canvas = document.getElementById('canvas')
+        let renderer = new THREE.WebGLRenderer({
+            antialias: true, //开启反锯齿
+            canvas: canvas, //输出的画布
+            devicePixelRatio: window.devicePixelRatio
+        })
+		//正交投影相机OrthographicCamera(left, right, top, bottom, near, far)
+        let camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1e-10, 1e10)
+        camera.position.z = 10
+        let scene = new THREE.Scene()
+        let axesHelper = new THREE.AxisHelper(100)
+        scene.add(axesHelper)
+        let nodes = new THREE.BufferGeometry()
+        let edges = new THREE.BufferGeometry()
+        let radius = 8, count = 500
+        let worker = new Worker(window.URL.createObjectURL(new Blob([ //新建一个 Worker 线程
+            document.querySelector('#worker').textContent])));
+		//先将嵌入网页的脚本代码，转成一个二进制对象，然后为这个二进制对象生成 URL，再让 Worker 加载这个 URL。这样就做到了，主线程和 Worker 的代码都在同一个网页上面。
+        let inited = false
+        worker.onmessage = function (event) {
+            if (event.data.colors) {
+                nodes.addAttribute('color', new THREE.Float32BufferAttribute(event.data.colors, 3, true));
+            }
+            if (event.data.nodes && event.data.links) {
+                nodes.verticlesArray = new Float32Array(event.data.nodes);
+                nodes.addAttribute('position', new THREE.Float32BufferAttribute(event.data.nodes, 3));
+                edges.addAttribute('position', new THREE.Float32BufferAttribute(event.data.links, 3));
+                render();
+            }
+            if (!inited) {
+                scene.add(new THREE.LineSegments(edges, new THREE.LineBasicMaterial({
+                    color: 'grey'
+                })))
+                scene.add(new THREE.Points(nodes, new THREE.PointsMaterial({
+                    size: radius * 2,
+                    sizeAttenuation: false,
+                    vertexColors: true,
+                })))
+            }
+            inited = true
+        };
+        let dragNode = null
+        canvas.addEventListener('mousedown', (event) => {
+            dragNode = null
+            let [x, y] = [event.clientX, window.innerHeight - event.clientY]
+            for (let i = 0; i < count; i++) {
+                let p = {
+                    x: nodes.verticlesArray[i * 3],
+                    y: nodes.verticlesArray[i * 3 + 1],
+                    update: (fx, fy) => {
+                        worker.postMessage({
+                            type: 'move',
+                            index: i,
+                            fx: fx,
+                            fy: fy
+                        })
+                    }
+                }
+                if (Math.abs(x - p.x) < radius && Math.abs(y - p.y) < radius) {
+                    dragNode = p
+                    break
+                }
+            }
+            if (dragNode) {
+                dragNode.update(x, y)
+            }
+        })
+        canvas.addEventListener('mousemove', (event) => {
+            if (!dragNode || event.buttons != 1) {
+                if (dragNode) {
+                    dragNode.fx = undefined
+                    dragNode.fy = undefined
+                    dragNode = null
+                }
+                return
+            }
+            dragNode.update(event.clientX, window.innerHeight - event.clientY)
+        })
+        canvas.addEventListener('mouseup', (event) => {
+            if (dragNode)
+                dragNode.update(undefined, undefined)
+            dragNode = null
+        })
+        worker.postMessage({
+            type: 'init',
+            width: window.innerWidth,
+            height: window.innerHeight,
+            radius: radius,
+            count: count
+        })
+        let onresize = () => {
+            let width = window.innerWidth
+            let height = window.innerHeight
+            renderer.setSize(width, height)
+            camera.left = - width / 2
+            camera.right = width / 2
+            camera.top = height / 2
+            camera.bottom = - height / 2
+            camera.updateProjectionMatrix()
+            camera.position.x = width / 2
+            camera.position.y = height / 2
+            worker.postMessage({
+                type: 'resize',
+                width: width,
+                height: height
+            })
+            canvas.width = width
+            canvas.height = height
+            canvas.style.width = `${width}px`
+            canvas.style.height = `${height}px`
+            render()
+        }
+        window.addEventListener('resize', onresize)
+        onresize()
+        function render() {
+            stats.begin()
+            renderer.render(scene, camera)
+            stats.end()
+        }
+    </script>
+    <!-- without worker
+    <script>
+        var stats = new Stats()
+        stats.showPanel(1) // 0: fps, 1: ms, 2: mb, 3+: custom
+        document.body.appendChild(stats.dom)
+        let canvas = document.getElementById('canvas')
+        let renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            canvas: canvas,
+            devicePixelRatio: window.devicePixelRatio
+        })
+        let camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1e-10, 1e10)
+        camera.position.z = 10
+        let scene = new THREE.Scene()
+        let axesHelper = new THREE.AxisHelper(100)
+        scene.add(axesHelper)
+        let nodes = new THREE.Geometry()
+        let edges = new THREE.Geometry()
+        edges.lines = []
+        for (let i = 0; i < 500; i++) {
+            var particle = new THREE.Vector3(Math.random() * window.innerWidth,
+                Math.random() * window.innerHeight, 0)
+            if (i > 0) {
+                let sourceIndex = Math.floor(Math.random() * (nodes.vertices.length))
+                edges.lines.push({
+                    id: i,
+                    source: sourceIndex,
+                    target: nodes.vertices.length
+                })
+                edges.vertices.push(nodes.vertices[sourceIndex], particle)
+            }
+            nodes.vertices.push(particle)
+            nodes.colors.push(new THREE.Color(`hsl(${Math.random() * 360}, 100%, 50%)`))
+        }
+        let radius = 8
+        scene.add(new THREE.LineSegments(edges, new THREE.LineBasicMaterial({
+            color: 'grey'
+        })))
+        scene.add(new THREE.Points(nodes, new THREE.PointsMaterial({
+            size: radius * 2,
+            sizeAttenuation: false,
+            vertexColors: true
+        })))
+        const simulation = d3.forceSimulation()
+            .force('link', d3.forceLink().distance(50))
+            .force('charge', d3.forceManyBody().strength(-10).distanceMax(200))
+        simulation.nodes(nodes.vertices)
+            .on('tick', () => {
+                nodes.verticesNeedUpdate = true
+                edges.verticesNeedUpdate = true
+                render()
+            })
+        simulation.force('link').links(edges.lines)
+        let dragNode = null
+        canvas.addEventListener('mousedown', (event) => {
+            dragNode = null
+            let [x, y] = [event.clientX, window.innerHeight - event.clientY]
+            for (p of nodes.vertices) {
+                if (Math.abs(x - p.x) < radius && Math.abs(y - p.y) < radius) {
+                    dragNode = p
+                    break
+                }
+            }
+            if (dragNode) {
+                dragNode.fx = x
+                dragNode.fy = y
+                simulation.alphaTarget(0.3).restart()
+            }
+        })
+        canvas.addEventListener('mousemove', (event) => {
+            if (!dragNode || event.buttons != 1) {
+                if (dragNode) {
+                    dragNode.fx = undefined
+                    dragNode.fy = undefined
+                    simulation.alphaTarget(0)
+                    dragNode = null
+                }
+                return
+            }
+            dragNode.fx = event.clientX
+            dragNode.fy = window.innerHeight - event.clientY
+        })
+        canvas.addEventListener('mouseup', (event) => {
+            if (dragNode) {
+                dragNode.fx = undefined
+                dragNode.fy = undefined
+                simulation.alphaTarget(0)
+            }
+            dragNode = null
+        })
+        let onresize = () => {
+            let width = window.innerWidth
+            let height = window.innerHeight
+            renderer.setSize(width, height)
+            camera.left = - width / 2
+            camera.right = width / 2
+            camera.top = height / 2
+            camera.bottom = - height / 2
+            camera.updateProjectionMatrix()
+            camera.position.x = width / 2
+            camera.position.y = height / 2
+            simulation.force('center', d3.forceCenter(width / 2, height / 2))
+            simulation.alphaTarget(0.3).restart()
+            canvas.width = width
+            canvas.height = height
+            canvas.style.width = `${width}px`
+            canvas.style.height = `${height}px`
+            render()
+        }
+        window.addEventListener('resize', onresize)
+        onresize()
+        function render() {
+            stats.begin()
+            renderer.render(scene, camera)
+            stats.end()
+        }
+    </script>
+-->
+</body>
+
+</html>
+
