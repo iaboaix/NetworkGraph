@@ -23,9 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'wuc%arx---7+-py!q1*lm*1xh4=tpfktntn@b-x_kk%hyy7=rk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    '139.199.163.147',
+]
 
 
 # Application definition
@@ -58,8 +61,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates'), 
-        		 os.path.join(BASE_DIR, 'index/templates'), 
-        		],
+                 os.path.join(BASE_DIR, 'index/templates'), 
+                ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,5 +130,5 @@ STATIC_URL = '/static/'
 # 设置根目录的静态资源文件夹public_static
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'public_static'),
 # 设置App（index）的静态文件夹index_static
-					os.path.join(BASE_DIR, 'index/index_static'),
-					]
+                    os.path.join(BASE_DIR, 'index/index_static'),
+                    ]

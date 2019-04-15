@@ -84,7 +84,7 @@ html, body {
     position: absolute;
     margin-top: 30px;
     width: 30px;
-    height: 100%;
+    height: calc(100% - 32px);
     background: #027080;
 }
 .attr-button {
@@ -204,43 +204,34 @@ text {
     font-family: sans-serif;
     font-size: 15px;
 }
-#tool-box {
-    width: 100%;
-    height: 120px;
+.bottom-item {
     color: black;
     opacity: 0.8;
     position: absolute;
-    left: 30px;
-    bottom: 0px;
-    padding: 2px;
+    bottom: 2px;
 }
 #select-box {
     width: 250px;
-    height: 100%;
+    height: 120px;
+    left: 32px;
     float: left;
     background-color: #68C994;
 }
 #color-box {
+    width: 250px;
+    height: 120px;
+    left: 284px;
     background-color: #68C994;
     display: grid;
     float: left;
-    margin-left: 2px;
     grid-template-rows: 1fr 3fr 1fr; 
-    width: 250px;
-    height: 100%;
-}
-#function-box {
-    width: 125px;
-    height: 100%;
-    float: left;
-    margin-left: 2px;
-    background-color: #68C994;
 }
 #stop-button {
     float: right;
+    right: 2px;
     width: 120px;
-    height: 100%;
-    margin-right: 38px;
+    height: 120px;
+    margin-right: 2px;
     background-color: #05887A;
 }
 #box-title {
