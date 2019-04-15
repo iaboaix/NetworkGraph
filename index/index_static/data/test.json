@@ -12,6 +12,6 @@
 		{"source": 0, "target": 2, "strength": 0.7, "label": "5g-能力"},
 		{"source": 0, "target": 3, "strength": 0.7, "label": "5g-场景"},
 		{"source": 0, "target": 4, "strength": 0.7, "label": "5g-架构"},
-		{"source": 0, "target": 5, "strength": 0.7, "label": "5g-影响"},
+		{"source": 0, "target": 5, "strength": 0.7, "label": "5g-影响"}
 	]
 }

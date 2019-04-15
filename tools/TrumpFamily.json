@@ -149,7 +149,11 @@
 
 	"links": [
 		{"source": 0, "target": 1, "label": "couple"},
+		{"source": 0, "target": 2, "label": "father-child"},
+		{"source": 1, "target": 2, "label": "mother-child"},
 		{"source": 2, "target": 3, "label": "couple"},
+		{"source": 2, "target": 4, "label": "father-child"},
+		{"source": 3, "target": 4, "label": "mother-child"},
 		{"source": 4, "target": 5, "label": "couple"},
 		{"source": 4, "target": 6, "label": "father-child"},
 		{"source": 5, "target": 6, "label": "mother-child"},
@@ -329,7 +333,7 @@
 		{"source": 111, "target": 126, "label": "设立"},
 		{"source": 111, "target": 127, "label": "设立"},
 		{"source": 111, "target": 128, "label": "设立"},
-		{"source": 111, "target": 128, "label": "设立"},
+		{"source": 111, "target": 129, "label": "设立"},
 		{"source": 111, "target": 130, "label": "设立"},
 		{"source": 111, "target": 131, "label": "设立"},
 		{"source": 111, "target": 132, "label": "设立"},

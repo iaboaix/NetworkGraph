@@ -30,7 +30,7 @@ html, body {
     background-size: cover;
 }
 .top-menu-item {
-    width: 10%;
+    width: 90px;
     height: 100%;
     float: left;
     font-size: 12px;
@@ -39,15 +39,17 @@ html, body {
     float: right;
 }
 #layout-button {
-    width: 250px;
+    width: auto;
     float: left;
+    margin-right: 5px;
 }
 #layout-button i {
     font-size: 12px;
 }
 #analyse-button {
-    width: 250px;
+    width: auto;
     float: left;
+    margin-right: 5px;
 }
 #analyse-button i {
     font-size: 12px;
@@ -354,8 +356,8 @@ input[type="range"]::-webkit-slider-thumb {
     width: 300px;
     height: 180px;
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: calc(50% - 150px);
+    left: calc(50% - 90px);
     background-color: steelblue;
     border-radius: 4px;
     font-size: 15px;

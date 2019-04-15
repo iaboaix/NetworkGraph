@@ -101,6 +101,7 @@ support_label.forEach(function(label) {
 })
 
 function restart(data) {
+    simulation.stop();
     control.calculating = true;
     stop_button.text("停止布局");
     if (control.layout == "force") {
@@ -161,17 +162,22 @@ function restart(data) {
     // 节点对象
     var nodeElements = node_layout.selectAll(".node")
         .data(data.nodes);
-
     nodeElements.exit().remove();
-    nodeElementsNew = nodeElements.enter()
+    nodeElements = nodeElements.enter()
         .append("g")
-        .attr("class", "node");
-
-    nodeElementsNew.append("circle")
-        .attr("r", function () { return control.node_size; })
-
-
-    nodeElementsNew.append("text")
+        .attr("class", "node")
+        .merge(nodeElements)
+        .on("mousedown.select-node", selectNode)
+        .on("mouseover.hover-link", hoverNode)
+        .call(d3.drag()
+            .on("start", dragstartFn)
+            .on("drag", dragFn)
+            .on("end", dragendFn));;
+    nodeElements.selectAll("circle").remove();
+    nodeElements.selectAll("text").remove();
+    nodeElements.append("circle")
+        .attr("r", control.node_size);
+    nodeElements.append("text")
         .attr("class", "node_text")
         .attr("font-size", 5)
         .attr("dy", ".35em")
@@ -179,22 +185,9 @@ function restart(data) {
             return textBreaking(d3.select(this), node.name);
         })
         .style("display", control.node_text_state == true ? "block" : "none");
-    nodeElements = nodeElements
-        .merge(nodeElementsNew)        
-        .attr("fill", function(node) {
-            if(control.special == true) {
-                return (node.label != "undefined" && support_label.indexOf(node.label) > -1) ? "url(#" + node.label + ")" : "url(#default)";
-            }
-            else {
-                return "black";
-            }
-        })
-        .on("mousedown.select-node", selectNode)
-        .on("mouseover.hover-link", hoverNode);
-    nodeElements.call(d3.drag()
-        .on("start", dragstartFn)
-        .on("drag", dragFn)
-        .on("end", dragendFn));
+    if (control.special == true) {
+        fill_pic();
+    }
     simulation.restart();
 
     function dragstartFn(node) {
@@ -265,7 +258,8 @@ function restart(data) {
                     var id = Number($(this).attr("id"));
                     var cur_node = d3.select(this).datum()
                     $.post("expand", JSON.stringify({ "node": { "label": cur_node.label, "name": cur_node.name} }), function(cur_data, status){
-                        cur_data = JSON.parse(cur_data);
+                        var cur_data = JSON.parse(cur_data);
+                        var need_restart = false;
                         cur_data.nodes.forEach(function(cur_node) {
                             var add = true;
                             data.nodes.forEach(function(node) {
@@ -273,7 +267,10 @@ function restart(data) {
                                     add = false;
                                 }
                             })
-                            if(add) { data.nodes.push(cur_node); }
+                            if(add) { 
+                                data.nodes.push(cur_node); 
+                                need_restart = true;
+                            }
                         })
                         cur_data.links.forEach(function(cur_link) {
                             var add = true;
@@ -282,9 +279,17 @@ function restart(data) {
                                     add = false;
                                 }
                             })
-                            if(add) { data.links.push(cur_link); }
+                            if(add) { 
+                                data.links.push(cur_link); 
+                                need_restart = true;
+                            }
                         })
-                        restart(data);
+                        if (need_restart == true) {
+                            restart(data);
+                        }
+                        else {
+                            alert("该节点为边界节点，请更换节点进行展开。")
+                        }
                     });
                 }
             },
@@ -681,7 +686,11 @@ function restart(data) {
         .on("click", function() {
             control.special = !control.special;
             d3.select("#analyse-switch").attr("class", control.special == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
-            nodeElements.select("circle")
+            fill_pic();
+        })
+
+    function fill_pic() {
+        nodeElements.select("circle")
                 .style("fill", function(node) {
                     if(control.special == true) {
                         return (node.label != "undefined" && support_label.indexOf(node.label) > -1) ? "url(#" + node.label + ")" : "url(#default)";
@@ -690,7 +699,7 @@ function restart(data) {
                         return "black";
                     }
             });
-        })
+    }
 
     // 点击选中节点
     function selectNode(node) {
@@ -878,7 +887,12 @@ d3.select("#screen-button")
     });
 
 function textBreaking(d3text, text) {
-    var len = text.length;
+    var len = 0;
+    try {
+        len = text.length;
+    } catch(error) {
+        return;
+    }
     if (len <= 4) {
         d3text.append("tspan")
             .attr("x", 0)
