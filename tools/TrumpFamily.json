@@ -111,7 +111,7 @@
 		{"id": 108, "name": "U.S. Department of Education", "label": "美国教育部"},
 		{"id": 109, "name": "Department of Veterans Affairs", "label": "美国退伍军人事务部"},
 		{"id": 110, "name": "Department of Homeland Security", "label": "美国国土安全部"},
-		{"id": 111, "name": "联邦政府独立行政机构", "label": ""},
+		{"id": 111, "name": "联邦政府独立行政机构", "label": "联邦政府独立行政机构"},
 		{"id": 112, "name": "CIA", "label": "美国中央情报局"},
 		{"id": 113, "name": "Commodity Futures Trading Commission", "label": "美国期货交易管理委员会"},
 		{"id": 114, "name": "Environmental Protection Agency", "label": "美国国家环境保护局"},

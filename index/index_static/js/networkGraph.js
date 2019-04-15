@@ -3,9 +3,9 @@ var control = {
     "layout": "force",
     "calculating": true,
     "isBrush": false,
-    "node_text_state": false,
+    "node_text_state": true,
     "link_text_state": false,
-    "marker_state": false,
+    "marker_state": true,
     "setting_state": false,
     "screen_state": false,
     "node_size": 15,
@@ -25,7 +25,7 @@ var brush_svg = svg.append("g")
         .attr("class", "brush_svg")
         .style("display", "none");
 
-const stop_button = d3.select("#stop-button");
+var stop_button = d3.select("#stop-button");
 
 var container = d3.select("#container");
 var defs_layout = container.append("defs");
@@ -47,13 +47,13 @@ radial_gradient.append("stop")
 radial_gradient.append("stop")
     .attr("offset", "100%")
     .attr("stop-color", "red");
-let temp_layout = container.append("g")
+var temp_layout = container.append("g")
         .attr("class", "temp-layout");
-let link_layout = container.append("g")
+var link_layout = container.append("g")
         .attr("class", "link-layout");
-let text_layout = container.append("g")
+var text_layout = container.append("g")
         .attr("class", "text-layout");
-let node_layout = container.append("g")
+var node_layout = container.append("g")
         .attr("class", "node-layout");
 
 // 箭头
@@ -70,8 +70,7 @@ var marker = container.append("marker")
     .append("path")
     .attr("class", "marker-path")
     .attr("d", "M2,0 L0,-3 L9,0 L0,3 M2,0 L0,3")//箭头的路径
-    .attr("fill","green") //箭头颜色
-    .style("display", "none"); 
+    .attr("fill","green"); //箭头颜色 
 
 var linkForce = d3.forceLink()
     .id(function (link) { return link.id })
@@ -133,7 +132,7 @@ function restart(data) {
         .links(data.links);
 
     // 连线对象
-    let linkElements = link_layout.selectAll("path")
+    var linkElements = link_layout.selectAll("path")
         .data(data.links);
     linkElements.exit().remove();
     linkElements = linkElements.enter()
@@ -145,7 +144,7 @@ function restart(data) {
         .on("mouseover.hover-link", hoverLink);
 
     // 连线的文字
-    let linkTextElements = text_layout.selectAll("text")
+    var linkTextElements = text_layout.selectAll("text")
         .data(data.links);
     linkTextElements.exit().remove();
     linkTextElements = linkTextElements.enter()
@@ -160,7 +159,7 @@ function restart(data) {
         .text(function(link) { return link.label; });
 
     // 节点对象
-    let nodeElements = node_layout.selectAll(".node")
+    var nodeElements = node_layout.selectAll(".node")
         .data(data.nodes);
 
     nodeElements.exit().remove();
@@ -264,11 +263,11 @@ function restart(data) {
                 func: function() {
                     // id为节点id
                     var id = Number($(this).attr("id"));
-                    let cur_node = d3.select(this).datum()
+                    var cur_node = d3.select(this).datum()
                     $.post("expand", JSON.stringify({ "node": { "label": cur_node.label, "name": cur_node.name} }), function(cur_data, status){
                         cur_data = JSON.parse(cur_data);
                         cur_data.nodes.forEach(function(cur_node) {
-                            let add = true;
+                            var add = true;
                             data.nodes.forEach(function(node) {
                                 if (cur_node.id == node.id) {
                                     add = false;
@@ -277,7 +276,7 @@ function restart(data) {
                             if(add) { data.nodes.push(cur_node); }
                         })
                         cur_data.links.forEach(function(cur_link) {
-                            let add = true;
+                            var add = true;
                             data.nodes.forEach(function(link) {
                                 if (cur_link.id == link.id) {
                                     add = false;
@@ -294,14 +293,14 @@ function restart(data) {
                 func: function() {
                     // id为节点id
                     var id = Number($(this).attr("id"));
-                    let cur_node = d3.select(this).datum()
+                    var cur_node = d3.select(this).datum()
                 }
             },
             {
                 text: "创建关系",
                 func: function() {
-                    let cur_node = d3.select(this).datum();
-                    let drag_line = temp_layout.append("line")
+                    var cur_node = d3.select(this).datum();
+                    var drag_line = temp_layout.append("line")
                         .attr("stroke", "#00FFFB")
                         .style("stroke-width", 1)
                         .style("opacity", "0")
@@ -319,7 +318,7 @@ function restart(data) {
                         .on("click.add-link", function(node) {
                             drag_line.attr("x2", node.x)
                                 .attr("y2", node.y);
-                            let new_data = {"source": cur_node.id, "target": node.id, "label": "test"};
+                            var new_data = {"source": cur_node.id, "target": node.id, "label": "test"};
                             data.links.push(new_data);
                             restart(data);
                             drag_line.remove();
@@ -355,9 +354,9 @@ function restart(data) {
             {
                 text: "创建节点",
                 func: function() {
-                    let attr_table = d3.select("#attr-table")
+                    var attr_table = d3.select("#attr-table")
                         .style("display", "block");
-                    let attr_tbody = attr_table.select("tbody");
+                    var attr_tbody = attr_table.select("tbody");
                     attr_tbody.selectAll("*").remove();
                     attr_tbody.append("tr")
                         .append("td")
@@ -365,13 +364,13 @@ function restart(data) {
                         .attr("colspan", 2)
                         .style("text-align", "center");
                     var new_data = {};
-                    for (let attr in data.nodes[0]) {
+                    for (var attr in data.nodes[0]) {
                         if (["x", "y", "vx", "vy", "index", "selected", "previouslySelected"].indexOf(attr) > -1) {
                             continue;
                         }
                         else {
                             new_data[attr] = null;
-                            let cur_tr = attr_tbody.append("tr");
+                            var cur_tr = attr_tbody.append("tr");
                             if (attr != "label") {
                                 cur_tr.append("td")
                                     .text(attr);
@@ -382,7 +381,7 @@ function restart(data) {
                             else {
                                 cur_tr.append("td")   
                                     .text("label");
-                                let select = cur_tr.append("td")
+                                var select = cur_tr.append("td")
                                     .append("select")
                                     .attr("id", attr);
                                 support_label.forEach(function(label) {
@@ -393,7 +392,7 @@ function restart(data) {
 
                         }
                     }
-                    let button_layout = attr_tbody.append("tr")
+                    var button_layout = attr_tbody.append("tr")
                         .append("td")
                         .attr("colspan", 2)
                         .append("div");
@@ -554,10 +553,10 @@ function restart(data) {
         });
 
     function selectNodes(type) {
-        let selected_nodes = data.nodes.filter(function(node, i) {
+        var selected_nodes = data.nodes.filter(function(node, i) {
             return node.selected;
         });
-        let parent_nodes = [];
+        var parent_nodes = [];
         if (type == 1) {
             data.links.forEach(function(link, i) {
                 if ( selected_nodes.indexOf(link.target) > -1) { 
@@ -641,14 +640,14 @@ function restart(data) {
     });
 
     d3.select("#node-opacity").on("input propertychange", function() {
-        let opacity = this.value;
+        var opacity = this.value;
         nodeElements.style("opacity", function(node, i){
             return opacity;
         });
     });      
 
     d3.select("#node-stroke").on("input propertychange", function() {
-        let stroke_width = this.value;
+        var stroke_width = this.value;
         nodeElements.selectAll("circle").style("stroke-width", function(node, i){
             return stroke_width;
         });
@@ -781,7 +780,7 @@ stop_button.on("click", function () {
 // 顺时针旋转
 d3.select("#rotate")
     .on("click", function() {
-        let translate_scale_rotate = getTranslateAndScaleAndRotate();
+        var translate_scale_rotate = getTranslateAndScaleAndRotate();
         translate_scale_rotate.rotate = parseInt(translate_scale_rotate.rotate) + 10 + '';
         zoomFunction(translate_scale_rotate);
     })
@@ -789,7 +788,7 @@ d3.select("#rotate")
 // 逆时针旋转
 d3.select("#rerotate")
     .on("click", function() {
-        let translate_scale_rotate = getTranslateAndScaleAndRotate();
+        var translate_scale_rotate = getTranslateAndScaleAndRotate();
         translate_scale_rotate.rotate = parseInt(translate_scale_rotate.rotate) - 10 + '';
         zoomFunction(translate_scale_rotate);
     })
@@ -797,7 +796,7 @@ d3.select("#rerotate")
 // 缩放
 var zoom = d3.zoom()
     .on("zoom", function() {
-        let translate_scale_rotate = getTranslateAndScaleAndRotate();
+        var translate_scale_rotate = getTranslateAndScaleAndRotate();
         d3.event.transform["rotate"] = translate_scale_rotate.rotate;
         zoomFunction(d3.event.transform);
     });
@@ -816,19 +815,19 @@ function zoomFunction(vars) {
 }
 
 d3.select("#zoom-out").on("click", function() {
-    let translate_scale_rotate = getTranslateAndScaleAndRotate();
+    var translate_scale_rotate = getTranslateAndScaleAndRotate();
     translate_scale_rotate.k = parseFloat(translate_scale_rotate.k) * 1.5 + '';
     zoomFunction(translate_scale_rotate);    
 });      
 
 d3.select("#zoom-in").on("click", function() {
-    let translate_scale_rotate = getTranslateAndScaleAndRotate();
+    var translate_scale_rotate = getTranslateAndScaleAndRotate();
     translate_scale_rotate.k = parseFloat(translate_scale_rotate.k) / 1.5 + '';
     zoomFunction(translate_scale_rotate);
 });      
 
 d3.select("#zoom-reset").on("click", function() {
-    let translate_scale_rotate = getTranslateAndScaleAndRotate();
+    var translate_scale_rotate = getTranslateAndScaleAndRotate();
     translate_scale_rotate.k = "1";
     zoomFunction(translate_scale_rotate);
 });
@@ -879,19 +878,19 @@ d3.select("#screen-button")
     });
 
 function textBreaking(d3text, text) {
-    let len = text.length;
+    var len = text.length;
     if (len <= 4) {
         d3text.append("tspan")
             .attr("x", 0)
             .attr("y", 2)
             .text(text);
     } else {
-        let top_text = text.substring(0, 4);
-        let mid_text = text.substring(4, 9);
-        let bot_ext = text.substring(9, len);
-        let top_y = -9;
-        let mid_y = 2;
-        let bot_y = 10;
+        var top_text = text.substring(0, 4);
+        var mid_text = text.substring(4, 9);
+        var bot_ext = text.substring(9, len);
+        var top_y = -9;
+        var mid_y = 2;
+        var bot_y = 10;
         if (len <= 10) {
             top_y += 5;
             mid_y += 5;
@@ -923,24 +922,24 @@ function textBreaking(d3text, text) {
 
 // 生成关系连线路径
 function genLinkPath(link, line_type) {
-    let path = null;
-    let temp = 0;
-    const sx = link.source.x;
-    const sy = link.source.y;
-    const tx = link.target.x;
-    const ty = link.target.y;
-    const dx = (tx - sx) / 8;
-    const dy = (ty - sy) / 8;
-    const x1 = sx + dx;
-    const y1 = sy + dy;
-    const x2 = sx + dx * 2;
-    const y2 = sy + dy * 2;
-    const x3 = sx + dx * 3;
-    const y3 = sy + dy * 3;
-    const x4 = sx + dx * 4;
-    const y4 = sy + dy * 4;
-    const x7 = sx + dx * 7;
-    const y6 = sy + dy * 6;
+    var path = null;
+    var temp = 0;
+    var sx = link.source.x;
+    var sy = link.source.y;
+    var tx = link.target.x;
+    var ty = link.target.y;
+    var dx = (tx - sx) / 8;
+    var dy = (ty - sy) / 8;
+    var x1 = sx + dx;
+    var y1 = sy + dy;
+    var x2 = sx + dx * 2;
+    var y2 = sy + dy * 2;
+    var x3 = sx + dx * 3;
+    var y3 = sy + dy * 3;
+    var x4 = sx + dx * 4;
+    var y4 = sy + dy * 4;
+    var x7 = sx + dx * 7;
+    var y6 = sy + dy * 6;
     if (line_type == 0) {
         path = "M" + sx + "," + sy + " L" + tx + "," + ty;
     }
@@ -957,13 +956,13 @@ function genLinkPath(link, line_type) {
 }
 
 function getLineTextDx(link) {
-    const sx = link.source.x;
-    const sy = link.source.y;
-    const tx = link.target.x;
-    const ty = link.target.y;
-    const distance = Math.sqrt(Math.pow(tx - sx, 2) + Math.pow(ty - sy, 2));
-    const text_length = link.label.length;
-    const dx = (distance - 3 * text_length) / 2;
+    var sx = link.source.x;
+    var sy = link.source.y;
+    var tx = link.target.x;
+    var ty = link.target.y;
+    var distance = Math.sqrt(Math.pow(tx - sx, 2) + Math.pow(ty - sy, 2));
+    var text_length = link.label.length;
+    var dx = (distance - 3 * text_length) / 2;
     return dx;
 }
 
@@ -1012,13 +1011,13 @@ function selectLink(link) {
 
 // 获取transform
 function getTranslateAndScaleAndRotate() {
-    const transform = container.attr("transform");
-    const match_translate_scale = transform && /translate/.test(transform) && /scale/.test(transform) && transform.match(/translate\(([^\)]+)\)\s?scale\(([^\)]+)/);
-    const translate = match_translate_scale && match_translate_scale[1].split(",") || [0, 0];
-    const k = match_translate_scale && match_translate_scale[2] || 1;
-    const match_rotate = transform && /rotate/.test(transform) && transform.match(/\s?rotate\(([^\)]+)/);
-    const rotate = match_rotate && match_rotate[1] || 0;
-    const x = translate[0];
-    const y = translate[1];
-    return {x, y, k, rotate};
+    var transform = container.attr("transform");
+    var match_translate_scale = transform && /translate/.test(transform) && /scale/.test(transform) && transform.match(/translate\(([^\)]+)\)\s?scale\(([^\)]+)/);
+    var translate = match_translate_scale && match_translate_scale[1].split(",") || [0, 0];
+    var k = match_translate_scale && match_translate_scale[2] || 1;
+    var match_rotate = transform && /rotate/.test(transform) && transform.match(/\s?rotate\(([^\)]+)/);
+    var rotate = match_rotate && match_rotate[1] || 0;
+    var x = translate[0];
+    var y = translate[1];
+    return {"x": x, "y": y, "k": k, "rotate": rotate};
 }
