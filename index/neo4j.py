@@ -6,12 +6,12 @@ class Neo4jToJson:
         self.graph = Graph("http://localhost:7474",username="neo4j",password="000000")
 
     def start(self):
-        return self.query_node("Donald-John-Trump", "Donald John Trump")
+        return self.query("Donald-John-Trump", "Donald John Trump")
 
     def expand(self, node):
-        return self.query_node(node["label"], node["name"])
+        return self.query(node["label"], node["name"])
 
-    def query_node(self, label, name):
+    def query(self, label, name):
         s_rels = self.graph.run("MATCH r=(n:`{0}`)-[]->() WHERE n.name = '{1}' RETURN r" \
                     .format(label, name)).data()
         t_rels = self.graph.run("MATCH r=(n:`{0}`)<-[]-() WHERE n.name = '{1}' RETURN r" \

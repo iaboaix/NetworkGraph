@@ -1,5 +1,5 @@
 
-var control = {
+var network_config = {
     "layout": "force",
     "calculating": true,
     "isBrush": false,
@@ -14,10 +14,8 @@ var control = {
     "link_strength": 0.5,
     "line_type": 0
 }
-var create_x = null;
-var create_y = null;
-var width = window.innerWidth
-var height = window.innerHeight
+var create_x = 0;
+var create_y = 0;
 
 var svg = d3.select("#svg");
 
@@ -61,7 +59,7 @@ var marker = container.append("marker")
     .attr("id", "resolved")
     .attr("markerUnits", "userSpaceOnUse")
     .attr("viewBox", "0 -5 10 10")//坐标系的区域
-    .attr("refX", control.node_size + 7)//箭头坐标
+    .attr("refX", network_config.node_size + 7)//箭头坐标
     .attr("refY", 0)
     .attr("markerWidth", 12)//标识的大小
     .attr("markerHeight", 12)
@@ -74,45 +72,39 @@ var marker = container.append("marker")
 
 var linkForce = d3.forceLink()
     .id(function (link) { return link.id })
-    .strength(control.link_strength);
+    .strength(network_config.link_strength);
 
 var simulation = d3.forceSimulation()
     .force("link", linkForce)
     .on("end", function() {
-        control.calculating = false;
-        stop_button.text("重新布局");
+        stop_layout();
     });
-
-// d3.json("static/data/TrumpFamily.json").then(function(data) {
-//     restart(data);
-// });
 
 restart(data);
 
-support_label.forEach(function(label) {
+support_labels.forEach(function(label) {
     defs_layout.append("pattern")
         .attr("id", label)
         .attr("width", "100%")
         .attr("height", "100%")
         .append("image")
-        .attr("width", control.node_size * 2)
-        .attr("height", control.node_size * 2)
+        .attr("width", network_config.node_size * 2)
+        .attr("height", network_config.node_size * 2)
         .attr("xlink:href", "static/image/label/" + label + ".jpg");
 })
 
 function restart(data) {
-    simulation.stop();
-    control.calculating = true;
-    stop_button.text("停止布局");
-    if (control.layout == "force") {
-        linkForce.strength(control.link_strength);
+    start_layout();
+    drawBarChart(data);
+    if (network_config.layout == "force") {
+        linkForce.strength(network_config.link_strength);
         simulation.alpha(1)
             .alphaDecay(0.002)
             .alphaMin(0.002)
             .force("r", null)
-            .force("charge", d3.forceManyBody().strength(control.node_charge).distanceMax(400))
+            .force("charge", d3.forceManyBody().strength(network_config.node_charge).distanceMax(400))
             .force("center", d3.forceCenter((width - 30) / 2, (height - 30) / 2))
-            .force("collision", d3.forceCollide(control.node_size));
+            .force("collision", d3.forceCollide(network_config.node_size));
     }
     else {
         data.nodes.forEach(function(node) {
@@ -120,7 +112,7 @@ function restart(data) {
             node.y = 0;
         })
         linkForce.strength(0);
-        simulation.force("charge", d3.forceCollide().radius(control.node_size * 1.5))
+        simulation.force("charge", d3.forceCollide().radius(network_config.node_size * 1.5))
             .force("r", d3.forceRadial(300, (width - 30) / 2, (height - 30) / 2))
             .alpha(5)
             .alphaDecay(0.1)
@@ -153,7 +145,7 @@ function restart(data) {
         .attr("class", "link-text")
         .style("font-size", 10)
         .merge(linkTextElements)
-        .style("display", control.link_text_state == true ? "block" : "none");
+        .style("display", network_config.link_text_state == true ? "block" : "none");
     linkTextElements.selectAll("textPath").remove();
     linkTextElements.append("textPath")
         .attr("xlink:href", function (link, i) { return "#link-" + i; })
@@ -172,11 +164,11 @@ function restart(data) {
         .call(d3.drag()
             .on("start", dragstartFn)
             .on("drag", dragFn)
-            .on("end", dragendFn));;
-    nodeElements.selectAll("circle").remove();
+            .on("end", dragendFn));
     nodeElements.selectAll("text").remove();
+    nodeElements.selectAll("circle").remove();
     nodeElements.append("circle")
-        .attr("r", control.node_size);
+        .attr("r", network_config.node_size);
     nodeElements.append("text")
         .attr("class", "node_text")
         .attr("font-size", 5)
@@ -184,14 +176,14 @@ function restart(data) {
         .attr("x", function (node) {
             return textBreaking(d3.select(this), node.name);
         })
-        .style("display", control.node_text_state == true ? "block" : "none");
-    if (control.special == true) {
-        fill_pic();
+        .style("display", network_config.node_text_state === true ? "block" : "none");
+    if (network_config.special === true) {
+        fill_circle("pic");
     }
     simulation.restart();
 
     function dragstartFn(node) {
-        simulation.stop();
+        stop_layout();
         d3.event.sourceEvent.stopPropagation();
     }
 
@@ -204,7 +196,7 @@ function restart(data) {
                   .attr("transform", "translate(" + node.x + "," + node.y + ")");
             })
         linkElements.attr("d", function(link) { 
-            return genLinkPath(link, control.line_type); 
+            return genLinkPath(link, network_config.line_type); 
         })
         linkTextElements.attr("dx", function(link) { return getLineTextDx(link) });
     }
@@ -218,7 +210,7 @@ function restart(data) {
 
     function draw() {
         nodeElements.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-        linkElements.attr("d", function(link) { return genLinkPath(link, control.line_type); })
+        linkElements.attr("d", function(link) { return genLinkPath(link, network_config.line_type); })
             .attr("marker-end", "url(#resolved)");
         linkTextElements.attr("dx", function(link) { return getLineTextDx(link); });
     }
@@ -227,6 +219,8 @@ function restart(data) {
         if (!d3.event.ctrlKey) {
             d3.selectAll(".selected")
                 .classed("selected", false);
+            d3.selectAll(".find-node")
+                .classed("find-node", false);
             nodeElements.each(function(d) {
                 d.selected = false;
             });
@@ -263,28 +257,28 @@ function restart(data) {
                         cur_data.nodes.forEach(function(cur_node) {
                             var add = true;
                             data.nodes.forEach(function(node) {
-                                if (cur_node.id == node.id) {
+                                if (cur_node.id === node.id) {
                                     add = false;
                                 }
                             })
-                            if(add) { 
+                            if(add === true) { 
                                 data.nodes.push(cur_node); 
                                 need_restart = true;
                             }
                         })
                         cur_data.links.forEach(function(cur_link) {
                             var add = true;
-                            data.nodes.forEach(function(link) {
-                                if (cur_link.id == link.id) {
+                            data.links.forEach(function(link) {
+                                if (cur_link.source === link.source.id && cur_link.target === link.target.id) {
                                     add = false;
                                 }
                             })
-                            if(add) { 
+                            if(add === true) { 
                                 data.links.push(cur_link); 
                                 need_restart = true;
                             }
                         })
-                        if (need_restart == true) {
+                        if (need_restart === true) {
                             restart(data);
                         }
                         else {
@@ -389,7 +383,7 @@ function restart(data) {
                                 var select = cur_tr.append("td")
                                     .append("select")
                                     .attr("id", attr);
-                                support_label.forEach(function(label) {
+                                support_labels.forEach(function(label) {
                                     select.append("option")
                                         .text(label);
                                 })
@@ -515,7 +509,7 @@ function restart(data) {
         .on("click", function() {
             var style_elements = nodeElements.filter(function(d) { return d.selected; })
                 .select("circle");
-            if (control.special == true) {
+            if (network_config.special == true) {
                 style_elements.style("stroke", d3.select(this).style("background-color"));
             }
             else {
@@ -525,7 +519,7 @@ function restart(data) {
 
     d3.select("#node-color").on("change", function () {
         var style_elements = nodeElements.filter(function(d) { return d.selected; });
-        if (control.special == true) {
+        if (network_config.special == true) {
             style_elements.style("stroke", this.value);
         }
         else {
@@ -606,67 +600,62 @@ function restart(data) {
     // 直线
     d3.select("#straight-line")
         .on("click", function() {
-            control.line_type = 0;
+            network_config.line_type = 0;
             draw();
         })
 
     // 贝塞尔曲线
     d3.select("#bezier-curves")
         .on("click", function() {
-            control.line_type = 1;
+            network_config.line_type = 1;
             draw();
         })
 
     // 横折线
     d3.select("#horizontal-broken-line")
         .on("click", function() {
-            control.line_type = 2;
+            network_config.line_type = 2;
             draw();
         })
 
     // 贝塞尔曲线
     d3.select("#vertical-broken-line")
         .on("click", function() {
-            control.line_type = 3;
+            network_config.line_type = 3;
             draw();
         })
 
     // 调整图参数
     d3.select("#node-size").on("input propertychange", function() {
-        control.node_size = parseFloat(this.value);
-        d3.select("marker").attr("refX", control.node_size + 7);
-        nodeElements.selectAll("circle").attr("r", control.node_size);
+        network_config.node_size = parseFloat(this.value);
+        d3.select("marker").attr("refX", network_config.node_size + 7);
+        nodeElements.selectAll("circle").attr("r", network_config.node_size);
         d3.selectAll("image")
-            .attr("width", control.node_size * 2)
-            .attr("height", control.node_size * 2);
-        simulation.force("collision", d3.forceCollide(control.node_size))
+            .attr("width", network_config.node_size * 2)
+            .attr("height", network_config.node_size * 2);
+        simulation.force("collision", d3.forceCollide(network_config.node_size))
             .alpha(0)
             .restart();
     });
 
     d3.select("#node-opacity").on("input propertychange", function() {
-        var opacity = this.value;
-        nodeElements.style("opacity", function(node, i){
-            return opacity;
-        });
+        nodeElements.select("circle")
+            .style("fill-opacity", this.value);
     });      
 
     d3.select("#node-stroke").on("input propertychange", function() {
-        var stroke_width = this.value;
-        nodeElements.selectAll("circle").style("stroke-width", function(node, i){
-            return stroke_width;
-        });
+        nodeElements.select("circle").style("stroke-width", this.value);
     });
 
     d3.select("#node-charge").on("input propertychange", function() {
-        control.node_charge = - this.value;
-        simulation.force("charge", d3.forceManyBody().strength(control.node_charge));
+        network_config.node_charge = - this.value;
+        simulation.force("charge", d3.forceManyBody().strength(network_config.node_charge));
         simulation.alpha(1).restart();
     });
 
     d3.select("#link-strength").on("input propertychange", function() {
-        control.link_strength = parseFloat(this.value);
-        simulation.force("link").strength(control.link_strength);
+        network_config.link_strength = parseFloat(this.value);
+        simulation.force("link").strength(network_config.link_strength);
         simulation.alpha(1).restart();
     });
 
@@ -675,37 +664,43 @@ function restart(data) {
     });
 
     d3.select("#line-stroke-width").on("input propertychange", function() {
-        var line_stroke_width = this.value;
-        linkElements.style("stroke-width", function(node, i){
-            return line_stroke_width;
-        });
+        linkElements.style("stroke-width", this.value);
     });
 
     // 切换分析模式
     d3.select("#analyse-button")
         .on("click", function() {
-            control.special = !control.special;
-            d3.select("#analyse-switch").attr("class", control.special == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
-            fill_pic();
+            network_config.special = !network_config.special;
+            d3.select("#analyse-switch").attr("class", network_config.special == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
+            if (network_config.special === true) {
+                fill_circle("pic");
+            }
+            else {
+                fill_circle();
+            }
         })
 
-    function fill_pic() {
-        nodeElements.select("circle")
+    function fill_circle(type) {
+        if (type === "pic") {
+            nodeElements.select("circle")
                 .style("fill", function(node) {
-                    if(control.special == true) {
-                        return (node.label != "undefined" && support_label.indexOf(node.label) > -1) ? "url(#" + node.label + ")" : "url(#default)";
-                    }
-                    else {
-                        return "black";
-                    }
-            });
+                    return (node.label != "undefined" && support_labels.indexOf(node.label) > -1) ? "url(#" + node.label + ")" : "url(#default)";
+                });
+        }
+        else {
+            nodeElements.select("circle")
+                .style("fill", function(node) {
+                    return type;
+                });
+        }
+
     }
 
     // 点击选中节点
     function selectNode(node) {
         d3.select(this).classed("find-node", false);
         if (d3.event.which == 3) {
-            simulation.stop();
+            stop_layout();
         }
         node.selected = true;
         d3.select(this).classed("selected", true);
@@ -714,8 +709,8 @@ function restart(data) {
     // 切换布局
     d3.select("#layout-button")
         .on("click", function() {
-            control.layout = (control.layout == "force" ? "radius" : "force");
-            d3.select("#layout-switch").attr("class", control.layout == "radius" ? "fa fa-toggle-on" : "fa fa-toggle-off");
+            network_config.layout = (network_config.layout === "force" ? "radius" : "force");
+            d3.select("#layout-switch").attr("class", network_config.layout == "force" ? "fa fa-toggle-off" : "fa fa-toggle-on");
             restart(data);
         })
 
@@ -772,19 +767,21 @@ d3.select("#upload-button")
             }
         })
     })
+
 // 停止布局
-stop_button.on("click", function () {
-    if (control.calculating == true) {
-        simulation.stop();
-        stop_button.text("重新布局");
-        control.calculating = false;
-    }
-    else {
-        control.calculating = true;
-        stop_button.text("停止布局");
-        simulation.restart();
-    }
+stop_button.on("click", function() {
+    network_config.calculating == true ? stop_layout() : start_layout();
 });
+function stop_layout() {
+    network_config.calculating = false;
+    stop_button.text("重新布局");
+    simulation.stop();
+}
+function start_layout() {
+    network_config.calculating = true;
+    stop_button.text("停止布局");
+    simulation.restart();
+}
 
 // 顺时针旋转
 d3.select("#rotate")
@@ -817,8 +814,8 @@ function zoomFunction(vars) {
     container.attr("transform", "translate(" + vars.x + "," + vars.y + ") " + "scale(" + vars.k + ") " + "rotate(" + vars.rotate + ")");
     brush_svg.attr("transform", "translate(" + vars.x + "," + vars.y + ") " + "scale(" + vars.k + ") " + "rotate(" + vars.rotate + ")");
     brush_svg.select("rect")
-        .attr("x", -vars.x / vars.k)
-        .attr("y", -vars.y / vars.k)
+        .attr("x", - vars.x / vars.k)
+        .attr("y", - vars.y / vars.k)
         .attr("width", width / vars.k)
         .attr("height", height / vars.k);
 }
@@ -844,46 +841,46 @@ d3.select("#zoom-reset").on("click", function() {
 // 框选模式
 d3.select("#brush-mode")
     .on("click", function () {
-        d3.select(this).classed("high-light", control.isBrush = !control.isBrush);
-        brush_svg.style("display", control.isBrush == true ? "block" : "none");
+        d3.select(this).classed("high-light", network_config.isBrush = !network_config.isBrush);
+        brush_svg.style("display", network_config.isBrush == true ? "block" : "none");
     })
 
 // 节点标签显示开关
 d3.select("#node-button").on("click", function() {
-    control.node_text_state = !control.node_text_state;
-    d3.select("#node-switch").attr("class", control.node_text_state == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
-    d3.selectAll(".node text").style("display", control.node_text_state == true ? "block" : "none");
+    network_config.node_text_state = !network_config.node_text_state;
+    d3.select("#node-switch").attr("class", network_config.node_text_state == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
+    d3.selectAll(".node text").style("display", network_config.node_text_state == true ? "block" : "none");
 });
 
 // 关系标签显示开关
 d3.select("#link-button")
     .on("click", function() {
-        control.link_text_state = !control.link_text_state;
-        d3.select("#link-switch").attr("class", control.link_text_state == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
-        text_layout.selectAll("text").style("display", control.link_text_state == true ? "block" : "none");
+        network_config.link_text_state = !network_config.link_text_state;
+        d3.select("#link-switch").attr("class", network_config.link_text_state == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
+        text_layout.selectAll("text").style("display", network_config.link_text_state == true ? "block" : "none");
     });
 
 // 箭头显示开关
 d3.select("#marker-button")
     .on("click", function() {
-        control.marker_state = !control.marker_state;
-        d3.select("#marker-switch").attr("class", control.marker_state == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
-        d3.selectAll(".marker-path").style("display", control.marker_state == true ? "block" : "none");
+        network_config.marker_state = !network_config.marker_state;
+        d3.select("#marker-switch").attr("class", network_config.marker_state == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
+        d3.selectAll(".marker-path").style("display", network_config.marker_state == true ? "block" : "none");
     });
 
 // 显示设置面板
 d3.selectAll("#setting-button")
     .on("click", function() {
-        control.setting_state = !control.setting_state;
-        d3.select("#setting-box").style("display", control.setting_state == true ? "block" : "none");
+        network_config.setting_state = !network_config.setting_state;
+        d3.select("#setting-box").style("display", network_config.setting_state == true ? "block" : "none");
     });
 
 // 全屏切换
 d3.select("#screen-button")
     .on("click", function() {
-        control.screen_state = !control.screen_state;
-        d3.select("#screen-switch").attr("class", control.screen_state == true ? "fa fa-compress" : "fa fa-expand");
-        control.screen_state == true ? enterFullScreen() : exitFullScreen();
+        network_config.screen_state = !network_config.screen_state;
+        d3.select("#screen-switch").attr("class", network_config.screen_state == true ? "fa fa-compress" : "fa fa-expand");
+        network_config.screen_state == true ? enterFullScreen() : exitFullScreen();
     });
 
 function textBreaking(d3text, text) {

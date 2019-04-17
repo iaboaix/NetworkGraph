@@ -16,7 +16,12 @@
     <link rel="shortcut icon" href="{% static 'image/logo.ico' %}" type="image/x-icon" />
 </head>
 <body>
-    <svg id="svg"><g id="container"></g></svg>
+    <svg id="svg">
+        <!-- 网络图 -->
+        <g id="container"></g>
+        <!-- 柱状图 -->
+        <g id="bargraph"></g>  
+    </svg>
     <div id="top-tool-bar">
         <div id="logo"></div>
         <button class="top-menu-item" id="upload-data"><i class="fa fa-upload"></i> 上传数据</button>
@@ -162,6 +167,10 @@
         </div>
     </div>
     <button id="stop-button" class="bottom-item">停止布局</button>
+    <div id="status-bar">status-bar:这儿我先占着！！！
+<!--         <div>节点标签选择：</div>
+        <div>图属性：15</div> -->
+    </div>
     <div id="upload-layout">
         <div id="upload-top-layout">
             <div id="file-title">导入json数据</div>
@@ -182,10 +191,13 @@
     </div>
     <table id="attr-table"><tbody></tbody></table>
     <script type="text/javascript">
+        var width = window.innerWidth
+        var height = window.innerHeight
     	var data = {{ Dict|safe }};
-    	var support_label = {{ List|safe }};
+    	var support_labels = {{ List|safe }};
     </script>
-    <script type="text/javascript" src="{% static 'js/networkGraph.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/operation.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/barGraph.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/networkGraph.min.js' %}"></script>
 </body>
 </html>

@@ -60,16 +60,29 @@ d3.select("#download-img")
 // 查找节点
 d3.select("#search-button")
 	.on("click", function() {
-		const node_label = $("#search-line").val();
-		let is_find = false;
-		d3.selectAll(".node")
-			.each(function(node) {
-				if (node.label == node_label) {
-					d3.select(this).classed("find-node", true);
-					is_find = true;
-				}
-			})
-		if (is_find === false) {
-			alert("未查找到此节点");
-		}
+		const node_name = $("#search-line").val();
+		find_node_name(node_name);
 	})
+
+function find_node_name(name) {
+	let is_find = false;
+	d3.selectAll(".node")
+		.each(function(node) {
+			if (node.name == name) {
+				d3.select(this).classed("find-node", true);
+				is_find = true;
+			}
+		})
+	if (is_find === false) {
+		alert("未查找到此节点");
+	}
+}
+
+function find_node_label(label) {
+	d3.selectAll(".node")
+		.each(function(node) {
+			if (node.label == label) {
+				d3.select(this).classed("find-node", true);
+			}
+		})
+}
