@@ -68,21 +68,12 @@ function find_node_name(name) {
 	let is_find = false;
 	d3.selectAll(".node")
 		.each(function(node) {
-			if (node.name == name) {
-				d3.select(this).classed("find-node", true);
+			if (node.name === name) {
+				d3.select(this).classed("finded", true);
 				is_find = true;
 			}
 		})
 	if (is_find === false) {
 		alert("未查找到此节点");
 	}
-}
-
-function find_node_label(label) {
-	d3.selectAll(".node")
-		.each(function(node) {
-			if (node.label == label) {
-				d3.select(this).classed("find-node", true);
-			}
-		})
 }

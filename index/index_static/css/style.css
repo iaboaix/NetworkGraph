@@ -154,7 +154,7 @@ circle:hover {
 .selected circle {
     stroke-width: 5px;
 }
-.find-node circle {
+.finded circle {
     stroke-width: 20px;
     stroke: #00FFFB;
 }

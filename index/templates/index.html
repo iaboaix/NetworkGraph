@@ -45,6 +45,7 @@
         <button id="rotate" title="顺时针旋转"><i class="fa fa-repeat"></i></button>
         <button id="rerotate" title="逆时针旋转"><i class="fa fa-undo"></i></button>
         <button id="brush-mode" title="框选模式"><i class="fa fa-crop"></i></button>
+        <button id="bar-graph" title="分类统计图"><i class="fa fa-bar-chart"></i></button>
     </div>
     <div id="setting-box">
         <div id="setting-box-header">
@@ -197,7 +198,7 @@
     	var support_labels = {{ List|safe }};
     </script>
     <script type="text/javascript" src="{% static 'js/operation.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/barGraph.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/networkGraph.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/barGraph.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/networkGraph.js' %}"></script>
 </body>
 </html>

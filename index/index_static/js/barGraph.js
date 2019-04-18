@@ -10,7 +10,8 @@ function drawBarChart(data){
     var bar_graph = d3.select("#bargraph")
         .attr("width", bar_config.width)
         .attr("height", bar_config.height)
-        .attr("transform", "translate(" + (width - bar_config.width + 2) + ", " + 32 + ")");
+        .attr("transform", "translate(" + (width - bar_config.width + 2) + ", " + 32 + ")")
+        .attr("display", "none");
 
     var bar_data = translate_to_bardata(data);
 
@@ -105,4 +106,14 @@ function translate_to_bardata(data) {
         return y.data - x.data;
     });
     return bar_data;
+}
+
+function find_node_label(label) {
+    d3.selectAll(".finded").classed("finded", false);
+    d3.selectAll(".node")
+        .each(function(node) {
+            if (node.label === label) {
+                d3.select(this).classed("finded", true);
+            }
+        })
 }

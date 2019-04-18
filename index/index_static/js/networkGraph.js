@@ -8,6 +8,7 @@ var network_config = {
     "marker_state": true,
     "setting_state": false,
     "screen_state": false,
+    "bar_state": false,
     "node_size": 15,
     "special": false,
     "node_charge": -300,
@@ -67,8 +68,7 @@ var marker = container.append("marker")
     .attr("stroke-width", 2)//箭头宽度
     .append("path")
     .attr("class", "marker-path")
-    .attr("d", "M2,0 L0,-3 L9,0 L0,3 M2,0 L0,3")//箭头的路径
-    .attr("fill","green"); //箭头颜色 
+    .attr("d", "M2,0 L0,-3 L9,0 L0,3 M2,0 L0,3"); //箭头的路径 
 
 var linkForce = d3.forceLink()
     .id(function (link) { return link.id })
@@ -219,8 +219,8 @@ function restart(data) {
         if (!d3.event.ctrlKey) {
             d3.selectAll(".selected")
                 .classed("selected", false);
-            d3.selectAll(".find-node")
-                .classed("find-node", false);
+            d3.selectAll(".finded")
+                .classed("finded", false);
             nodeElements.each(function(d) {
                 d.selected = false;
             });
@@ -507,13 +507,15 @@ function restart(data) {
     // 颜色标记
     d3.selectAll(".color-item")
         .on("click", function() {
-            var style_elements = nodeElements.filter(function(d) { return d.selected; })
-                .select("circle");
-            if (network_config.special == true) {
-                style_elements.style("stroke", d3.select(this).style("background-color"));
+            var select_elements = d3.selectAll(".selected").select("circle");
+            var find_elements = d3.selectAll(".finded").select("circle");
+            if (network_config.special === true) {
+                select_elements.style("stroke", d3.select(this).style("background-color"));
+                find_elements.style("stroke", d3.select(this).style("background-color"));
             }
             else {
-                style_elements.style("fill", d3.select(this).style("background-color"));
+                select_elements.style("fill", d3.select(this).style("background-color"));
+                find_elements.style("fill", d3.select(this).style("background-color"));
             }
         });
 
@@ -698,7 +700,7 @@ function restart(data) {
 
     // 点击选中节点
     function selectNode(node) {
-        d3.select(this).classed("find-node", false);
+        d3.select(this).classed("finded", false);
         if (d3.event.which == 3) {
             stop_layout();
         }
@@ -842,44 +844,51 @@ d3.select("#zoom-reset").on("click", function() {
 d3.select("#brush-mode")
     .on("click", function () {
         d3.select(this).classed("high-light", network_config.isBrush = !network_config.isBrush);
-        brush_svg.style("display", network_config.isBrush == true ? "block" : "none");
+        brush_svg.style("display", network_config.isBrush === true ? "block" : "none");
+    })
+
+// 统计图开关
+d3.select("#bar-graph")
+    .on("click", function () {
+        d3.select(this).classed("high-light", network_config.bar_state = !network_config.bar_state);
+        d3.select("#bargraph").style("display", network_config.bar_state === true ? "block" : "none");
     })
 
 // 节点标签显示开关
 d3.select("#node-button").on("click", function() {
     network_config.node_text_state = !network_config.node_text_state;
-    d3.select("#node-switch").attr("class", network_config.node_text_state == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
-    d3.selectAll(".node text").style("display", network_config.node_text_state == true ? "block" : "none");
+    d3.select("#node-switch").attr("class", network_config.node_text_state === true ? "fa fa-toggle-on" : "fa fa-toggle-off");
+    d3.selectAll(".node text").style("display", network_config.node_text_state === true ? "block" : "none");
 });
 
 // 关系标签显示开关
 d3.select("#link-button")
     .on("click", function() {
         network_config.link_text_state = !network_config.link_text_state;
-        d3.select("#link-switch").attr("class", network_config.link_text_state == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
-        text_layout.selectAll("text").style("display", network_config.link_text_state == true ? "block" : "none");
+        d3.select("#link-switch").attr("class", network_config.link_text_state === true ? "fa fa-toggle-on" : "fa fa-toggle-off");
+        text_layout.selectAll("text").style("display", network_config.link_text_state === true ? "block" : "none");
     });
 
 // 箭头显示开关
 d3.select("#marker-button")
     .on("click", function() {
         network_config.marker_state = !network_config.marker_state;
-        d3.select("#marker-switch").attr("class", network_config.marker_state == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
-        d3.selectAll(".marker-path").style("display", network_config.marker_state == true ? "block" : "none");
+        d3.select("#marker-switch").attr("class", network_config.marker_state === true ? "fa fa-toggle-on" : "fa fa-toggle-off");
+        d3.selectAll(".marker-path").style("display", network_config.marker_state === true ? "block" : "none");
     });
 
 // 显示设置面板
 d3.selectAll("#setting-button")
     .on("click", function() {
         network_config.setting_state = !network_config.setting_state;
-        d3.select("#setting-box").style("display", network_config.setting_state == true ? "block" : "none");
+        d3.select("#setting-box").style("display", network_config.setting_state === true ? "block" : "none");
     });
 
 // 全屏切换
 d3.select("#screen-button")
     .on("click", function() {
         network_config.screen_state = !network_config.screen_state;
-        d3.select("#screen-switch").attr("class", network_config.screen_state == true ? "fa fa-compress" : "fa fa-expand");
+        d3.select("#screen-switch").attr("class", network_config.screen_state === true ? "fa fa-compress" : "fa fa-expand");
         network_config.screen_state == true ? enterFullScreen() : exitFullScreen();
     });
 
