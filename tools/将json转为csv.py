@@ -36,12 +36,12 @@ csvf.close()
 
 csvf = open("links.csv", 'w', newline='', encoding="utf-8-sig")
 w = csv.writer(csvf)
-w.writerow((":START_ID", ":END_ID", "label:TYPE", "label"))#写入表头
+w.writerow((":START_ID", ":END_ID", "label:TYPE"))#写入表头
 for link in js["links"]:
     label = ""
     try:
         label = link["label"]
     except:
         pass
-    w.writerow((int(link["source"]), int(link["target"]), link["label"], link["label"]))#写入行
+    w.writerow((int(link["source"]), int(link["target"]), link["label"]))#写入行
 csvf.close()

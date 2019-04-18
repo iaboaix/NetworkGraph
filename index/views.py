@@ -10,8 +10,7 @@ def index(request):
     data = data_neo4j.start()
     support_label = ["default", "male", "female", "bus", "qq", "wechat", "phone",
                     "Donald-John-Trump", "us", "germany", "Ivanka-Trump",
-                    "twitter", "美国财政部", "美国国务院", "美国联邦",
-                    "美国国防部", "美国司法部"]
+                    "twitter", "机构", "职位"]
     return render(request, 'index.html', {
         'List': json.dumps(support_label),
         'Dict': json.dumps(data)
