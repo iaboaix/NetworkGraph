@@ -70,6 +70,9 @@ var marker = container.append("marker")
     .attr("class", "marker-path")
     .attr("d", "M2,0 L0,-3 L9,0 L0,3 M2,0 L0,3"); //箭头的路径 
 
+// 颜色比例尺
+var color = d3.scaleOrdinal(d3.schemeCategory10);
+
 var linkForce = d3.forceLink()
     .id(function (link) { return link.id })
     .strength(network_config.link_strength);
@@ -177,9 +180,7 @@ function restart(data) {
             return textBreaking(d3.select(this), node.name);
         })
         .style("display", network_config.node_text_state === true ? "block" : "none");
-    if (network_config.special === true) {
-        fill_circle("pic");
-    }
+    fill_circle();
     simulation.restart();
 
     function dragstartFn(node) {
@@ -507,16 +508,16 @@ function restart(data) {
     // 颜色标记
     d3.selectAll(".color-item")
         .on("click", function() {
-            var select_elements = d3.selectAll(".selected").select("circle");
-            var find_elements = d3.selectAll(".finded").select("circle");
-            if (network_config.special === true) {
-                select_elements.style("stroke", d3.select(this).style("background-color"));
-                find_elements.style("stroke", d3.select(this).style("background-color"));
-            }
-            else {
-                select_elements.style("fill", d3.select(this).style("background-color"));
-                find_elements.style("fill", d3.select(this).style("background-color"));
-            }
+            var cur_color = d3.select(this).style("background-color");
+            var select_elements = d3.selectAll(".selected");
+            var find_elements = d3.selectAll(".finded");
+            select_elements.each(function(node) {
+                node["color"] = cur_color;
+            });
+            find_elements.each(function(node) {
+                node["color"] = cur_color;
+            });
+            fill_circle();
         });
 
     d3.select("#node-color").on("change", function () {
@@ -673,26 +674,41 @@ function restart(data) {
     d3.select("#analyse-button")
         .on("click", function() {
             network_config.special = !network_config.special;
-            d3.select("#analyse-switch").attr("class", network_config.special == true ? "fa fa-toggle-on" : "fa fa-toggle-off");
-            if (network_config.special === true) {
-                fill_circle("pic");
-            }
-            else {
-                fill_circle();
-            }
+            d3.select("#analyse-switch").attr("class", network_config.special === true ? "fa fa-toggle-on" : "fa fa-toggle-off");
+            fill_circle();
         })
 
-    function fill_circle(type) {
-        if (type === "pic") {
+    function fill_circle() {
+        if (network_config.special === true) {
             nodeElements.select("circle")
                 .style("fill", function(node) {
                     return (node.label != "undefined" && support_labels.indexOf(node.label) > -1) ? "url(#" + node.label + ")" : "url(#default)";
+                })
+                .style("stroke", function(node) {
+                    if ("color" in node) {
+                        return node.color;
+                    }
+                    else {
+                        var color_index = support_labels.indexOf(node.label);
+                        node["color"] = color(color_index > -1 ? color_index : 0);
+                        return node.color;
+                    }
                 });
         }
         else {
             nodeElements.select("circle")
                 .style("fill", function(node) {
-                    return type;
+                    if ("color" in node) {
+                        return node.color;
+                    }
+                    else {
+                        var color_index = support_labels.indexOf(node.label);
+                        node["color"] = color( color_index > -1 ? color_index : 0);
+                        return node.color;
+                    }
+                })
+                .style("stroke", function(node) {
+                    return "white";
                 });
         }
 
