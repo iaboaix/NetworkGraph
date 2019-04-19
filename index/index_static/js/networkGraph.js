@@ -706,8 +706,8 @@ d3.select("#search-button")
     .on("click", find_node_name);
 
 function find_node_name(name) {
-    const node_name = $("#search-line").val();
-    let is_find = false;
+    var node_name = $("#search-line").val();
+    var is_find = false;
     node_elements.each(function(node) {
         if (node.name === name) {
             d3.select(this).classed("finded", true);

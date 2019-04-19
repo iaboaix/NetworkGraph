@@ -1,1 +1,0 @@
-uglifyjs networkGraph.js -m -o networkGraph.min.js

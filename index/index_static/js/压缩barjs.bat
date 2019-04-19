@@ -1,1 +1,0 @@
-uglifyjs barGraph.js -m -o barGraph.min.js
