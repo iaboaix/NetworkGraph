@@ -21,13 +21,13 @@
 #smartMenu_node_menu .smart_menu_li:first-child a {
 	background-image: url("../image/expand.png");
 }
-#smartMenu_node_menu .smart_menu_li:nth-child(2) a {
+/* #smartMenu_node_menu .smart_menu_li:nth-child(2) a {
 	background-image: url("../image/collapse.png");
-}
-#smartMenu_node_menu .smart_menu_li:nth-child(3) a {
+} */
+#smartMenu_node_menu .smart_menu_li:nth-child(2) a {
 	background-image: url("../image/link.png");
 }
-#smartMenu_node_menu .smart_menu_li:nth-child(4) a {
+#smartMenu_node_menu .smart_menu_li:nth-child(3) a {
 	background-image: url("../image/delete.png");
 }
 #smartMenu_link_menu .smart_menu_li:first-child a {

@@ -1,19 +1,5 @@
-var bar_config = {width: 400,
-                  height: 300,
-                  top: 20, 
-                  bottom: 70, 
-                  left: 20, 
-                  right: 20,
-                 }
-
 function drawBarChart(data){
-    var bar_graph = d3.select("#bargraph")
-        .attr("width", bar_config.width)
-        .attr("height", bar_config.height)
-        .attr("transform", "translate(" + (width - bar_config.width + 2) + ", " + 32 + ")")
-        .attr("display", "none");
-
-    var bar_data = translate_to_bardata(data);
+    var bar_data = translate_to_bardata(data).slice(0, 15);
 
     // x 轴
     var x_label = [];
@@ -34,14 +20,16 @@ function drawBarChart(data){
     var step = (bar_config.width - bar_config.left - bar_config.right) / bar_data.length;
     var padding = step * 0.3;
 
-    bar_graph.selectAll("*").remove();
+    bar_graph.selectAll(".bar-elements").remove();
 
     bar_graph.append("g")
         .attr("id", "text-rotate")
+        .attr("class", "bar-elements")
         .attr("transform", "translate(" + bar_config.left + ", " + (bar_config.height - bar_config.bottom) + ")")
         .call(xAxis);
 
     bar_graph.append("g")
+        .attr("class", "bar-elements")
         .attr("transform", "translate(" + bar_config.left + ", " + bar_config.top + ")")
         .call(yAxis);
 
@@ -50,6 +38,7 @@ function drawBarChart(data){
         .data(bar_data)
         .enter()
         .append("rect")
+        .attr("class", "bar-elements")
         .attr("x", function(d, i) {
             return i * step + bar_config.left + padding/ 2;
         })  

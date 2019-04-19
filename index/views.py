@@ -7,10 +7,14 @@ from django.http import HttpResponse
 data_neo4j = Neo4jToJson()
 # Create your views here.
 def index(request):
-    data = data_neo4j.start()
+    data = {"nodes": [], "links": []}
     support_label = ["default", "male", "female", "bus", "qq", "wechat", "phone",
                     "Donald-John-Trump", "us", "germany", "Ivanka-Trump",
                     "twitter", "机构", "职位"]
+    try:
+        data = data_neo4j.start()
+    except:
+        print("ERROR neo4j未启动")
     return render(request, 'index.html', {
         'List': json.dumps(support_label),
         'Dict': json.dumps(data)

@@ -9,7 +9,7 @@ html, body {
     -ms-user-select:none;
     user-select:none;
 }
-#svg {
+#container {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -105,17 +105,29 @@ html, body {
     cursor: crosshair;
 }
 #setting-box {
-    width: 280px;
+    width: 300px;
     background-color: #0D877A;
     position: absolute;
-    right: 0px;
     top: 30px;
+    right: -300px;
     font-size: 15px;
-    display: none;
     margin: 2px auto;
     border-collapse: collapse;
     border-radius: 5px;
-}        
+}    
+
+@-webkit-keyframes show /* Safari 和 Chrome */
+{
+    from { right: -300px; }
+    to { right: 0px; }
+}
+
+@-webkit-keyframes hide /* Safari 和 Chrome */
+{
+    from { right: 0px; }
+    to { right: -300px; }
+}
+  
 #setting-box-header {
     height: 38px;
     line-height: 38px;
@@ -190,7 +202,16 @@ text {
     fill: white;
     user-select: none;
     pointer-events: none;
+}
+.node-text {
+    font-size: 5px;
+    user-select: none;
+    pointer-events: none;
     text-anchor: middle;
+}
+.tip {
+    fill: red;
+    font-size: 10px;
 }
 #info-layout {
     color:  black;
@@ -427,4 +448,18 @@ input[type="file"] {
 rect:hover {
     stroke: #7dfbf5;
     stroke-width: 1px;
+}
+#bar-grapg {
+
+}
+@-webkit-keyframes showbar /* Safari 和 Chrome */
+{
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@-webkit-keyframes hidebar /* Safari 和 Chrome */
+{
+    from { opacity: 1; }
+    to { opacity: 0; }
 }

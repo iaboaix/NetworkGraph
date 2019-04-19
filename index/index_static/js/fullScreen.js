@@ -1,3 +1,12 @@
+// 全屏切换
+d3.select("#screen-button")
+    .on("click", function() {
+        network_config.screen_state = !network_config.screen_state;
+        network_config.screen_state === true ? enterFullScreen() : exitFullScreen();
+        d3.select("#screen-switch")
+            .attr("class", network_config.screen_state === true ? "fa fa-compress" : "fa fa-expand");
+    });
+
 //进入全屏
 function enterFullScreen() {
     var de = document.documentElement;

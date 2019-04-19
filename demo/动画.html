@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>js+CSS实现表格渐变</title>
+<style>
+#tip{
+position:absolute;
+left:90px;
+width:0px;
+height:0px;
+color:#FFF;
+font-size:12px;
+background-color:#000;
+border:1px solid #DEF;
+filter:Alpha(Opacity=0);
+opacity:0;
+z-index:999;
+}
+</style>
+<script type="text/javascript">
+<!--
+//定义“获得指定dom节点”的函数，因为其重用率高
+function $(d){return document.getElementById(d);}
+//控制div逐渐显示
+var i = 0;
+function change_show(){
+var obj = $("tip");
+i=i+5; //逐渐显示速度
+obj.style.filter = "Alpha(Opacity=" + i + ")"; //透明度逐渐变小
+obj.style.opacity = i/100; //兼容FireFox
+if(i>=100){
+clearInterval(s);
+i=0;
+}
+}
+//控制div逐渐消失
+var j = 100;
+function change_hidden(){
+var obj = $("tip");
+j=j-5; //逐渐消失速度
+obj.style.filter = "Alpha(Opacity=" + j + ")"; //透明度逐渐变大
+obj.style.opacity = j/100; //兼容FireFox
+if(j<=0){
+clearInterval(h);
+//obj.style.display="none";
+j=100;
+}
+}
+//控制change_show()行为
+var s;
+function show(){
+if(s){clearInterval(s);}
+$("tip").style.display="block";
+s = setInterval(change_show,1);
+}
+//控制change_hidden()行为
+var h;
+function hiddentip(){
+$("tip").innerHTML="";
+h = setInterval(change_hidden,1);
+}
+//-->
+</script>
+</head>
+<body>
+鼠标滑过这里，渐变出现
+<div id="tip" style="background-color:blue;width:48%;height:48%;" onmouseover="show();" onmouseout="hiddentip();">
+</div>
+</body>
+</html>

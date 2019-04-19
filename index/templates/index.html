@@ -8,7 +8,6 @@
     <script type="text/javascript" src="{% static 'js/thirdPart/saveSvgAsPng.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/thirdPart/jquery-3.3.1.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/thirdPart/smartMenu.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/fullScreen.js' %}"></script>
 
     <link rel="stylesheet" href="{% static 'css/font-awesome-4.7.0/css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -16,11 +15,11 @@
     <link rel="shortcut icon" href="{% static 'image/logo.ico' %}" type="image/x-icon" />
 </head>
 <body>
-    <svg id="svg">
+    <svg id="container">
         <!-- 网络图 -->
-        <g id="container"></g>
+        <g id="network-graph"></g>
         <!-- 柱状图 -->
-        <g id="bargraph"></g>  
+        <g id="bar-graph"></g>  
     </svg>
     <div id="top-tool-bar">
         <div id="logo"></div>
@@ -44,8 +43,9 @@
         <button id="zoom-reset" title="1：1"><i class="fa fa-arrows-h"></i></button>
         <button id="rotate" title="顺时针旋转"><i class="fa fa-repeat"></i></button>
         <button id="rerotate" title="逆时针旋转"><i class="fa fa-undo"></i></button>
+        <button id="info-show" title="详细信息" class="high-light"><i class="fa fa-info-circle"></i></button>
         <button id="brush-mode" title="框选模式"><i class="fa fa-crop"></i></button>
-        <button id="bar-graph" title="分类统计图"><i class="fa fa-bar-chart"></i></button>
+        <button id="bar-graph-show" title="分类统计图"><i class="fa fa-bar-chart"></i></button>
     </div>
     <div id="setting-box">
         <div id="setting-box-header">
@@ -69,7 +69,7 @@
                 <tr>
                     <td>节点轮廓宽度</td>
                     <td>
-                        <input type="range" name="points" id="node-stroke" min="0" max="5" step="0.1" value="1" />
+                        <input type="range" name="points" id="node-stroke" min="0" max="10" step="0.1" value="2" />
                     </td>
                 </tr>
                 <tr>
@@ -118,10 +118,15 @@
         </table>
     </div>
     <div id="info-layout">
-        <div id="node-info" class="hidden">
+        <div id="network-info">
+            <p>
+                <strong>网络图属性:</strong>
+            </p>
+        </div>
+        <div id="node-info">
             <p><strong>节点属性:</strong></p>
         </div>
-        <div id="link-info" class="hidden">
+        <div id="link-info">
             <p><strong>关系属性:</strong></p>
         </div>
     </div>
@@ -168,9 +173,8 @@
         </div>
     </div>
     <button id="stop-button" class="bottom-item">停止布局</button>
-    <div id="status-bar">status-bar:这儿我先占着！！！
-<!--         <div>节点标签选择：</div>
-        <div>图属性：15</div> -->
+    <div id="status-bar">
+        <!-- <div>选择节点上提示信息</div> -->
     </div>
     <div id="upload-layout">
         <div id="upload-top-layout">
@@ -192,13 +196,16 @@
     </div>
     <table id="attr-table"><tbody></tbody></table>
     <script type="text/javascript">
-        var width = window.innerWidth
-        var height = window.innerHeight
     	var data = {{ Dict|safe }};
     	var support_labels = {{ List|safe }};
     </script>
-    <script type="text/javascript" src="{% static 'js/operation.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/barGraph.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/networkGraph.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tools.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/switches.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/upOrDownload.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/transform.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/barGraph.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/networkGraph.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/fullScreen.js' %}"></script>
 </body>
 </html>
