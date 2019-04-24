@@ -125,7 +125,7 @@ var create_menu = [
                     .style("text-align", "center");
                 var new_data = {};
                 for (var attr in data.nodes[0]) {
-                    if (["x", "y", "vx", "vy", "index", "selected", "previouslySelected"].indexOf(attr) > -1) {
+                    if (["x", "y", "vx", "vy", "index", "selected", "previouslySelected", "color"].indexOf(attr) > -1) {
                         continue;
                     }
                     else {
@@ -556,8 +556,11 @@ d3.select("#link-strength").on("input propertychange", function() {
 // 关系线颜色
 d3.select("#line-color").on("change", function() {
     d3.selectAll(".link")
-        .style("stroke", this.value)
-        .style("fill", this.value);
+        .style("stroke", this.value);
+    d3.select("marker")
+        .select("path")
+        .style("fill", this.value)
+        .style("stroke", this.value);
 });
 
 // 关系线宽

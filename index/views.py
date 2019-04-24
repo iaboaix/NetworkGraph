@@ -10,7 +10,9 @@ def index(request):
     data = {"nodes": [], "links": []}
     support_label = ["default", "male", "female", "bus", "qq", "wechat", "phone",
                     "Donald-John-Trump", "us", "germany", "Ivanka-Trump",
-                    "twitter", "机构", "职位"]
+                    "twitter", "机构", "职位", "迈克·彭斯", "苏世民", "米奇·麦康奈尔",
+                    "詹姆斯·马蒂斯", "约翰·凯利", "妮基·黑利", "特里·布兰斯塔德",
+                    "美国财政部", "美国国防部", "美国国务院", "美国联邦", "美国司法部"]
     try:
         data = data_neo4j.start()
     except:

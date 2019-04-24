@@ -3,19 +3,6 @@ document.oncontextmenu=function(ev){
 	ev.preventDefault();
 }
 
-// 获取元素格式化的 transform 属性
-function getTranslateAndScaleAndRotate(element) {
-    var transform = d3.select(element).attr("transform");
-    var match_translate_scale = transform && /translate/.test(transform) && /scale/.test(transform) && transform.match(/translate\(([^\)]+)\)\s?scale\(([^\)]+)/);
-    var translate = match_translate_scale && match_translate_scale[1].split(",") || [0, 0];
-    var k = match_translate_scale && match_translate_scale[2] || 1;
-    var match_rotate = transform && /rotate/.test(transform) && transform.match(/\s?rotate\(([^\)]+)/);
-    var rotate = match_rotate && match_rotate[1] || 0;
-    var x = translate[0];
-    var y = translate[1];
-    return {"x": x, "y": y, "k": k, "rotate": rotate};
-}
-
 // 圆内文字切分
 function textBreaking(d3text, text) {
     var len = 0;
@@ -36,7 +23,7 @@ function textBreaking(d3text, text) {
         var top_y = -9;
         var mid_y = 2;
         var bot_y = 10;
-        if (len <= 10) {
+        if (len < 10) {
             top_y += 5;
             mid_y += 5;
         } else {

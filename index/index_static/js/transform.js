@@ -1,3 +1,16 @@
+// 获取元素格式化的 transform 属性
+function getTranslateAndScaleAndRotate(element) {
+    var transform = d3.select(element).attr("transform");
+    var match_translate_scale = transform && /translate/.test(transform) && /scale/.test(transform) && transform.match(/translate\(([^\)]+)\)\s?scale\(([^\)]+)/);
+    var translate = match_translate_scale && match_translate_scale[1].split(",") || [0, 0];
+    var k = match_translate_scale && match_translate_scale[2] || 1;
+    var match_rotate = transform && /rotate/.test(transform) && transform.match(/\s?rotate\(([^\)]+)/);
+    var rotate = match_rotate && match_rotate[1] || 0;
+    var x = translate[0];
+    var y = translate[1];
+    return {"x": x, "y": y, "k": k, "rotate": rotate};
+}
+
 // 缩放
 var zoom = d3.zoom()
     .on("zoom", function() {
@@ -10,6 +23,7 @@ container.call(zoom)
     .on("dblclick.zoom", null);
 
 function zoomFunction(vars) {
+    console.log("translate(" + vars.x + "," + vars.y + ") " + "scale(" + vars.k + ") " + "rotate(" + vars.rotate + "," + (window.innerWidth / 2) + " " + (window.innerHeight / 2) + ")")
     network_graph.attr("transform", "translate(" + vars.x + "," + vars.y + ") " + "scale(" + vars.k + ") " + "rotate(" + vars.rotate + ")");
     brush_svg.attr("transform", "translate(" + vars.x + "," + vars.y + ") " + "scale(" + vars.k + ") " + "rotate(" + vars.rotate + ")");
     brush_svg.select("rect")

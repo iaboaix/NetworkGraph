@@ -135,7 +135,7 @@
         <div id="functions">
             <div id="fun-layout">
                 <div class="fun-title">点选取</div>
-                <div class="node-fun">
+                <div class="grid-layout">
                     <button class="select-button" id="select-correlation">选 取 关 联</button>
                     <button class="select-button" id="select-same-degree">选 取 同 级</button>
                     <button class="select-button" id="select-childs">选取子节点</button>
@@ -144,7 +144,7 @@
             </div>
             <div id="fun-layout">
                 <div class="fun-title">边样式</div>
-                <div class="node-fun">
+                <div class="grid-layout">
                     <button class="select-button" id="straight-line">直&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp线</button>
                     <button class="select-button" id="bezier-curves">贝塞尔曲线</button>
                     <button class="select-button" id="horizontal-broken-line">横&nbsp&nbsp&nbsp&nbsp折&nbsp&nbsp&nbsp&nbsp线</button>
@@ -174,8 +174,8 @@
     </div>
     <button id="stop-button" class="bottom-item">停止布局</button>
     <div id="status-bar">
-        <!-- <div>选择节点上提示信息</div> -->
-    </div>
+<!--     如果发现BUG或有好的修改意见,请联系QQ 642212607 进行提交，谢谢。
+ -->    </div>
     <div id="upload-layout">
         <div id="upload-top-layout">
             <div id="file-title">导入json数据</div>
@@ -199,13 +199,13 @@
     	var data = {{ Dict|safe }};
     	var support_labels = {{ List|safe }};
     </script>
-    <script type="text/javascript" src="{% static 'js/index.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/tools.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/switches.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/upOrDownload.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/transform.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/barGraph.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/networkGraph.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/fullScreen.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tools.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/switches.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/upOrDownload.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/transform.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/barGraph.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/networkGraph.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/fullScreen.js' %}"></script>
 </body>
 </html>

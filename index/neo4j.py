@@ -44,10 +44,8 @@ class Neo4jToJson:
 
     def create_node(self, neo4j_node):
         node = {"id": neo4j_node["id"], "label": neo4j_node["label"], "name": neo4j_node["name"]}
-        try:
-            node["life"] = neo4j_node["life"]
-        except:
-            pass
+        if "life" in neo4j_node:
+        	node["life"] = neo4j_node["life"]
         return node
 
 

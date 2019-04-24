@@ -4,7 +4,7 @@ from py2neo import Graph, Node, Relationship
 # graph = Graph("http://localhost:7474",username="neo4j",password="000000")
 # tx = graph.begin()
 js = dict()
-with open("./TrumpFamily.json", "rb") as file:
+with open("./Trump.json", "rb") as file:
     data = file.read()
     js = json.loads(data)
 #     nodes = js["nodes"]
