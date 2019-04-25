@@ -1,22 +1,14 @@
-var network_config = {
+var NETWORKCONFIG = {
     "layout": "force",
     "calculating": true,
-    "isBrush": false,
-    "node_text_state": true,
-    "link_text_state": false,
-    "marker_state": true,
-    "setting_state": false,
-    "screen_state": false,
-    "bar_state": false,
     "node_size": 15,
     "special": false,
     "node_charge": -300,
     "link_strength": 0.5,
-    "line_type": 0,
-    "info_show_state": true
+    "line_style": 0
 }
 
-var bar_config = {  
+var BARCONFIG = {  
 	width: 400,
 	height: 300,
 	top: 20, 
@@ -28,8 +20,8 @@ var bar_config = {
 var container = d3.select("#container");
 
 var bar_graph = d3.select("#bar-graph")
-        .attr("width", bar_config.width)
-        .attr("height", bar_config.height)
+        .attr("width", BARCONFIG.width)
+        .attr("height", BARCONFIG.height)
         .style("opacity", 0);
 
 var brush_svg = container.append("g")
@@ -57,7 +49,7 @@ var marker = network_graph.append("marker")
     .attr("id", "resolved")
     .attr("markerUnits", "userSpaceOnUse")
     .attr("viewBox", "0 -5 10 10")//坐标系的区域
-    .attr("refX", network_config.node_size + 7)//箭头坐标
+    .attr("refX", NETWORKCONFIG.node_size + 7)//箭头坐标
     .attr("refY", 0)
     .attr("markerWidth", 18)//标识的大小
     .attr("markerHeight", 12)
@@ -71,6 +63,14 @@ var marker = network_graph.append("marker")
 // 颜色比例尺
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
+// 初始化配色条
+var color_bar = d3.select("#color-bar");
+for (var i = 0; i <= 1; i += 0.01) {
+    color_bar.append("button")
+        .attr("class", "color-item")
+        .style("background-color", d3.interpolateSinebow(i));
+}
+
 // 请求图片 为典型场景分析准备
 support_labels.forEach(function(label) {
     defs_layout.append("pattern")
@@ -78,7 +78,7 @@ support_labels.forEach(function(label) {
         .attr("width", "100%")
         .attr("height", "100%")
         .append("image")
-        .attr("width", network_config.node_size * 2)
-        .attr("height", network_config.node_size * 2)
+        .attr("width", NETWORKCONFIG.node_size * 2)
+        .attr("height", NETWORKCONFIG.node_size * 2)
         .attr("xlink:href", "static/image/label/" + label + ".jpg");
 })

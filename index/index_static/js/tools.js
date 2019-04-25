@@ -53,7 +53,7 @@ function textBreaking(d3text, text) {
 }
 
 // 生成关系连线路径
-function genLinkPath(link, line_type) {
+function genLinkPath(link, line_style) {
     var path = null;
     var temp = 0;
     var sx = link.source.x;
@@ -72,16 +72,16 @@ function genLinkPath(link, line_type) {
     var y4 = sy + dy * 4;
     var x7 = sx + dx * 7;
     var y6 = sy + dy * 6;
-    if (line_type == 0) {
+    if (line_style == 0) {
         path = "M" + sx + "," + sy + " L" + tx + "," + ty;
     }
-    else if (line_type == 1) {
+    else if (line_style == 1) {
         path = "M " + sx + "," + sy + " C" + x1 + "," + y2 + " " + x2 + "," + y3 + " " + x4 + "," + y4 + " S" + x7 + "," + y6 + " " + tx + "," + ty;
     }
-    else if (line_type == 2) {
+    else if (line_style == 2) {
         path = "M " + sx + "," + sy + " L" + x4 + "," + sy + " " + " L" + x4 + "," + ty + " L" + tx + "," + ty;
     }
-    else if (line_type == 3) {
+    else if (line_style == 3) {
         path = "M " + sx + "," + sy + " L" + sx + "," + y4 + " " + " L" + tx + "," + y4 + " L" + tx + "," + ty;
     }
     return path;

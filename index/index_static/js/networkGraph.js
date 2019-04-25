@@ -92,6 +92,30 @@ var node_menu = [
                 removeNode(d3.select(this).datum());
                 updateData(data);
             }
+        },
+        {
+            text: "选中父节点",
+            func: function() {
+                selectNodes(0);
+            }
+        },        
+        {
+            text: "选中子节点",
+            func: function() {
+                selectNodes(1);
+            }
+        },        
+        {
+            text: "选中同级",
+            func: function() {
+                selectNodes(2);
+            }
+        },        
+        {
+            text: "选中关联",
+            func: function() {
+                selectNodes(3);
+            }
         }
     ]
 ];
@@ -187,7 +211,7 @@ var link_text_elements = null;
 
 var linkForce = d3.forceLink()
     .id(function (link) { return link.id })
-    .strength(network_config.link_strength);
+    .strength(NETWORKCONFIG.link_strength);
 
 var simulation = d3.forceSimulation()
     .force("link", linkForce)
@@ -216,15 +240,15 @@ function setNetworkInfo(data) {
 
 function drawNetworkGraph(data) {
     startLayout();
-    if (network_config.layout == "force") {
-        linkForce.strength(network_config.link_strength);
+    if (NETWORKCONFIG.layout == "force") {
+        linkForce.strength(NETWORKCONFIG.link_strength);
         simulation.alpha(1)
             .alphaDecay(0.002)
             .alphaMin(0.002)
             .force("r", null)
-            .force("charge", d3.forceManyBody().strength(network_config.node_charge).distanceMax(400))
+            .force("charge", d3.forceManyBody().strength(NETWORKCONFIG.node_charge).distanceMax(400))
             .force("center", d3.forceCenter((window.innerWidth - 30) / 2, (window.innerHeight - 30) / 2))
-            .force("collision", d3.forceCollide(network_config.node_size));
+            .force("collision", d3.forceCollide(NETWORKCONFIG.node_size));
     }
     else {
         data.nodes.forEach(function(node) {
@@ -232,7 +256,7 @@ function drawNetworkGraph(data) {
             node.y = 0;
         })
         linkForce.strength(0);
-        simulation.force("charge", d3.forceCollide().radius(network_config.node_size * 1.5))
+        simulation.force("charge", d3.forceCollide().radius(NETWORKCONFIG.node_size * 1.5))
             .force("r", d3.forceRadial(300, (window.innerWidth - 30) / 2, (window.innerHeight - 30) / 2))
             .alpha(5)
             .alphaDecay(0.1)
@@ -260,7 +284,7 @@ function drawNetworkGraph(data) {
         .attr("class", "link-text")
         .style("font-size", 10)
         .merge(link_text_elements)
-        .style("display", network_config.link_text_state == true ? "block" : "none");
+        .style("display", SHOWCONFIG.link_text == true ? "block" : "none");
     link_text_elements.selectAll("textPath").remove();
     link_text_elements.append("textPath")
         .attr("xlink:href", function (link, i) { return "#link-" + i; })
@@ -283,14 +307,14 @@ function drawNetworkGraph(data) {
     node_elements.selectAll("text").remove();
     node_elements.selectAll("circle").remove();
     node_elements.append("circle")
-        .attr("r", network_config.node_size);
+        .attr("r", NETWORKCONFIG.node_size);
     node_elements.append("text")
         .attr("class", "node-text")
         .attr("dy", ".35em")
         .attr("x", function (node) {
             return textBreaking(d3.select(this), node.name);
         })
-        .style("display", network_config.node_text_state === true ? "block" : "none");
+        .style("display", SHOWCONFIG.node_text === true ? "block" : "none");
     node_elements.filter(function(node) { return node.border === true; })
         .append("text")
         .attr("class", "tip")
@@ -319,7 +343,7 @@ $("#container").smartMenu(create_menu, {
 
 function tick() {
     node_elements.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-    link_elements.attr("d", function(link) { return genLinkPath(link, network_config.line_type); })
+    link_elements.attr("d", function(link) { return genLinkPath(link, NETWORKCONFIG.line_style); })
         .attr("marker-end", "url(#resolved)");
     link_text_elements.attr("dx", function(link) { return getLineTextDx(link); });
 }
@@ -327,14 +351,22 @@ function tick() {
 // 布局切换开关
 d3.select("#layout-button")
     .on("click", function() {
-        network_config.layout = (network_config.layout === "force" ? "radius" : "force");
-        d3.select("#layout-switch").attr("class", network_config.layout == "force" ? "fa fa-toggle-off" : "fa fa-toggle-on");
+        NETWORKCONFIG.layout = (NETWORKCONFIG.layout === "force" ? "radius" : "force");
+        d3.select("#layout-switch").attr("class", NETWORKCONFIG.layout == "force" ? "fa fa-toggle-off" : "fa fa-toggle-on");
         drawNetworkGraph(data);
     })
 
 // 点击清空所有选中
-container.on("click", function() {
-    if (d3.event.ctrlKey == false) {
+container.on("keydown", function() {
+    if (d3.event.shiftKey === true) {
+        brush_svg.style("display", "block");
+    }
+}).on("keyup", function() {
+    if (d3.event.shiftKey === true) {
+        brush_svg.style("display", "none");
+    }
+}).on("click", function() {
+    if (d3.event.ctrlKey === false) {
         d3.selectAll(".selected")
             .classed("selected", false);
         d3.selectAll(".finded")
@@ -344,11 +376,11 @@ container.on("click", function() {
         });
     }
 }).on("mousedown", function() {
-        if (d3.event.which == 3) {
-            create_x = d3.event.x;
-            create_y = d3.event.y;
-        }
-    });
+    if (d3.event.which === 3) {
+        create_x = d3.event.x;
+        create_y = d3.event.y;
+    }
+});
 
 // 清除所有临时绑定
 function clearEvents() {
@@ -396,78 +428,6 @@ function removeNode(node) {
     }).remove();
 }
 
-// 选取关联
-d3.select("#select-correlation")
-    .on("click", function() {
-        selectNodes(0);
-    });
-
-// 选中同级
-d3.select("#select-same-degree")
-    .on("click", function() {
-        selectNodes(1);
-    });
-
-// 选中子节点
-d3.select("#select-childs")
-    .on("click", function() {
-        selectNodes(2);
-    });
-
-// 选中父节点
-d3.select("#select-parents")
-    .on("click", function() {
-        selectNodes(3);
-    });
-
-// 选择节点
-function selectNodes(type) {
-    var selected_nodes = data.nodes.filter(function(node, i) {
-        return node.selected;
-    });
-    console.log(selected_nodes)
-    var parent_nodes = [];
-    if (type == 1) {
-        data.links.forEach(function(link, i) {
-            if ( selected_nodes.indexOf(link.target) > -1) { 
-                link.source.selected = false;
-                parent_nodes.push(link.source);
-            }
-        });
-    }
-    data.links.forEach(function(link, i) {
-        // 关联
-        if (selected_nodes.indexOf(link.source) > -1 && type == 0) { 
-            link.target.selected = true;
-        }
-        else if (selected_nodes.indexOf(link.target) > -1 && type == 0) { 
-            link.source.selected = true;
-        }
-        // 同级
-        else if (parent_nodes.indexOf(link.source) > -1 && type == 1) {
-            link.target.selected = true;
-        }
-        // 子节点
-        else if (selected_nodes.indexOf(link.source) > -1 && type == 2) {
-            link.target.selected = true;
-        }
-        // 父节点
-        else if (selected_nodes.indexOf(link.target) > -1 && type == 3) {
-            link.source.selected = true;
-        }
-    });
-    refreshState();
-}
-
-// 刷新节点选中状态
-function refreshState() {
-    node_elements.each(function(node) {
-        if(node.selected == true) {
-            d3.select(this).classed("selected", true);
-        }
-    });
-}
-
 // 颜色标记
 d3.selectAll(".color-item")
     .on("click", function() {
@@ -490,43 +450,15 @@ function markColor(color_value) {
     fill_circle();
 }
 
-// 直线
-d3.select("#straight-line")
-    .on("click", function() {
-        network_config.line_type = 0;
-        tick();
-    })
-
-// 贝塞尔曲线
-d3.select("#bezier-curves")
-    .on("click", function() {
-        network_config.line_type = 1;
-        tick();
-    })
-
-// 横折线
-d3.select("#horizontal-broken-line")
-    .on("click", function() {
-        network_config.line_type = 2;
-        tick();
-    })
-
-// 贝塞尔曲线
-d3.select("#vertical-broken-line")
-    .on("click", function() {
-        network_config.line_type = 3;
-        tick();
-    })
-
 // 调整图参数
 // 节点大小
 d3.select("#node-size").on("input propertychange", function() {
-    network_config.node_size = parseFloat(this.value);
-    d3.select("marker").attr("refX", network_config.node_size + 7);
-    node_elements.selectAll("circle").attr("r", network_config.node_size);
+    NETWORKCONFIG.node_size = parseFloat(this.value);
+    d3.select("marker").attr("refX", NETWORKCONFIG.node_size + 7);
+    node_elements.selectAll("circle").attr("r", NETWORKCONFIG.node_size);
     d3.selectAll("image")
-        .attr("width", network_config.node_size * 2)
-        .attr("height", network_config.node_size * 2);
+        .attr("width", NETWORKCONFIG.node_size * 2)
+        .attr("height", NETWORKCONFIG.node_size * 2);
 });
 
 // 节点透明度
@@ -541,15 +473,15 @@ d3.select("#node-stroke").on("input propertychange", function() {
 
 // 节点斥力
 d3.select("#node-charge").on("input propertychange", function() {
-    network_config.node_charge = - this.value;
-    simulation.force("charge", d3.forceManyBody().strength(network_config.node_charge));
+    NETWORKCONFIG.node_charge = - this.value;
+    simulation.force("charge", d3.forceManyBody().strength(NETWORKCONFIG.node_charge));
     startLayout();
 });
 
 // 连接强度
 d3.select("#link-strength").on("input propertychange", function() {
-    network_config.link_strength = parseFloat(this.value);
-    simulation.force("link").strength(network_config.link_strength);
+    NETWORKCONFIG.link_strength = parseFloat(this.value);
+    simulation.force("link").strength(NETWORKCONFIG.link_strength);
     startLayout();
 });
 
@@ -568,8 +500,14 @@ d3.select("#line-stroke-width").on("input propertychange", function() {
     link_elements.style("stroke-width", this.value);
 });
 
+// 连线样式
+d3.select("#line-style")
+    .on("change", function() {
+        NETWORKCONFIG.line_style = this.value;
+        tick();
+    })
 function fill_circle() {
-    if (network_config.special === true) {
+    if (NETWORKCONFIG.special === true) {
         node_elements.select("circle")
             .style("fill", function(node) {
                 return (node.label != "undefined" && support_labels.indexOf(node.label) > -1) ? "url(#" + node.label + ")" : "url(#default)";
@@ -616,7 +554,7 @@ function draging(node) {
             node.y += d3.event.dy;
             d3.select(this).attr("transform", "translate(" + node.x + "," + node.y + ")");
         });
-    link_elements.attr("d", function(link) { return genLinkPath(link, network_config.line_type); });
+    link_elements.attr("d", function(link) { return genLinkPath(link, NETWORKCONFIG.line_style); });
     link_text_elements.attr("dx", function(link) { return getLineTextDx(link); });
 }
 
@@ -629,31 +567,23 @@ function drag_end(node) {
 
 // 布局 开始/暂停 按钮
 d3.select("#stop-button").on("click", function() {
-    network_config.calculating === true ? stopLayout() : startLayout();
+    NETWORKCONFIG.calculating === true ? stopLayout() : startLayout();
 });
 
 // 开始布局
 function startLayout() {
-    network_config.calculating = true;
-    d3.select("#stop-button").text("停止布局");
+    NETWORKCONFIG.calculating = true;
+    d3.select("#network-status").style("animation", "calc ease 1s infinite");
+    d3.select("#stop-button-text").text("停止布局");
     simulation.alpha(1).restart();
 }
 
 // 停止布局
 function stopLayout() {
-    network_config.calculating = false;
-    d3.select("#stop-button").text("重新布局");
+    NETWORKCONFIG.calculating = false;
+    d3.select("#network-status").style("animation", "none");
+    d3.select("#stop-button-text").text("重新布局");
     simulation.stop();
-}
-
-// 点击选中节点
-function selectNode(node) {
-    d3.select(this).classed("finded", false);
-    if (d3.event.which == 3) {
-        stopLayout();
-    }
-    node.selected = true;
-    d3.select(this).classed("selected", true);
 }
 
 // 掠过显示节点信息
@@ -722,46 +652,13 @@ function find_node_name(name) {
     }
 }
 
-// 框选功能
-data.nodes.forEach(function(d) {
-    d.selected = false;
-    d.previouslySelected = false;
-});
-
-var brush_event = d3.brush()
-    .extent([[0, 0], [window.innerWidth, window.innerHeight]])
-    .on("start", brushStarted)
-    .on("brush", brushed)
-    .on("end", brushEnded);
-
-brush_svg.call(brush_event);
-
-function brushStarted() {
-    if (d3.event.sourceEvent.type !== "end") {
-        node_elements.classed("selected", false);
-        data.nodes.forEach(function(node) {
-            node.selected = false;
-        });
-    }
-}
-
-function brushed() {
-  if (d3.event.sourceEvent.type !== "end") {
-    var selection = d3.event.selection;
-    node_elements.classed("selected", function(d) {
-      return d.selected = d.previouslySelected ^
-        (selection != null
-        && selection[0][0] <= d.x && d.x < selection[1][0]
-        && selection[0][1] <= d.y && d.y < selection[1][1]);
-    });
-  }
-}
-
-function brushEnded() {
-    if (d3.event.selection != null) {
-      d3.select(this).call(d3.event.target.move, null);
-    }
-}
+// 切换分析模式
+d3.select("#analyse-button")
+    .on("click", function() {
+        NETWORKCONFIG.special = !NETWORKCONFIG.special;
+        d3.select("#analyse-switch").attr("class", NETWORKCONFIG.special === true ? "fa fa-toggle-on" : "fa fa-toggle-off");
+        fill_circle();
+    })
 
 // 渐变 先不用
 // radial_gradient = defs_layout.append("radialGradient")

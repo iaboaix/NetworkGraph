@@ -8,16 +8,16 @@ function drawBarChart(data){
     });
     var xScale = d3.scaleBand()
         .domain(x_label)
-        .range([0, bar_config.width - bar_config.left - bar_config.right]);
+        .range([0, BARCONFIG.width - BARCONFIG.left - BARCONFIG.right]);
     var xAxis = d3.axisBottom(xScale);
     // y 轴
     var yScale = d3.scaleLinear()
         .domain([0, bar_data[0].data])
-        .range([bar_config.height - bar_config.top - bar_config.bottom, 0]);
+        .range([BARCONFIG.height - BARCONFIG.top - BARCONFIG.bottom, 0]);
     var yAxis = d3.axisLeft(yScale);
     // 颜色比例尺
     var color = d3.scaleOrdinal(d3.schemeCategory10);
-    var step = (bar_config.width - bar_config.left - bar_config.right) / bar_data.length;
+    var step = (BARCONFIG.width - BARCONFIG.left - BARCONFIG.right) / bar_data.length;
     var padding = step * 0.3;
 
     bar_graph.selectAll(".bar-elements").remove();
@@ -25,12 +25,12 @@ function drawBarChart(data){
     bar_graph.append("g")
         .attr("id", "text-rotate")
         .attr("class", "bar-elements")
-        .attr("transform", "translate(" + bar_config.left + ", " + (bar_config.height - bar_config.bottom) + ")")
+        .attr("transform", "translate(" + BARCONFIG.left + ", " + (BARCONFIG.height - BARCONFIG.bottom) + ")")
         .call(xAxis);
 
     bar_graph.append("g")
         .attr("class", "bar-elements")
-        .attr("transform", "translate(" + bar_config.left + ", " + bar_config.top + ")")
+        .attr("transform", "translate(" + BARCONFIG.left + ", " + BARCONFIG.top + ")")
         .call(yAxis);
 
     var bars = bar_graph.append("g")
@@ -40,10 +40,10 @@ function drawBarChart(data){
         .append("rect")
         .attr("class", "bar-elements")
         .attr("x", function(d, i) {
-            return i * step + bar_config.left + padding/ 2;
+            return i * step + BARCONFIG.left + padding/ 2;
         })  
         .attr("y", function(d) {
-            return yScale(d.data) + bar_config.top;
+            return yScale(d.data) + BARCONFIG.top;
         })
         .attr("width", function() {
             return step - padding;
@@ -65,7 +65,7 @@ function drawBarChart(data){
         .duration(1500)
         .ease(d3.easeCubicOut)
         .attr("height", function(d) {
-            return bar_config.height - bar_config.top - bar_config.bottom - yScale(d.data);
+            return BARCONFIG.height - BARCONFIG.top - BARCONFIG.bottom - yScale(d.data);
         });
 
     bar_graph.selectAll("#text-rotate text")
@@ -104,5 +104,5 @@ function find_node_label(label) {
             if (node.label === label) {
                 d3.select(this).classed("finded", true);
             }
-        })
+        });
 }

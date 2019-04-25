@@ -1,0 +1,17 @@
+{
+  "nodes": [
+    { "id": "0", "label": "Mammals" },
+    { "id": "1", "label": "Dogs"    },
+    { "id": "2", "label": "Cats"    },
+    { "id": "3", "label": "Foxes"   },
+    { "id": "4", "label": "Elk"     },
+    { "id": "5", "label": "Insects" }
+  ],
+  "links": [
+  	{ "source": "dog" , "target": "mammal" },
+  	{ "source": "cat" , "target": "mammal" },
+    { "source": "fox" , "target": "mammal" },
+    { "source": "elk" , "target": "mammal" },
+    { "source": "ant" , "target": "insect" }
+  ]
+}

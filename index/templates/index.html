@@ -27,8 +27,7 @@
         <button class="top-menu-item" id="download-data"><i class="fa fa-download"></i> 导出数据</button>
         <button class="top-menu-item" id="download-img"><i class="fa fa-share"></i> 导出图片</button>
         <div id="top-right-bar">
-        	<button id="layout-button" class="switch-button" title="切换布局模式">力布局&nbsp&nbsp&nbsp&nbsp<i id="layout-switch" class="fa fa-toggle-off"></i>&nbsp&nbsp&nbsp&nbsp圆布局</button>
-        	<button id="analyse-button" class="switch-button" title="切换分析模式">数据分析&nbsp&nbsp&nbsp&nbsp<i id="analyse-switch" class="fa fa-toggle-off"></i>&nbsp&nbsp&nbsp&nbsp场景分析</button>
+            <button id="stop-button"><div id="network-status"></div><div id="stop-button-text">停止布局</div></button>
             <div id="search-line-layout">
                 <input type="text" name="" id="search-line">
                 <button id="search-button"><i class="fa fa-search"></i></button>
@@ -37,19 +36,28 @@
             <button class="top-tool-button" id="setting-button"><i class="fa fa-gear"></i></button>
         </div>  
     </div>
+    <div id="color-bar"></div>
     <div id="left-tool-bar">
-        <button id="zoom-out" title="放大"><i class="fa fa-plus-circle"></i></button>
-        <button id="zoom-in" title="缩小"><i class="fa fa-minus-circle"></i></button>
-        <button id="zoom-reset" title="1：1"><i class="fa fa-arrows-h"></i></button>
-        <button id="rotate" title="顺时针旋转"><i class="fa fa-repeat"></i></button>
-        <button id="rerotate" title="逆时针旋转"><i class="fa fa-undo"></i></button>
-        <button id="info-show" title="详细信息" class="high-light"><i class="fa fa-info-circle"></i></button>
-        <button id="brush-mode" title="框选模式"><i class="fa fa-crop"></i></button>
-        <button id="bar-graph-show" title="分类统计图"><i class="fa fa-bar-chart"></i></button>
+    	<div id="tool-bar">
+	        <button id="zoom-out" title="放大"><i class="fa fa-plus-circle"></i></button>
+	        <button id="zoom-in" title="缩小"><i class="fa fa-minus-circle"></i></button>
+	        <button id="zoom-reset" title="1：1"><i class="fa fa-arrows-h"></i></button>
+	        <button id="rotate" title="顺时针旋转"><i class="fa fa-repeat"></i></button>
+	        <button id="rerotate" title="逆时针旋转"><i class="fa fa-undo"></i></button>
+	    </div>
+	    <hr />
+	    <div id="show-control-bar">
+	    	<button id="info-show" title="详细信息" class="high-light"><i class="fa fa-info-circle"></i></button>
+	        <button id="bar-graph-show" title="分类统计图"><i class="fa fa-bar-chart"></i></button>	
+	        <button id="node-button" title="节点提示" class="high-light"><i class="fa fa-dot-circle-o"></i></button>
+			<button id="link-button" title="关系提示"><i class="fa fa-link"></i></button>
+			<button id="marker-button" title="箭头提示" class="high-light"><i class="fa fa-location-arrow"></i></button>
+	    </div>
+        <button id="color-button" type=""></button>
     </div>
     <div id="setting-box">
         <div id="setting-box-header">
-            &nbsp&nbsp自定义设置&nbsp&nbsp
+            &nbsp&nbsp网络图设置&nbsp&nbsp
             <i class="fa fa-arrow-right" id="setting-button"></i>
         </div>
         <table id="setting-box-content">
@@ -97,23 +105,29 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>节点提示开关</td>
+                    <td>边样式</td>
                     <td>
-                        <button id="node-button" class="switch-button" title="节点提示开关"><i id="node-switch" class="fa fa-toggle-on"></i></button>
+                        <select id="line-style">
+                        	<option value="0">直&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp线</option>
+                        	<option value="1">贝塞尔曲线</option>
+                        	<option value="2">横&nbsp&nbsp&nbsp&nbsp直&nbsp&nbsp&nbsp&nbsp线</option>
+                        	<option value="3">竖&nbsp&nbsp&nbsp&nbsp直&nbsp&nbsp&nbsp&nbsp线</option>
+                        	option
+                        </select>
                     </td>
                 </tr>
                 <tr>
-                    <td>关系提示开关</td>
+                    <td>布局切换</td>
                     <td>
-                        <button id="link-button" class="switch-button" title="关系提示开关"><i id="link-switch" class="fa fa-toggle-off"></i></button>
+                        <button id="layout-button" class="switch-button" title="切换布局模式">力&nbsp&nbsp布&nbsp&nbsp局&nbsp&nbsp&nbsp&nbsp<i id="layout-switch" class="fa fa-toggle-off"></i>&nbsp&nbsp&nbsp&nbsp圆&nbsp&nbsp布&nbsp&nbsp局</button>
                     </td>
                 </tr>
                 <tr>
-                    <td>箭头显示开关</td>
+                    <td>场景切换</td>
                     <td>
-                        <button id="marker-button" class="switch-button" title="箭头提示开关"><i id="marker-switch" class="fa fa-toggle-on"></i></button>
+                        <button id="analyse-button" class="switch-button" title="切换分析模式">数据分析&nbsp&nbsp&nbsp&nbsp<i id="analyse-switch" class="fa fa-toggle-off"></i>&nbsp&nbsp&nbsp&nbsp场景分析</button>
                     </td>
-                </tr>                    
+                </tr>
             </tbody>
         </table>
     </div>
@@ -130,49 +144,6 @@
             <p><strong>关系属性:</strong></p>
         </div>
     </div>
-    <div id="select-box" class="bottom-item">
-        <div id="box-title">功能区</div>
-        <div id="functions">
-            <div id="fun-layout">
-                <div class="fun-title">点选取</div>
-                <div class="grid-layout">
-                    <button class="select-button" id="select-correlation">选 取 关 联</button>
-                    <button class="select-button" id="select-same-degree">选 取 同 级</button>
-                    <button class="select-button" id="select-childs">选取子节点</button>
-                    <button class="select-button" id="select-parents">选取父节点</button>
-                </div>
-            </div>
-            <div id="fun-layout">
-                <div class="fun-title">边样式</div>
-                <div class="grid-layout">
-                    <button class="select-button" id="straight-line">直&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp线</button>
-                    <button class="select-button" id="bezier-curves">贝塞尔曲线</button>
-                    <button class="select-button" id="horizontal-broken-line">横&nbsp&nbsp&nbsp&nbsp折&nbsp&nbsp&nbsp&nbsp线</button>
-                    <button class="select-button" id="vertical-broken-line">竖&nbsp&nbsp&nbsp&nbsp折&nbsp&nbsp&nbsp&nbsp线</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="color-box" class="bottom-item">
-        <div id="box-title">调色区</div>
-        <div id="color-items">
-            <div class="color-item" style="background-color: #FFB900"></div>
-            <div class="color-item" style="background-color: #E74856"></div>
-            <div class="color-item" style="background-color: #0078D7"></div>
-            <div class="color-item" style="background-color: #0099BC"></div>
-            <div class="color-item" style="background-color: #7A7574"></div>
-            <div class="color-item" style="background-color: #767676"></div>
-            <div class="color-item" style="background-color: #FF8C00"></div>
-            <div class="color-item" style="background-color: #E81123"></div>
-            <div class="color-item" style="background-color: #0063B1"></div>
-            <div class="color-item" style="background-color: #2D7D9A"></div>
-            <div class="color-item" style="background-color: #5D5A58"></div>
-            <div class="color-item" style="background-color: #4C4A48"></div>
-        </div>
-        <div id="color-others">&nbsp&nbsp其他颜色<input type="color" id="node-color" />
-        </div>
-    </div>
-    <button id="stop-button" class="bottom-item">停止布局</button>
     <div id="status-bar">
 <!--     如果发现BUG或有好的修改意见,请联系QQ 642212607 进行提交，谢谢。
  -->    </div>
@@ -199,13 +170,13 @@
     	var data = {{ Dict|safe }};
     	var support_labels = {{ List|safe }};
     </script>
-    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/tools.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/switches.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/upOrDownload.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/transform.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/barGraph.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/networkGraph.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/fullScreen.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/index.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tools.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/showControl.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/upOrDownload.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/transform.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/barGraph.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/selectFunction.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/networkGraph.min.js' %}"></script>
 </body>
 </html>
