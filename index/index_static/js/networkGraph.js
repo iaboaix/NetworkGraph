@@ -501,11 +501,14 @@ d3.select("#line-stroke-width").on("input propertychange", function() {
 });
 
 // 连线样式
-d3.select("#line-style")
-    .on("change", function() {
+var line_style_buttons = d3.selectAll(".line-style");
+line_style_buttons.on("click", function() {
+        line_style_buttons.classed("high-light", false);
+        d3.select(this).classed("high-light", true);
         NETWORKCONFIG.line_style = this.value;
         tick();
-    })
+    });
+
 function fill_circle() {
     if (NETWORKCONFIG.special === true) {
         node_elements.select("circle")

@@ -36,6 +36,19 @@
             <button class="top-tool-button" id="setting-button"><i class="fa fa-gear"></i></button>
         </div>  
     </div>
+    <div id="info-layout">
+        <div id="network-info">
+            <p>
+                <strong>网络图属性:</strong>
+            </p>
+        </div>
+        <div id="node-info">
+            <p><strong>节点属性:</strong></p>
+        </div>
+        <div id="link-info">
+            <p><strong>关系属性:</strong></p>
+        </div>
+    </div>
     <div id="color-bar"></div>
     <div id="left-tool-bar">
     	<div id="tool-bar">
@@ -45,7 +58,7 @@
 	        <button id="rotate" title="顺时针旋转"><i class="fa fa-repeat"></i></button>
 	        <button id="rerotate" title="逆时针旋转"><i class="fa fa-undo"></i></button>
 	    </div>
-	    <hr />
+        <hr />
 	    <div id="show-control-bar">
 	    	<button id="info-show" title="详细信息" class="high-light"><i class="fa fa-info-circle"></i></button>
 	        <button id="bar-graph-show" title="分类统计图"><i class="fa fa-bar-chart"></i></button>	
@@ -107,13 +120,10 @@
                 <tr>
                     <td>边样式</td>
                     <td>
-                        <select id="line-style">
-                        	<option value="0">直&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp线</option>
-                        	<option value="1">贝塞尔曲线</option>
-                        	<option value="2">横&nbsp&nbsp&nbsp&nbsp直&nbsp&nbsp&nbsp&nbsp线</option>
-                        	<option value="3">竖&nbsp&nbsp&nbsp&nbsp直&nbsp&nbsp&nbsp&nbsp线</option>
-                        	option
-                        </select>
+                        <button id="sline-button" class="line-style high-light" value=0></button>
+                        <button id="curve-button" class="line-style" value=1></button>
+                        <button id="hline-button" class="line-style" value=2></button>
+                        <button id="vline-button" class="line-style" value=3></button>
                     </td>
                 </tr>
                 <tr>
@@ -130,19 +140,6 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-    <div id="info-layout">
-        <div id="network-info">
-            <p>
-                <strong>网络图属性:</strong>
-            </p>
-        </div>
-        <div id="node-info">
-            <p><strong>节点属性:</strong></p>
-        </div>
-        <div id="link-info">
-            <p><strong>关系属性:</strong></p>
-        </div>
     </div>
     <div id="status-bar">
 <!--     如果发现BUG或有好的修改意见,请联系QQ 642212607 进行提交，谢谢。
@@ -170,13 +167,13 @@
     	var data = {{ Dict|safe }};
     	var support_labels = {{ List|safe }};
     </script>
-    <script type="text/javascript" src="{% static 'js/index.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/tools.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/showControl.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/upOrDownload.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/transform.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/barGraph.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/selectFunction.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/networkGraph.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tools.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/showControl.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/upOrDownload.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/transform.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/barGraph.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/selectFunction.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/networkGraph.js' %}"></script>
 </body>
 </html>

@@ -14,7 +14,7 @@ var SHOWCONFIG = {
 d3.select("#info-show")
     .on("click", function() {
         d3.select(this).classed("high-light", SHOWCONFIG.info = !SHOWCONFIG.info);
-        d3.select("#info-layout").style("display", SHOWCONFIG.info === true ? "block" : "none");
+        d3.select("#info-layout").style("animation", SHOWCONFIG.info === true ? "show-info 3s forwards" : "hide-info 3s forwards");
     });
 
 // 柱状图显示开关
@@ -23,14 +23,11 @@ d3.select("#bar-graph-show")
         d3.select(this).classed("high-light", SHOWCONFIG.bar_chart = !SHOWCONFIG.bar_chart);
         d3.select("#bar-graph")
             .attr("transform", "translate(" + (window.innerWidth - BARCONFIG.width + 2) + ", " + 32 + ")")
-            // .style("display", SHOWCONFIG.bar_chart === true ? "block" : "none");
         if (SHOWCONFIG.bar_chart === true) {
-            bar_graph.style("-webkit-animation", "showbar 3s")
-                .style("opacity", "1");
+            bar_graph.style("animation", "show-bar-chart 3s forwards");
         }
         else {
-            bar_graph.style("-webkit-animation", "hidebar 3s")
-                .style("opacity", "0");
+            bar_graph.style("animation", "hide-bar-chart 3s forwards");
         }
     });
 
@@ -57,19 +54,11 @@ d3.select("#marker-button")
     });
 
 // 设置面板显示开关
+var setting_box = d3.select("#setting-box");
 d3.selectAll("#setting-button")
     .on("click", function() {
         SHOWCONFIG.setting = !SHOWCONFIG.setting;
-        if (SHOWCONFIG.setting === true) {
-            d3.select("#setting-box")
-                .style("animation", "show 3s")
-                .style("right", "0px");
-        }
-        else {
-            d3.select("#setting-box")
-                .style("animation", "hide 3s")
-                .style("right", "-300px");
-        }
+        setting_box.style("animation", SHOWCONFIG.setting === true ? "show-setting 3s forwards" : "hide-setting 3s forwards");
     });
 
 // 配色条显示开关
@@ -79,7 +68,7 @@ d3.select("#color-button")
         d3.select(this)
             .style("animation", SHOWCONFIG.color === true ? "rotate ease-in 2s" : "rerotate ease-out 2s")
         d3.select("#color-bar")
-            .style("animation", SHOWCONFIG.color === true ? "show-bar ease-in 2s forwards" : "hide-bar ease-out 2s forwards")
+            .style("animation", SHOWCONFIG.color === true ? "show-color-bar ease-in 2s forwards" : "hide-color-bar ease-out 2s forwards")
     });
 
 // 全屏切换

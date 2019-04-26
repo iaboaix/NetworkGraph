@@ -96,6 +96,9 @@ html, body {
     height: calc(100% - 32px);
     background: #027080;
 }
+#tool-bar {
+    height: 40%;
+}
 .attr-button {
     width: 50%;
     float: left;
@@ -114,22 +117,30 @@ html, body {
     background-color: #0D877A;
     position: absolute;
     top: 30px;
-    right: -300px;
+    left: 100%;
     font-size: 15px;
     margin: 2px auto;
     border-collapse: collapse;
     border-radius: 5px;
 }    
-@keyframes show
+@keyframes show-setting
 {
-    from { right: -300px; }
-    to { right: 0px; }
+    from { 
+        left: 100%; 
+    }
+    to { 
+        left: calc(100% - 300px); 
+    }
 }
 
-@keyframes hide
+@keyframes hide-setting
 {
-    from { right: 0px; }
-    to { right: -300px; }
+    from { 
+        left: calc(100% - 300px); 
+    }
+    to { 
+        left: 100%; 
+    }
 }
 #setting-box-header {
     height: 38px;
@@ -219,8 +230,8 @@ text {
     position: absolute;
     width: 250px;
     height: auto;
-    left: 30px;
     top: 30px;
+    left: 30px;
     padding:3px;
     background-color: white;
     border:1px solid #ccc;
@@ -231,6 +242,22 @@ text {
 #info-layout p {
     font-family: sans-serif;
     font-size: 15px;
+}
+@keyframes show-info {
+    from {
+        left: -280px;
+    }
+    to {
+        left: 30px;
+    }
+}
+@keyframes hide-info {
+    from {
+        left: 30px;
+    }
+    to {
+        left: -280px;
+    }
 }
 #color-button {
     position: absolute;
@@ -264,24 +291,20 @@ text {
     right: calc(100% - 30px);
     bottom: 20px;
 }
-@keyframes show-bar {
+@keyframes show-color-bar {
     from {
         right: calc(100% - 30px);
-        border-radius: 15px;
     }
     to {
         right: 0%;
-        border-radius: 0px;
     }
 }
-@keyframes hide-bar {
+@keyframes hide-color-bar {
     from {
         right: 0%;
-        border-radius: 0px;
     }
     to {
         right: calc(100% - 30px);
-        border-radius: 15px;
     }
 }
 .color-item {
@@ -327,6 +350,27 @@ input[type="range"]::-webkit-slider-thumb {
     border: 3px solid white;
     cursor: pointer;
     transition: 0.3s ease-in-out;
+}
+.line-style {
+    float: left;
+    width: 35px;
+    margin: 7px;
+}
+#sline-button {
+    background-image: url("../image/sline.png");
+    background-size: cover;
+}
+#curve-button {
+    background-image: url("../image/curve.png");
+    background-size: cover;
+}
+#hline-button {
+    background-image: url("../image/hline.png");
+    background-size: cover;
+}
+#vline-button {
+    background-image: url("../image/vline.png");
+    background-size: cover;
 }
 #upload-layout {
     width: 300px;
@@ -407,19 +451,24 @@ rect:hover {
     stroke: #7dfbf5;
     stroke-width: 1px;
 }
-#bar-grapg {
-
-}
-@-webkit-keyframes showbar /* Safari 和 Chrome */
+@keyframes show-bar-chart
 {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from { 
+        opacity: 0; 
+    }
+    to { 
+        opacity: 1; 
+    }
 }
 
-@-webkit-keyframes hidebar /* Safari 和 Chrome */
+@keyframes hide-bar-chart
 {
-    from { opacity: 1; }
-    to { opacity: 0; }
+    from { 
+        opacity: 1; 
+    }
+    to { 
+        opacity: 0; 
+    }
 }
 #status-bar {
     text-align: right;

@@ -15,7 +15,7 @@ function selectNodes(type) {
         return node.selected;
     });
     var parent_nodes = [];
-    if (type == 1) {
+    if (type === 2) {
         data.links.forEach(function(link, i) {
             if ( selected_nodes.indexOf(link.target) > -1) { 
                 link.source.selected = false;
