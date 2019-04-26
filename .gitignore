@@ -1,0 +1,2 @@
+index/index_static/js/*
+!index/index_static/js/*.min.js
