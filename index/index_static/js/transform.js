@@ -23,9 +23,17 @@ container.call(zoom)
     .on("dblclick.zoom", null);
 
 function zoomFunction(vars) {
-    console.log("translate(" + vars.x + "," + vars.y + ") " + "scale(" + vars.k + ") " + "rotate(" + vars.rotate + "," + (window.innerWidth / 2) + " " + (window.innerHeight / 2) + ")")
-    network_graph.attr("transform", "translate(" + vars.x + "," + vars.y + ") " + "scale(" + vars.k + ") " + "rotate(" + vars.rotate + ")");
-    brush_svg.attr("transform", "translate(" + vars.x + "," + vars.y + ") " + "scale(" + vars.k + ") " + "rotate(" + vars.rotate + ")");
+    var translate = "translate(" + vars.x + "," + vars.y + ") ";
+    var scale = "scale(" + vars.k + ") ";
+    var rotate = "rotate(0)"
+    if (typeof(vars.rotate) === "number") {
+        rotate = "rotate(" + vars.rotate + "," + (window.innerWidth / 2) + " " + (window.innerHeight / 2) + ")";
+    }
+    else {
+        rotate = "rotate(" + vars.rotate.split(",")[0] + "," + (window.innerWidth / 2) + " " + (window.innerHeight / 2) + ")";
+    }
+    network_graph.attr("transform", translate + scale + rotate);
+    brush_svg.attr("transform", translate + scale + rotate);
     brush_svg.select("rect")
         .attr("x", - vars.x / vars.k)
         .attr("y", - vars.y / vars.k)
@@ -36,7 +44,7 @@ function zoomFunction(vars) {
 d3.select("#zoom-out").on("click", function() {
     var translate_scale_rotate = getTranslateAndScaleAndRotate("#network-graph");
     translate_scale_rotate.k = parseFloat(translate_scale_rotate.k) * 1.5 + '';
-    zoomFunction(translate_scale_rotate);    
+    zoomFunction(translate_scale_rotate);
 });      
 
 d3.select("#zoom-in").on("click", function() {
@@ -46,9 +54,10 @@ d3.select("#zoom-in").on("click", function() {
 });      
 
 d3.select("#zoom-reset").on("click", function() {
-    var translate_scale_rotate = getTranslateAndScaleAndRotate("#network-graph");
-    translate_scale_rotate.k = "1";
-    zoomFunction(translate_scale_rotate);
+    // var translate_scale_rotate = getTranslateAndScaleAndRotate("#network-graph");
+    // translate_scale_rotate.k = 1;
+    // zoomFunction(translate_scale_rotate);
+    network_graph.call(zoom.transform, d3.zoomIdentity);
 });
 
 // 顺时针旋转

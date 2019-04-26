@@ -66,7 +66,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 // 初始化配色条
 var color_bar = d3.select("#color-bar");
 for (var i = 0; i <= 1; i += 0.01) {
-    color_bar.append("button")
+    color_bar.append("div")
         .attr("class", "color-item")
         .style("background-color", d3.interpolateSinebow(i));
 }

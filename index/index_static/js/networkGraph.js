@@ -1,7 +1,3 @@
-// 用来记录新建节点的 x y 坐标
-var create_x = 0;
-var create_y = 0;
-
 // 定义右键菜单选项
 var node_menu = [
     [
@@ -200,6 +196,12 @@ var create_menu = [
                         attr_table.style("display", "none");
                     });
             }
+        },
+        {
+            text: "全部展开",
+            func: function() {
+                alert("还没写");
+            }
         }
     ]
 ];
@@ -208,6 +210,10 @@ var create_menu = [
 var node_elements = null;
 var link_elements = null;
 var link_text_elements = null;
+
+// 用来记录新建节点的 x y 坐标
+var create_x = 0;
+var create_y = 0;
 
 var linkForce = d3.forceLink()
     .id(function (link) { return link.id })
@@ -219,6 +225,7 @@ var simulation = d3.forceSimulation()
         stopLayout();
     });
 
+// 更新数据
 updateData(data);
 
 function updateData(data) {
@@ -347,14 +354,6 @@ function tick() {
         .attr("marker-end", "url(#resolved)");
     link_text_elements.attr("dx", function(link) { return getLineTextDx(link); });
 }
-
-// 布局切换开关
-d3.select("#layout-button")
-    .on("click", function() {
-        NETWORKCONFIG.layout = (NETWORKCONFIG.layout === "force" ? "radius" : "force");
-        d3.select("#layout-switch").attr("class", NETWORKCONFIG.layout == "force" ? "fa fa-toggle-off" : "fa fa-toggle-on");
-        drawNetworkGraph(data);
-    })
 
 // 点击清空所有选中
 container.on("click", function() {
@@ -504,6 +503,14 @@ line_style_buttons.on("click", function() {
         NETWORKCONFIG.line_style = this.value;
         tick();
     });
+
+// 布局切换开关
+d3.select("#layout-button")
+    .on("click", function() {
+        NETWORKCONFIG.layout = (NETWORKCONFIG.layout === "force" ? "radius" : "force");
+        d3.select("#layout-switch").attr("class", NETWORKCONFIG.layout == "force" ? "fa fa-toggle-off" : "fa fa-toggle-on");
+        drawNetworkGraph(data);
+    })
 
 function fill_circle() {
     if (NETWORKCONFIG.special === true) {

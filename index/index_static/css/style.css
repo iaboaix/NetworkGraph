@@ -117,7 +117,7 @@ html, body {
     background-color: #0D877A;
     position: absolute;
     top: 30px;
-    left: 100%;
+    right: -300px;
     font-size: 15px;
     margin: 2px auto;
     border-collapse: collapse;
@@ -126,20 +126,20 @@ html, body {
 @keyframes show-setting
 {
     from { 
-        left: 100%; 
+        right: -300px; 
     }
     to { 
-        left: calc(100% - 300px); 
+        right: 0px; 
     }
 }
 
 @keyframes hide-setting
 {
     from { 
-        left: calc(100% - 300px); 
+        right: 0px; 
     }
     to { 
-        left: 100%; 
+        right: -300px; 
     }
 }
 #setting-box-header {
@@ -285,7 +285,7 @@ text {
     }
 }
 #color-layout {
-    width: calc(100% - 30px);
+    width: 100%;
     height: 50px;
     position: absolute;
     left: calc(30px - 100%);
@@ -458,7 +458,7 @@ input[type="file"] {
     position: absolute;
     left: 30px;
     bottom: 0px;
-    font-size: 10px;
+    font-size: 12px;
     line-height: 20px;
 }
 #tips {

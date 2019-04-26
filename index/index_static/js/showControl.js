@@ -14,7 +14,7 @@ var SHOWCONFIG = {
 d3.select("#info-show")
     .on("click", function() {
         d3.select(this).classed("high-light", SHOWCONFIG.info = !SHOWCONFIG.info);
-        d3.select("#info-layout").style("animation", SHOWCONFIG.info === true ? "show-info 3s forwards" : "hide-info 3s forwards");
+        d3.select("#info-layout").style("animation", SHOWCONFIG.info === true ? "show-info 1s forwards" : "hide-info 1s forwards");
     });
 
 // 柱状图显示开关
@@ -24,10 +24,10 @@ d3.select("#bar-graph-show")
         d3.select("#bar-graph")
             .attr("transform", "translate(" + (window.innerWidth - BARCONFIG.width + 2) + ", " + 32 + ")")
         if (SHOWCONFIG.bar_chart === true) {
-            bar_graph.style("animation", "show-bar-chart 3s forwards");
+            bar_graph.style("animation", "show-bar-chart 1s forwards");
         }
         else {
-            bar_graph.style("animation", "hide-bar-chart 3s forwards");
+            bar_graph.style("animation", "hide-bar-chart 1s forwards");
         }
     });
 
@@ -58,7 +58,7 @@ var setting_box = d3.select("#setting-box");
 d3.selectAll("#setting-button")
     .on("click", function() {
         SHOWCONFIG.setting = !SHOWCONFIG.setting;
-        setting_box.style("animation", SHOWCONFIG.setting === true ? "show-setting 3s forwards" : "hide-setting 3s forwards");
+        setting_box.style("animation", SHOWCONFIG.setting === true ? "show-setting 1s forwards" : "hide-setting 1s forwards");
     });
 
 // 配色条显示开关

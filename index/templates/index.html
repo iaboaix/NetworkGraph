@@ -146,7 +146,7 @@
     </div>
     <div id="status-bar">
         <div id="tips">TIPS: CTRL可进行点选，SHIFT可 打开/关闭 框选。</div>
-        <div id="notice">如果发现BUG或有好的修改意见,请联系QQ 642212607 进行提交。</div>
+        <div id="notice">如果发现BUG或有好的修改意见,请在<a id="github" href="https://github.com/iaboaix/network_graph">Github</a>进行提交。</div>
     </div>
     <div id="upload-layout">
         <div id="upload-top-layout">
@@ -171,13 +171,13 @@
     	var data = {{ Dict|safe }};
     	var support_labels = {{ List|safe }};
     </script>
-    <script type="text/javascript" src="{% static 'js/index.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/tools.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/showControl.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/upOrDownload.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/transform.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/barGraph.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/selectFunction.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/networkGraph.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tools.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/showControl.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/upOrDownload.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/transform.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/barGraph.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/selectFunction.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/networkGraph.js' %}"></script>
 </body>
 </html>
