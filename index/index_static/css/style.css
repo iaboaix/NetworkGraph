@@ -284,37 +284,49 @@ text {
         transform: rotate(0deg);
     }
 }
-#color-bar {
+#color-layout {
     width: calc(100% - 30px);
-    height: 30px;
+    height: 50px;
     position: absolute;
-    right: calc(100% - 30px);
+    left: calc(30px - 100%);
     bottom: 20px;
 }
-@keyframes show-color-bar {
+@keyframes show-color-layout {
     from {
-        right: calc(100% - 30px);
+        left: calc(30px - 100%);
     }
     to {
-        right: 0%;
+        left: 30px;
     }
 }
-@keyframes hide-color-bar {
+@keyframes hide-color-layout {
     from {
-        right: 0%;
+        left: 30px;
     }
     to {
-        right: calc(100% - 30px);
+        left: calc(30px - 100%);
     }
+}
+#color-bar {
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    display: flex;
 }
 .color-item {
     width: 1%;
+    height: 30px;
     float: left;
-    -webkit-transition-duration: 0s;
     transition-duration: 0s;
+    bottom: 0px;
 }
-.color-item:hover {
-    border: 1px solid black;
+#color-marker {
+    height: 15px;
+    position: absolute;
+    bottom: 30px;
+    left: 0px;
+    color: rgb(255, 64, 64);
+    text-align: center;
 }
 #line-color{
     width: 100%;
@@ -445,9 +457,17 @@ input[type="file"] {
     background-color: #027080;
     position: absolute;
     left: 30px;
-    bottom: 2px;
+    bottom: 0px;
+    font-size: 10px;
+    line-height: 20px;
 }
-rect:hover {
+#tips {
+    float: left;
+}
+#notice {
+    float: right;
+}
+.bar-elements rect:hover {
     stroke: #7dfbf5;
     stroke-width: 1px;
 }
@@ -469,11 +489,6 @@ rect:hover {
     to { 
         opacity: 0; 
     }
-}
-#status-bar {
-    text-align: right;
-    font-size: 12px;
-    line-height: 20px;
 }
 select {
     width: 100%;

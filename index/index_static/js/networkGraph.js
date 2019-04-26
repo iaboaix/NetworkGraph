@@ -357,15 +357,7 @@ d3.select("#layout-button")
     })
 
 // 点击清空所有选中
-container.on("keydown", function() {
-    if (d3.event.shiftKey === true) {
-        brush_svg.style("display", "block");
-    }
-}).on("keyup", function() {
-    if (d3.event.shiftKey === true) {
-        brush_svg.style("display", "none");
-    }
-}).on("click", function() {
+container.on("click", function() {
     if (d3.event.ctrlKey === false) {
         d3.selectAll(".selected")
             .classed("selected", false);
@@ -431,7 +423,11 @@ function removeNode(node) {
 // 颜色标记
 d3.selectAll(".color-item")
     .on("click", function() {
-        markColor(d3.select(this).style("background-color"));
+        var click_item = d3.select(this);
+        markColor(click_item.style("background-color"));
+        d3.select("#color-marker")
+            .style("left", this.offsetLeft + 2 + "px")
+            .style("color", click_item.style("background-color"));
     });
 
 d3.select("#node-color").on("change", function () {

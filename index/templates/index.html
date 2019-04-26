@@ -49,7 +49,10 @@
             <p><strong>关系属性:</strong></p>
         </div>
     </div>
-    <div id="color-bar"></div>
+    <div id="color-layout">
+        <div><i id="color-marker" class="fa fa-map-pin"></i></div>
+        <div id="color-bar"></div>
+    </div>
     <div id="left-tool-bar">
     	<div id="tool-bar">
 	        <button id="zoom-out" title="放大"><i class="fa fa-plus-circle"></i></button>
@@ -142,8 +145,9 @@
         </table>
     </div>
     <div id="status-bar">
-<!--     如果发现BUG或有好的修改意见,请联系QQ 642212607 进行提交，谢谢。
- -->    </div>
+        <div id="tips">TIPS: CTRL可进行点选，SHIFT可 打开/关闭 框选。</div>
+        <div id="notice">如果发现BUG或有好的修改意见,请联系QQ 642212607 进行提交。</div>
+    </div>
     <div id="upload-layout">
         <div id="upload-top-layout">
             <div id="file-title">导入json数据</div>
@@ -167,13 +171,13 @@
     	var data = {{ Dict|safe }};
     	var support_labels = {{ List|safe }};
     </script>
-    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/tools.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/showControl.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/upOrDownload.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/transform.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/barGraph.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/selectFunction.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/networkGraph.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/index.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tools.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/showControl.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/upOrDownload.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/transform.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/barGraph.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/selectFunction.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/networkGraph.min.js' %}"></script>
 </body>
 </html>

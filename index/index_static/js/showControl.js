@@ -67,8 +67,8 @@ d3.select("#color-button")
         SHOWCONFIG.color = !SHOWCONFIG.color;
         d3.select(this)
             .style("animation", SHOWCONFIG.color === true ? "rotate ease-in 2s" : "rerotate ease-out 2s")
-        d3.select("#color-bar")
-            .style("animation", SHOWCONFIG.color === true ? "show-color-bar ease-in 2s forwards" : "hide-color-bar ease-out 2s forwards")
+        d3.select("#color-layout")
+            .style("animation", SHOWCONFIG.color === true ? "show-color-layout ease-in 2s forwards" : "hide-color-layout ease-out 2s forwards")
     });
 
 // 全屏切换
@@ -79,6 +79,15 @@ d3.select("#screen-button")
         d3.select("#screen-switch")
             .attr("class", SHOWCONFIG.screen === true ? "fa fa-compress" : "fa fa-expand");
     });
+
+// shift 点击切换框选
+document.onkeydown = function(ev) {
+    var e = ev || window.ev || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode === 16){
+        SHOWCONFIG.brush = !SHOWCONFIG.brush;
+        brush_svg.style("display", SHOWCONFIG.brush === true ? "block" : "none");
+    }
+};
 
 //进入全屏
 function enterFullScreen() {

@@ -1,5 +1,5 @@
 // 屏蔽右键菜单
-document.oncontextmenu=function(ev){
+document.oncontextmenu = function(ev) {
 	ev.preventDefault();
 }
 

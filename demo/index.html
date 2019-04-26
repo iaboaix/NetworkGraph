@@ -5,12 +5,38 @@
     <meta charset='utf-8'>
     <title>D3 关系图示例</title>
     <link rel="stylesheet" href="style.css">
-    <script src='http://d3js.org/d3.v3.min.js' charset='utf-8'></script>
+    <script src='d3.min.js' charset='utf-8'></script>
+    <style type="text/css" media="screen">
+    	svg {
+    		width: 100%;
+    		height: 100%;
+    		background-color: green;
+    	}	
+    </style>
 </head>
-
 <body>
-    <div id='canvas'></div>
-    <script src="./force.js"></script>
+    <svg></svg>
+    <script type="text/javascript">
+    	d3.select("svg")
+    		.on("keypress", function() {
+    			console.log("keypress");
+    		})
+    		.on("click", function() {
+    			console.log("click");
+    		})
+    	document.onkeydown=function(event){
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if(e && e.keyCode==27){ // 按 Esc 
+            	console.log("27")
+                //要做的事情
+              }
+            if(e && e.keyCode==113){ // 按 F2 
+                 //要做的事情
+               }            
+             if(e && e.keyCode==13){ // enter 键
+                 //要做的事情
+            }
+        }; 
+    </script>
 </body>
-
 </html>
