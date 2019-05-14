@@ -1,4 +1,3 @@
-![Image text](https://github.com/iaboaix/NetworkGraph/blob/master/preview.jpg)
 # network_graph
 ## 系统部署
 1、yum update  
@@ -31,3 +30,4 @@
 vim /usr/local/lib64/python3.6/site-packages/django/db/models/base.py  
 将版本检测代码段注释掉  
 若django debug=false之后 静态文件找不到 启动时添加--insecure  
+![Image text](https://github.com/iaboaix/NetworkGraph/blob/master/preview.jpg)
