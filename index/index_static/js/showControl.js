@@ -1,3 +1,11 @@
+/*
+* @project: NetworkGraph
+* @file: showControl.js
+* @author: dangzhiteng
+* @email: 642212607@qq.com
+* @date: 2019.5.14
+*/
+
 var SHOWCONFIG = {
     "screen": false,
     "brush": false,

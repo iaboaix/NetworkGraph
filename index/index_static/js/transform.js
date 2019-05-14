@@ -1,3 +1,11 @@
+/*
+* @project: NetworkGraph
+* @file: transform.js
+* @author: dangzhiteng
+* @email: 642212607@qq.com
+* @date: 2019.5.14
+*/
+
 // 获取元素格式化的 transform 属性
 function getTranslateAndScaleAndRotate(element) {
     var transform = d3.select(element).attr("transform");

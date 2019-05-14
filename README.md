@@ -1,3 +1,4 @@
+![Image text](https://github.com/iaboaix/NetworkGraph/blob/master/preview.jpg)
 # network_graph
 ## 系统部署
 1、yum update  

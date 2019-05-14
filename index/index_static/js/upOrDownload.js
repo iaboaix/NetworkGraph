@@ -1,3 +1,11 @@
+/*
+* @project: NetworkGraph
+* @file: upOrDownload.js
+* @author: dangzhiteng
+* @email: 642212607@qq.com
+* @date: 2019.5.14
+*/
+
 // 上传数据功能
 var upload_layout = d3.select("#upload-layout");
 d3.select("#upload-data")

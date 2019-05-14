@@ -1,3 +1,11 @@
+/*
+* @project: NetworkGraph
+* @file: networkGraph.js
+* @author: dangzhiteng
+* @email: 642212607@qq.com
+* @date: 2019.5.14
+*/
+
 // 定义右键菜单选项
 var node_menu = [
     [

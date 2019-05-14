@@ -1,3 +1,10 @@
+/*
+* @project: NetworkGraph
+* @file: index.js
+* @author: dangzhiteng
+* @email: 642212607@qq.com
+* @date: 2019.5.14
+*/
 var NETWORKCONFIG = {
     "layout": "force",
     "calculating": true,

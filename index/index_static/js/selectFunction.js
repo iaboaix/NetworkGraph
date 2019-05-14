@@ -1,3 +1,11 @@
+/*
+* @project: NetworkGraph
+* @file: selectFunction.js
+* @author: dangzhiteng
+* @email: 642212607@qq.com
+* @date: 2019.5.14
+*/
+
 // 点击选中节点
 function selectNode(node) {
     d3.select(this).classed("finded", false);

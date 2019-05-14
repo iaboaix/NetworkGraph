@@ -1,3 +1,11 @@
+/*
+* @project: NetworkGraph
+* @file: tools.js
+* @author: dangzhiteng
+* @email: 642212607@qq.com
+* @date: 2019.5.14
+*/
+
 // 屏蔽右键菜单
 document.oncontextmenu = function(ev) {
 	ev.preventDefault();

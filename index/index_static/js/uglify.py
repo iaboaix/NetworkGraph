@@ -1,3 +1,10 @@
+"""
+* @project: NetworkGraph
+* @file: uglify.py
+* @author: dangzhiteng
+* @email: 642212607@qq.com
+* @date: 2019.5.14
+"""
 import os
 files = os.listdir(".")
 uglify_files = []
