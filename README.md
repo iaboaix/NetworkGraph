@@ -2,7 +2,7 @@
 
 [![Demo](https://img.shields.io/badge/D3-NetworkGraph-green.svg)](http://148.70.238.152/)
 
-如果对您有帮助，别忘了点击:star:  
+如果对您有帮助，请点击:star:  
 
 [![GitHub watchers](https://img.shields.io/github/watchers/iaboaix/NetworkGraph.svg?style=social&label=Watch)](https://github.com/iaboaix/NetworkGraph)
 [![GitHub stars](https://img.shields.io/github/stars/iaboaix/NetworkGraph.svg?style=social)](https://github.com/iaboaix/NetworkGraph)
@@ -52,4 +52,4 @@ http://148.70.238.152/
 ![Image text](https://github.com/iaboaix/NetworkGraph/blob/master/preview.jpg)
 
 # [Donate](Donate)
-<a href="javascript:;" alt="微信"><img src="Donate/wechat.png" height="350" width="250"></a>
+<a href="javascript:;" alt="微信"><img src="Donate/wechat.png" height="350" width="350"></a>
