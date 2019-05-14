@@ -52,4 +52,4 @@ http://148.70.238.152/
 ![Image text](https://github.com/iaboaix/NetworkGraph/blob/master/preview.jpg)
 
 # [Donate](Donate)
-<a href="javascript:;" alt="微信"><img src="Donate/wechat.png" height="350" width="350"></a>
+<a href="javascript:;" alt="微信"><img src="Donate/wechat.png" height="350" width="250"></a>
