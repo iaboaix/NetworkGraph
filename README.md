@@ -1,5 +1,13 @@
 # NetworkGraph
 
+[![Demo](https://img.shields.io/badge/D3-NetworkGraph-green.svg)](http://148.70.238.152/)
+
+如果对您有帮助，别忘了点击:star:  
+
+[![GitHub watchers](https://img.shields.io/github/watchers/iaboaix/NetworkGraph.svg?style=social&label=Watch)](https://github.com/iaboaix/NetworkGraph)
+[![GitHub stars](https://img.shields.io/github/stars/iaboaix/NetworkGraph.svg?style=social)](https://github.com/iaboaix/NetworkGraph)
+[![GitHub forks](https://img.shields.io/github/forks/iaboaix/NetworkGraph.svg?style=social)](https://github.com/iaboaix/NetworkGraph/fork)
+
 ## 项目预览
 http://148.70.238.152/  
 
@@ -42,3 +50,6 @@ http://148.70.238.152/
 
 ## 系统预览
 ![Image text](https://github.com/iaboaix/NetworkGraph/blob/master/preview.jpg)
+
+# [Donate](Donate)
+<a href="javascript:;" alt="微信"><img src="Donate/weixin.png" height="350" width="350"></a>
