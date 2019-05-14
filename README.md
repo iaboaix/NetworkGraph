@@ -19,7 +19,7 @@
 12、把54行dbms.connectors.default_listen_address=0.0.0.0注释去掉  
 13、远程访问neo4j数据库 http://IP:7474/ 修改初始密码
 ## 拉取代码
-14、git clone git@139.199.163.147:root/networkgraph.git
+14、git clone https://github.com/iaboaix/NetworkGraph.git
 ## 启动neo4j django
 15、nohup ./neo4j console &  
 16、nohup python3 manage.py runserver --insecure 0.0.0.0:80 & 
