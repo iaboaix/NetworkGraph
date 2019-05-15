@@ -32,7 +32,7 @@ def upload(request):
     if request.method == 'POST':
         data = dict()
         file_obj = request.FILES.get('file')
-        with open(os.path.join('index', 'index_static/data', file_obj.name), 'rb+') as file:
+        with open(os.path.join('index', 'index_static', 'data', file_obj.name), 'wb+') as file:
             for chunk in file_obj.chunks():
                 file.write(chunk)
             file.seek(0)

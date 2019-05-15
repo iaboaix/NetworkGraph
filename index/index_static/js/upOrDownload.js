@@ -67,6 +67,7 @@ d3.select("#upload-button")
             contentType: false,
             processData: false,
             success: function(cur_data) {
+                console.log(cur_data);
                 data = JSON.parse(cur_data);
                 updateData(data);
                 d3.select("#upload-layout").style("display", "none");
@@ -83,6 +84,7 @@ d3.select("#upload-button")
 d3.select("#download-data")
     .on("click", downFile);
 
+// 先清洗数据 再下载
 function downFile() {
     var temp = JSON.parse(JSON.stringify(data));
     temp.nodes.forEach(function(node) {
@@ -91,6 +93,7 @@ function downFile() {
         delete node.y;
         delete node.vx;
         delete node.vy;
+        delete node.color;
         delete node.selected;
         delete node.previouslySelected;
     });
@@ -101,7 +104,8 @@ function downFile() {
     })
     var elementA = document.createElement('a');
     elementA.setAttribute('href', 'data:text/plain;charset=utf-8,' + JSON.stringify(temp, null, 4));
-    elementA.setAttribute('download', "data.json");
+    var time = new Date().getTime();
+    elementA.setAttribute('download', 'data_' + time + '.json');
     elementA.style.display = 'none';
     document.body.appendChild(elementA);
     elementA.click();

@@ -17,6 +17,7 @@ function textBreaking(d3text, text) {
     try {
         len = text.length;
     } catch(error) {
+        console.log("Warning: nodes缺少name标签！");
         return;
     }
     if (len <= 4) {
@@ -80,16 +81,16 @@ function genLinkPath(link, line_style) {
     var y4 = sy + dy * 4;
     var x7 = sx + dx * 7;
     var y6 = sy + dy * 6;
-    if (line_style == 0) {
+    if (line_style === "0") {
         path = "M" + sx + "," + sy + " L" + tx + "," + ty;
     }
-    else if (line_style == 1) {
+    else if (line_style === "1") {
         path = "M " + sx + "," + sy + " C" + x1 + "," + y2 + " " + x2 + "," + y3 + " " + x4 + "," + y4 + " S" + x7 + "," + y6 + " " + tx + "," + ty;
     }
-    else if (line_style == 2) {
+    else if (line_style === "2") {
         path = "M " + sx + "," + sy + " L" + x4 + "," + sy + " " + " L" + x4 + "," + ty + " L" + tx + "," + ty;
     }
-    else if (line_style == 3) {
+    else if (line_style === "3") {
         path = "M " + sx + "," + sy + " L" + sx + "," + y4 + " " + " L" + tx + "," + y4 + " L" + tx + "," + ty;
     }
     return path;
@@ -102,7 +103,13 @@ function getLineTextDx(link) {
     var tx = link.target.x;
     var ty = link.target.y;
     var distance = Math.sqrt(Math.pow(tx - sx, 2) + Math.pow(ty - sy, 2));
-    var text_length = link.label.length;
+    var text_length = 0;
+    try {
+        var text_length = link.label.length;
+    } catch(error) {
+        console.log("Warning: links缺少label标签！");
+    }
+    
     var dx = (distance - 3 * text_length) / 2;
     return dx;
 }

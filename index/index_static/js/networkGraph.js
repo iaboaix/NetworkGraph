@@ -255,7 +255,7 @@ function setNetworkInfo(data) {
 
 function drawNetworkGraph(data) {
     startLayout();
-    if (NETWORKCONFIG.layout == "force") {
+    if (NETWORKCONFIG.layout === 0) {
         linkForce.strength(NETWORKCONFIG.link_strength);
         simulation.alpha(1)
             .alphaDecay(0.002)
@@ -265,7 +265,7 @@ function drawNetworkGraph(data) {
             .force("center", d3.forceCenter((window.innerWidth - 30) / 2, (window.innerHeight - 30) / 2))
             .force("collision", d3.forceCollide(NETWORKCONFIG.node_size));
     }
-    else {
+    else if (NETWORKCONFIG.layout === 1){
         data.nodes.forEach(function(node) {
             node.x = 0;
             node.y = 0;
@@ -276,6 +276,9 @@ function drawNetworkGraph(data) {
             .alpha(5)
             .alphaDecay(0.1)
             .alphaMin(0.02);
+    }
+    else if(NETWORKCONFIG.layout === 2) {
+        drawTree();
     }
 
     // 连线对象
@@ -513,10 +516,15 @@ line_style_buttons.on("click", function() {
     });
 
 // 布局切换开关
-d3.select("#layout-button")
-    .on("click", function() {
-        NETWORKCONFIG.layout = (NETWORKCONFIG.layout === "force" ? "radius" : "force");
-        d3.select("#layout-switch").attr("class", NETWORKCONFIG.layout == "force" ? "fa fa-toggle-off" : "fa fa-toggle-on");
+var layout_switch_buttons = d3.selectAll(".layout-switch");
+layout_switch_buttons.on("click", function() {
+        if (this.value === "2") {
+            alert("点击右下方进入github协助完成树图布局。");
+            return;
+        }
+        layout_switch_buttons.classed("high-light", false);
+        d3.select(this).classed("high-light", true)
+        NETWORKCONFIG.layout = parseInt(this.value);
         drawNetworkGraph(data);
     })
 
@@ -652,11 +660,11 @@ d3.select("#search-line")
 d3.select("#search-button")
     .on("click", find_node_name);
 
-function find_node_name(name) {
+function find_node_name() {
     var node_name = $("#search-line").val();
     var is_find = false;
     node_elements.each(function(node) {
-        if (node.name === name) {
+        if (node.name === node_name) {
             d3.select(this).classed("finded", true);
             is_find = true;
         }

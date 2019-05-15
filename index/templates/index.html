@@ -130,16 +130,19 @@
                 <tr>
                     <td>边样式</td>
                     <td>
-                        <button id="sline-button" class="line-style high-light" value=0></button>
-                        <button id="curve-button" class="line-style" value=1></button>
-                        <button id="hline-button" class="line-style" value=2></button>
-                        <button id="vline-button" class="line-style" value=3></button>
+                        <button id="sline-button" class="line-style high-light" value="0"></button>
+                        <button id="curve-button" class="line-style" value="1"></button>
+                        <button id="hline-button" class="line-style" value="2"></button>
+                        <button id="vline-button" class="line-style" value="3"></button>
                     </td>
                 </tr>
                 <tr>
                     <td>布局切换</td>
                     <td>
-                        <button id="layout-button" class="switch-button" title="切换布局模式">力&nbsp&nbsp布&nbsp&nbsp局&nbsp&nbsp&nbsp&nbsp<i id="layout-switch" class="fa fa-toggle-off"></i>&nbsp&nbsp&nbsp&nbsp圆&nbsp&nbsp布&nbsp&nbsp局</button>
+<!--                         <button id="layout-button" class="switch-button" title="切换布局模式">力&nbsp&nbsp布&nbsp&nbsp局&nbsp&nbsp&nbsp&nbsp<i id="layout-switch" class="fa fa-toggle-off"></i>&nbsp&nbsp&nbsp&nbsp圆&nbsp&nbsp布&nbsp&nbsp局</button> -->
+                        <button id="force-button" class="layout-switch high-light" value="0"><i class="fa fa-snowflake-o"></i></button>
+                        <button id="radius-button" class="layout-switch" value="1"><i class="fa fa-circle-o"></i></button>
+                        <button id="tree-button" class="layout-switch" value="2"><i class="fa fa-tree"></i></button>
                     </td>
                 </tr>
                 <tr>
@@ -185,6 +188,7 @@
     <script type="text/javascript" src="{% static 'js/transform.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/barGraph.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/selectFunction.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/treeGraph.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/networkGraph.js' %}"></script>
 </body>
 </html>

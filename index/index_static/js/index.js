@@ -6,13 +6,13 @@
 * @date: 2019.5.14
 */
 var NETWORKCONFIG = {
-    "layout": "force",
+    "layout": 0, // 0: 力引导布局, 1: 圆布局, 2: 树布局
     "calculating": true,
     "node_size": 15,
     "special": false,
     "node_charge": -300,
     "link_strength": 0.5,
-    "line_style": 0
+    "line_style": "0"
 }
 
 var BARCONFIG = {  
