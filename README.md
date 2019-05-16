@@ -1,7 +1,7 @@
 # NetworkGraph
 
 [![Demo](https://img.shields.io/badge/D3-NetworkGraph-green.svg)](http://148.70.238.152/)
-[![Demo](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://github.com/iaboaix/NetworkGraph/license)
+[![Demo](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://github.com/iaboaix/NetworkGraph/LICENSE)
 
 如果对您有帮助，请点击:star:  
 
@@ -9,8 +9,9 @@
 [![GitHub stars](https://img.shields.io/github/stars/iaboaix/NetworkGraph.svg?style=social)](https://github.com/iaboaix/NetworkGraph)
 [![GitHub forks](https://img.shields.io/github/forks/iaboaix/NetworkGraph.svg?style=social)](https://github.com/iaboaix/NetworkGraph/fork)
 
-## 项目预览
-http://148.70.238.152/  
+**点击进行**[项目预览](http://148.70.238.152/)  
+
+**点击进行**[本地部署](https://github.com/iaboaix/NetworkGraph/blob/master/QuickStart.md).  
 
 ## 系统已完成功能
 ### 网络图
@@ -19,6 +20,7 @@ http://148.70.238.152/
 - 分析模式切换  
 - 整体参数统计  
 - 分类统计  
+- 最短路径查找  
 
 ### 节点
 - 节点大小调节  
@@ -45,6 +47,7 @@ http://148.70.238.152/
 
 ## 待完成
 - 右键空白区域，显示菜单展开全部  
+- 树形布局  
 
 ## 存在的BUG
 - 右侧按钮 放大/缩小 错位(与问题 http://bl.ocks.org/nicmcd/a74b0bfba61f50d932dedd6534ad7d9e 相同)  
