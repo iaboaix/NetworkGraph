@@ -119,7 +119,7 @@ html, body {
 .cursor-add {
     cursor: crosshair;
 }
-#setting-box {
+.right-box {
     width: 300px;
     background-color: #0D877A;
     position: absolute;
@@ -130,7 +130,7 @@ html, body {
     border-collapse: collapse;
     border-radius: 5px;
 }    
-@keyframes show-setting
+@keyframes show-box
 {
     from { 
         right: -300px; 
@@ -140,7 +140,7 @@ html, body {
     }
 }
 
-@keyframes hide-setting
+@keyframes hide-box
 {
     from { 
         right: 0px; 
@@ -149,7 +149,7 @@ html, body {
         right: -300px; 
     }
 }
-#setting-box-header {
+.box-header {
     height: 38px;
     line-height: 38px;
     background: #027080;
@@ -171,6 +171,11 @@ tbody td {
     font-size: 12px;
     border: 1px solid #FFFFFF;
     padding: 4px;
+    text-align: center;
+}
+td input[type=text] {
+    width: 80%;
+    height: 80%;
 }
 circle {
     cursor: move;
@@ -189,15 +194,19 @@ circle:hover {
     stroke-width: 20px;
     stroke: #00FFFB;
 }
-path{
+path {
     fill: none;
     cursor: pointer;
     stroke: #00FFFB;
     stroke-width: 1px;
 }
-path:hover{
+path:hover {
     stroke-width: 4px !important;
     stroke-opacity: 0.8;
+}
+.route {
+    stroke: red;
+    stroke-width: 5px;
 }
 .selected path{
     stroke: yellow;

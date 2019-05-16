@@ -373,6 +373,8 @@ container.on("click", function() {
             .classed("selected", false);
         d3.selectAll(".finded")
             .classed("finded", false);
+        d3.selectAll(".route")
+            .classed("route", false);
         node_elements.each(function(d) {
             d.selected = false;
         });
@@ -612,7 +614,7 @@ function stopLayout() {
 function hoverNode(node) {
     var node_info = d3.select("#node-info");
     node_info.selectAll(".info").remove();
-    var exclude_attr = ["x", "y", "vx", "vy", "index", "selected", "previouslySelected", "color"];
+    var exclude_attr = ["x", "y", "vx", "vy", "selected", "previouslySelected", "color"];
     for (var key in node) {
         if (exclude_attr.indexOf(key.toString()) != -1) {
             continue;
@@ -680,7 +682,26 @@ d3.select("#analyse-button")
         NETWORKCONFIG.special = !NETWORKCONFIG.special;
         d3.select("#analyse-switch").attr("class", NETWORKCONFIG.special === true ? "fa fa-toggle-on" : "fa fa-toggle-off");
         fill_circle();
-    })
+    });
+
+// 最短路径查找
+d3.select("#begin-find")
+    .on("click", function() {
+        var source_index = parseInt($("#source-node-index").val());
+        var target_index = parseInt($("#target-node-index").val());
+        if (source_index === "" || target_index === "" || source_index === "NAN" || target_index === "NAN") {
+            alert("请正确输入源节点和目标节点index！");
+            return
+        }
+        var paths = find_route(data, source_index, target_index);
+        paths.forEach(function(path) {
+            link_elements.each(function(link) {
+                if ((path.indexOf(link.source.index) > -1) && (path.indexOf(link.target.index) > -1)) {
+                    d3.select(this).classed("route", true);
+                }
+            });
+        });
+    });
 
 // 渐变 先不用
 // radial_gradient = defs_layout.append("radialGradient")

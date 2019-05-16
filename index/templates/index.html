@@ -40,7 +40,8 @@
                 <button id="search-button"><i class="fa fa-search"></i></button>
             </div>
             <button class="top-tool-button" id="screen-button"><i class="fa fa-expand" id="screen-switch"></i></button>
-            <button class="top-tool-button" id="setting-button"><i class="fa fa-gear"></i></button>
+            <button class="top-tool-button" id="route-visiable-button"><i class="fa fa-road"></i></button>
+            <button class="top-tool-button" id="setting-visiable-button"><i class="fa fa-gear"></i></button>
         </div>  
     </div>
     <div id="info-layout">
@@ -78,10 +79,10 @@
 	    </div>
         <button id="color-button" type=""></button>
     </div>
-    <div id="setting-box">
-        <div id="setting-box-header">
+    <div id="setting-box" class="right-box">
+        <div class="box-header">
             &nbsp&nbsp网络图设置&nbsp&nbsp
-            <i class="fa fa-arrow-right" id="setting-button"></i>
+            <i class="fa fa-arrow-right" id="setting-visiable-button"></i>
         </div>
         <table id="setting-box-content">
             <tbody>
@@ -139,7 +140,7 @@
                 <tr>
                     <td>布局切换</td>
                     <td>
-<!--                         <button id="layout-button" class="switch-button" title="切换布局模式">力&nbsp&nbsp布&nbsp&nbsp局&nbsp&nbsp&nbsp&nbsp<i id="layout-switch" class="fa fa-toggle-off"></i>&nbsp&nbsp&nbsp&nbsp圆&nbsp&nbsp布&nbsp&nbsp局</button> -->
+                    <!--<button id="layout-button" class="switch-button" title="切换布局模式">力&nbsp&nbsp布&nbsp&nbsp局&nbsp&nbsp&nbsp&nbsp<i id="layout-switch" class="fa fa-toggle-off"></i>&nbsp&nbsp&nbsp&nbsp圆&nbsp&nbsp布&nbsp&nbsp局</button> -->
                         <button id="force-button" class="layout-switch high-light" value="0"><i class="fa fa-snowflake-o"></i></button>
                         <button id="radius-button" class="layout-switch" value="1"><i class="fa fa-circle-o"></i></button>
                         <button id="tree-button" class="layout-switch" value="2"><i class="fa fa-tree"></i></button>
@@ -154,9 +155,34 @@
             </tbody>
         </table>
     </div>
+    <div id="route-box" class="right-box">
+        <div class="box-header">
+            &nbsp&nbsp路径查找&nbsp&nbsp
+            <i class="fa fa-arrow-right" id="route-visiable-button"></i>
+        </div>
+        <table id="route-box-content">
+            <tbody>
+                <tr>
+                    <td>起点index</td>
+                    <td>
+                        <input type="text" id="source-node-index"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>终点index</td>
+                    <td>
+                        <input type="text" id="target-node-index"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="route-button-line" colspan="2"><button id="begin-find">开始查找</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div id="status-bar">
         <div id="tips">TIPS: CTRL可进行点选，SHIFT可 打开/关闭 框选。</div>
-        <div id="notice">如果发现BUG或有好的修改意见,请在<a id="github" href="https://github.com/iaboaix/https://github.com/iaboaix/NetworkGraph">Github</a>进行提交。</div>
+        <div id="notice">如果发现BUG或有好的修改意见,请在<a id="github" href="https://github.com/iaboaix/NetworkGraph.git">Github</a>进行提交。</div>
     </div>
     <div id="upload-layout">
         <div id="upload-top-layout">
@@ -190,5 +216,6 @@
     <script type="text/javascript" src="{% static 'js/selectFunction.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/treeGraph.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/networkGraph.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tools/route.js' %}"></script>
 </body>
 </html>

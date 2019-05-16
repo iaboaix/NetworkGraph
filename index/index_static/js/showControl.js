@@ -11,6 +11,7 @@ var SHOWCONFIG = {
     "brush": false,
     "info": true,
     "setting": false,
+    "route": false,
     "bar_chart": false,
     "node_text": true,
     "link_text": false,
@@ -63,11 +64,28 @@ d3.select("#marker-button")
 
 // 设置面板显示开关
 var setting_box = d3.select("#setting-box");
-d3.selectAll("#setting-button")
+d3.selectAll("#setting-visiable-button")
     .on("click", function() {
+        if (SHOWCONFIG.route === true) {
+            SHOWCONFIG.route = false;
+            route_box.style("animation", "hide-box 1s forwards");
+        }
         SHOWCONFIG.setting = !SHOWCONFIG.setting;
-        setting_box.style("animation", SHOWCONFIG.setting === true ? "show-setting 1s forwards" : "hide-setting 1s forwards");
+        setting_box.style("animation", SHOWCONFIG.setting === true ? "show-box 1s forwards" : "hide-box 1s forwards");
     });
+
+// 路径查找显示开关
+var route_box = d3.select("#route-box");
+d3.select("#route-visiable-button")
+    .on("click", function() {
+        if (SHOWCONFIG.setting === true) {
+            SHOWCONFIG.setting = false;
+            setting_box.style("animation", "hide-box 1s forwards");
+        }
+        SHOWCONFIG.route = !SHOWCONFIG.route;
+        route_box.style("animation", SHOWCONFIG.route === true ? "show-box 1s forwards" : "hide-box 1s forwards");
+    });
+
 
 // 配色条显示开关
 d3.select("#color-button")
