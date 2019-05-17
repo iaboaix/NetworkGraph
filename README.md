@@ -11,7 +11,9 @@
 
 **点击进行**[项目预览](http://148.70.238.152/)  
 
-**点击进行**[本地部署](https://github.com/iaboaix/NetworkGraph/blob/master/QuickStart.md).  
+**点击进行**[Linux部署](https://github.com/iaboaix/NetworkGraph/blob/master/QuickStartLinux).  
+
+**点击进行**[Windows部署](https://github.com/iaboaix/NetworkGraph/blob/master/QuickStartWindows.txt).  
 
 ## 系统已完成功能
 ### 网络图
@@ -57,6 +59,3 @@
 
 ## 系统预览
 ![Image text](https://github.com/iaboaix/NetworkGraph/blob/master/preview.jpg)
-
-# [Donate](Donate)
-<a href="javascript:;" alt="微信"><img src="others/donate/wechat.png" height="350" width="350"></a>
