@@ -11,7 +11,9 @@
 
 **点击进行**[项目预览](http://148.70.238.152/)  
 
-**点击进行**[本地部署](https://github.com/iaboaix/NetworkGraph/blob/master/QuickStart.md).  
+**点击进行**[Linux部署](https://github.com/iaboaix/NetworkGraph/blob/master/QuickStartLinux).  
+
+**点击进行**[Windows部署](https://github.com/iaboaix/NetworkGraph/blob/master/QuickStartWindows.txt).  
 
 ## 系统已完成功能
 ### 网络图
