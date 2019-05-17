@@ -5,7 +5,7 @@
 * @email: 642212607@qq.com
 * @date: 2019.5.14
 */
-function drawBarChart(data){
+function drawBarGraph(data){
     var bar_data = translate_to_bardata(data).slice(0, 15);
 
     // x 轴

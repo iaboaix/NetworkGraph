@@ -237,9 +237,8 @@ var simulation = d3.forceSimulation()
 updateData(data);
 
 function updateData(data) {
-    setNetworkInfo(data);
     drawNetworkGraph(data);
-    drawBarChart(data);
+    drawBarGraph(data);
 }
 
 function setNetworkInfo(data) {
@@ -254,6 +253,7 @@ function setNetworkInfo(data) {
 }
 
 function drawNetworkGraph(data) {
+	setNetworkInfo(data);
     startLayout();
     if (NETWORKCONFIG.layout === 0) {
         linkForce.strength(NETWORKCONFIG.link_strength);
