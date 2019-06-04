@@ -6,8 +6,10 @@
 * @date: 2019.5.14
 */
 function drawBarGraph(data){
+    if (data.nodes.length === 0) {
+        return;
+    }
     var bar_data = translate_to_bardata(data).slice(0, 15);
-
     // x 轴
     var x_label = [];
     bar_data.forEach(function(data) {

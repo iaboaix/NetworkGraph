@@ -62,7 +62,7 @@ function textBreaking(d3text, text) {
 }
 
 // 生成关系连线路径
-function genLinkPath(link, line_style) {
+function genLinkPath(link, link_style) {
     var path = null;
     var temp = 0;
     var sx = link.source.x;
@@ -81,23 +81,23 @@ function genLinkPath(link, line_style) {
     var y4 = sy + dy * 4;
     var x7 = sx + dx * 7;
     var y6 = sy + dy * 6;
-    if (line_style === "0") {
+    if (link_style === "slink") {
         path = "M" + sx + "," + sy + " L" + tx + "," + ty;
     }
-    else if (line_style === "1") {
+    else if (link_style === "clink") {
         path = "M " + sx + "," + sy + " C" + x1 + "," + y2 + " " + x2 + "," + y3 + " " + x4 + "," + y4 + " S" + x7 + "," + y6 + " " + tx + "," + ty;
     }
-    else if (line_style === "2") {
+    else if (link_style === "hlink") {
         path = "M " + sx + "," + sy + " L" + x4 + "," + sy + " " + " L" + x4 + "," + ty + " L" + tx + "," + ty;
     }
-    else if (line_style === "3") {
+    else if (link_style === "vlink") {
         path = "M " + sx + "," + sy + " L" + sx + "," + y4 + " " + " L" + tx + "," + y4 + " L" + tx + "," + ty;
     }
     return path;
 }
 
 // 获取文字位置
-function getLineTextDx(link) {
+function getLinkTextDx(link) {
     var sx = link.source.x;
     var sy = link.source.y;
     var tx = link.target.x;

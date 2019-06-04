@@ -149,10 +149,9 @@ html, body {
         right: -300px; 
     }
 }
-.box-header {
-    height: 38px;
-    line-height: 38px;
-    background: #027080;
+.box-title td {
+    font-size: 15px;
+    text-align: left;
 }
 #attr-table {
     width: auto;
@@ -190,6 +189,21 @@ circle:hover {
 .selected circle {
     stroke-width: 5px;
 }
+.selected {
+    stroke-dasharray: 1;
+}
+.style-0 {
+    stroke-dasharray: 0;
+}
+.style-55 {
+    stroke-dasharray: 5, 5;
+}
+.style-1010 {
+    stroke-dasharray: 10, 10;
+}
+.style-2010 {
+    stroke-dasharray: 20, 10;
+}
 .finded circle {
     stroke-width: 20px;
     stroke: #00FFFB;
@@ -198,7 +212,7 @@ path {
     fill: none;
     cursor: pointer;
     stroke: #00FFFB;
-    stroke-width: 1px;
+    stroke-width: 2px;
 }
 path:hover {
     stroke-width: 4px !important;
@@ -379,28 +393,33 @@ input[type="range"]::-webkit-slider-thumb {
     cursor: pointer;
     transition: 0.3s ease-in-out;
 }
-.line-style {
+.link-type {
     float: left;
     width: 35px;
     margin: 7px;
 }
-#sline-button {
+.link-style {
+    float: left;
+    width: 35px;
+    margin: 7px;
+}
+#slink-button {
     background-image: url("../image/sline.png");
     background-size: cover;
 }
-#curve-button {
+#clink-button {
     background-image: url("../image/curve.png");
     background-size: cover;
 }
-#hline-button {
+#hlink-button {
     background-image: url("../image/hline.png");
     background-size: cover;
 }
-#vline-button {
+#vlink-button {
     background-image: url("../image/vline.png");
     background-size: cover;
 }
-.layout-switch {
+.layout-style {
     float: left;
     width: 30%;
     margin: 3px;

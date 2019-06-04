@@ -36,7 +36,7 @@
         <div id="top-right-bar">
             <button id="stop-button"><div id="network-status"></div><div id="stop-button-text">停止布局</div></button>
             <div id="search-line-layout">
-                <input type="text" name="" id="search-line">
+                <input type="text" name="" id="search-lineedit">
                 <button id="search-button"><i class="fa fa-search"></i></button>
             </div>
             <button class="top-tool-button" id="screen-button"><i class="fa fa-expand" id="screen-switch"></i></button>
@@ -49,12 +49,20 @@
             <p>
                 <strong>网络图属性:</strong>
             </p>
+            <p id="node-num"></p>
+            <p id="link-num"></p>
         </div>
         <div id="node-info">
             <p><strong>节点属性:</strong></p>
+            <p id="node-index"></p>
+            <p id="node-label"></p>
+            <p id="node-name"></p>
         </div>
         <div id="link-info">
             <p><strong>关系属性:</strong></p>
+            <p id="link-source"></p>
+            <p id="link-target"></p>
+            <p id="link-label"></p>
         </div>
     </div>
     <div id="color-layout">
@@ -80,88 +88,104 @@
         <button id="color-button" type=""></button>
     </div>
     <div id="setting-box" class="right-box">
-        <div class="box-header">
-            &nbsp&nbsp网络图设置&nbsp&nbsp
-            <i class="fa fa-arrow-right" id="setting-visiable-button"></i>
-        </div>
         <table id="setting-box-content">
             <tbody>
+				<tr class="box-title">
+		            <td colspan=2>网络图设置</td>
+		        </tr>
                 <tr>
-                    <td>节点大小</td>
+                    <td>节点斥力</td>
                     <td>
-                        <input type="range" name="points" id="node-size" min="0" max="50" step="1" value="15" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>节点透明度</td>
-                    <td>
-                        <input type="range" name="points" id="node-opacity" min="0" max="1" step="0.02" value="1" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>节点轮廓宽度</td>
-                    <td>
-                        <input type="range" name="points" id="node-stroke" min="0" max="10" step="0.1" value="2" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>节点间斥力</td>
-                    <td>
-                        <input type="range" name="points" id="node-charge" min="100" max="1000" step="10" value="300" />
+                        <input type="range" name="points" id="repulsion" min="100" max="1000" step="10" value="300" />
                     </td>
                 </tr>
                 <tr>
                     <td>连接强度</td>
                     <td>
-                        <input type="range" name="points" id="link-strength" min="0" max="1" step="0.05" value="0.5" />
+                        <input type="range" name="points" id="gravitation" min="0" max="1" step="0.05" value="0.5" />
                     </td>
                 </tr>
                 <tr>
-                    <td>边颜色</td>
+                    <td>节点缩放比例</td>
                     <td>
-                        <input type="color" name="points" id="line-color" value="#00FFFB">
+                        <input type="range" name="points" id="nodes-size" min="0" max="10" step="0.1" value="1" />
                     </td>
                 </tr>
+                <tr>
+                    <td>边宽缩放比例</td>
+                    <td>
+                        <input type="range" name="points" id="links-width" min="0" max="10" step="0.1" value="1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>边类型</td>
+                    <td>
+                        <button id="slink-button" class="link-type high-light" value="slink"></button>
+                        <button id="clink-button" class="link-type" value="clink"></button>
+                        <button id="hlink-button" class="link-type" value="hlink"></button>
+                        <button id="vlink-button" class="link-type" value="vlink"></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>布局方式</td>
+                    <td>
+                        <button id="force-button" class="layout-style high-light" value="0"><i class="fa fa-snowflake-o"></i></button>
+                        <button id="radius-button" class="layout-style" value="1"><i class="fa fa-circle-o"></i></button>
+                        <button id="tree-button" class="layout-style" value="2"><i class="fa fa-tree"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>分析模式</td>
+                    <td>
+                        <button id="analyse-mode" title="切换分析模式">数据分析&nbsp&nbsp&nbsp&nbsp<i id="analyse-switch" class="fa fa-toggle-off"></i>&nbsp&nbsp&nbsp&nbsp场景分析</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody>
+				<tr class="box-title">
+		            <td colspan=2>节点设置</td>
+		        </tr>
+                <tr>
+                    <td>节点大小</td>
+                    <td>
+                        <input type="range" name="points" id="node-size" min="0" max="100" step="1" value="15" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>节点透明度</td>
+                    <td>
+                        <input type="range" name="points" id="node-opacity" min="0" max="1" step="0.01" value="1" />
+                    </td>
+                </tr>
+            </tbody>
+            <tbody>
+				<tr class="box-title">
+		            <td colspan=2>边设置</td>
+		        </tr>
                 <tr>
                     <td>边宽度</td>
                     <td>
-                        <input type="range" name="points" id="line-stroke-width" min="0" max="5" step="0.1" value="1" />
+                        <input type="range" name="points" id="link-width" min="0" max="10" step="0.1" value="1" />
                     </td>
                 </tr>
                 <tr>
                     <td>边样式</td>
                     <td>
-                        <button id="sline-button" class="line-style high-light" value="0"></button>
-                        <button id="curve-button" class="line-style" value="1"></button>
-                        <button id="hline-button" class="line-style" value="2"></button>
-                        <button id="vline-button" class="line-style" value="3"></button>
+                        <button id="0-button" class="link-style high-light" value="0"></button>
+                        <button id="55-button" class="link-style" value="1"></button>
+                        <button id="1010-button" class="link-style" value="2"></button>
+                        <button id="2010-button" class="link-style" value="3"></button>
                     </td>
-                </tr>
-                <tr>
-                    <td>布局切换</td>
-                    <td>
-                    <!--<button id="layout-button" class="switch-button" title="切换布局模式">力&nbsp&nbsp布&nbsp&nbsp局&nbsp&nbsp&nbsp&nbsp<i id="layout-switch" class="fa fa-toggle-off"></i>&nbsp&nbsp&nbsp&nbsp圆&nbsp&nbsp布&nbsp&nbsp局</button> -->
-                        <button id="force-button" class="layout-switch high-light" value="0"><i class="fa fa-snowflake-o"></i></button>
-                        <button id="radius-button" class="layout-switch" value="1"><i class="fa fa-circle-o"></i></button>
-                        <button id="tree-button" class="layout-switch" value="2"><i class="fa fa-tree"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>场景切换</td>
-                    <td>
-                        <button id="analyse-button" class="switch-button" title="切换分析模式">数据分析&nbsp&nbsp&nbsp&nbsp<i id="analyse-switch" class="fa fa-toggle-off"></i>&nbsp&nbsp&nbsp&nbsp场景分析</button>
-                    </td>
-                </tr>
+                </tr>            
             </tbody>
         </table>
     </div>
     <div id="route-box" class="right-box">
-        <div class="box-header">
-            &nbsp&nbsp路径查找&nbsp&nbsp
-            <i class="fa fa-arrow-right" id="route-visiable-button"></i>
-        </div>
         <table id="route-box-content">
             <tbody>
+				<tr class="box-title">
+		            <td colspan=2>路径查找</td>
+		        </tr>
                 <tr>
                     <td>起点index</td>
                     <td>
@@ -202,7 +226,31 @@
             <button id="close-button" class="file-button">关闭</button>
         </div>
     </div>
-    <table id="attr-table"><tbody></tbody></table>
+    <table id="attr-table">
+        <tbody>
+            <tr><td colspan=2>节点属性设置</td></tr>
+            <tr>
+                <td>ID:</td>
+                <td><input type="text" id="create-id"></td>
+            </tr>
+            <tr>
+                <td>label:</td>
+                <td><input type="text" id="create-label"></td>
+            </tr>
+            <tr>
+                <td>name:</td>
+                <td><input type="text" id="create-name"></td>
+            </tr>
+            <tr>
+                <td colspan=2>
+                    <div>
+                        <button id="create-confirm" class="attr-button">确认</button>
+                        <button id="create-cancel" class="attr-button">取消</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <script type="text/javascript">
     	var data = {{ Dict|safe }};
     	var support_labels = {{ List|safe }};

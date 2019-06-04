@@ -6,14 +6,18 @@
 * @date: 2019.5.14
 */
 var NETWORKCONFIG = {
-    "layout": 0, // 0: 力引导布局, 1: 圆布局, 2: 树布局
-    "calculating": true,
-    "node_size": 15,
-    "special": false,
-    "node_charge": -300,
-    "link_strength": 0.5,
-    "line_style": "0"
-}
+    layout_style: 0,       // 0: 力引导布局, 1: 圆布局, 2: 树布局
+    calculate_state: true, // 是否正在计算
+    analyse_mode: false,   // 分析模式
+    gravitation: 0.5,      // 吸引力
+    repulsion: -300,       // 排斥力
+    node_size: 15,         // 节点大小
+    node_color: "black",   // 节点颜色
+    node_opacity: "1",     // 节点透明度
+    link_width: 2,         // 边宽度
+    link_color: "#00FFFB", // 连线颜色
+    link_style: "slink",   // slink: 直线, curve: 曲线, hlink: 横直线, vlink: 竖直线
+};
 
 var BARCONFIG = {  
 	width: 400,
