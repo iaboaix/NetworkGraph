@@ -614,7 +614,7 @@ function stopLayout() {
 function hoverNode(node) {
     var node_info = d3.select("#node-info");
     node_info.selectAll(".info").remove();
-    var exclude_attr = ["x", "y", "vx", "vy", "selected", "previouslySelected", "color"];
+    var exclude_attr = ["x", "y", "vx", "vy", "selected", "previouslySelected", "color", "scale", "size", "type"];
     for (var key in node) {
         if (exclude_attr.indexOf(key.toString()) != -1) {
             continue;
@@ -635,12 +635,12 @@ function selectLink(link) {
 function hoverLink(link) {
     var link_info = d3.select("#link-info");
     link_info.selectAll(".info").remove();
-    var exclude_attr = ["x", "y", "vx", "vy", "index", "selected", "previouslySelected"];
+    var exclude_attr = ["x", "y", "vx", "vy", "selected", "previouslySelected", "label", "weight"];
     for(var key in link){
         // 可用来排除一些属性
-        // if(exclude_attr.indexOf(item.toString()) != -1) {
-        //     continue;
-        // }
+        if(exclude_attr.indexOf(key.toString()) > -1) {
+            continue;
+        }
         var temp = link_info.append("p")
             .attr("class", "info");
         if (key != "source" && key != "target") {
