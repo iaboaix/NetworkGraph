@@ -183,12 +183,33 @@ var link_text_elements = null;
 var create_x = 0;
 var create_y = 0;
 
-var linkForce = d3.forceLink()
+var simulation = null;
+
+var link_force = d3.forceLink()
     .id(function (link) { return link.id })
     .strength(NETWORKCONFIG.gravitation);
 
-var simulation = d3.forceSimulation()
-    .force("link", linkForce)
+var simulation_force = d3.forceSimulation()
+    .force("link", link_force)
+    .force("charge", d3.forceManyBody().strength(NETWORKCONFIG.repulsion).distanceMax(400))
+    .force("center", d3.forceCenter((window.innerWidth - 30) / 2, (window.innerHeight - 30) / 2))
+    .force("collision", d3.forceCollide(NETWORKCONFIG.node_size))
+    .alpha(1)
+    .alphaDecay(0.002)
+    .alphaMin(0.002)
+    .on("end", function() {
+        stopLayout();
+    });
+
+var link_radius = d3.forceLink()
+    .id(function (link) { return link.id });
+
+var simulation_radius = d3.forceSimulation()
+    .force("charge", d3.forceCollide().radius(NETWORKCONFIG.node_size * 1.5))
+    .force("r", d3.forceRadial(300, (window.innerWidth - 30) / 2, (window.innerHeight - 30) / 2))
+    .alpha(5)
+    .alphaDecay(0.1)
+    .alphaMin(0.02)
     .on("end", function() {
         stopLayout();
     });
@@ -199,6 +220,7 @@ updateData(data);
 function updateData(data) {
     drawNetworkGraph(data);
     drawBarGraph(data);
+    updateLabels(data);
 }
 
 function setNetworkInfo(data) {
@@ -208,33 +230,29 @@ function setNetworkInfo(data) {
 
 function drawNetworkGraph(data) {
 	setNetworkInfo(data);
-    startLayout();
     if (NETWORKCONFIG.layout_style === 0) {
-        linkForce.strength(NETWORKCONFIG.gravitation);
-        simulation.alpha(1)
-            .alphaDecay(0.002)
-            .alphaMin(0.002)
-            .force("r", null)
-            .force("charge", d3.forceManyBody().strength(NETWORKCONFIG.repulsion).distanceMax(400))
-            .force("center", d3.forceCenter((window.innerWidth - 30) / 2, (window.innerHeight - 30) / 2))
-            .force("collision", d3.forceCollide(NETWORKCONFIG.node_size));
+        simulation = simulation_force
+            .nodes(data.nodes)
+            .on("tick", tick);
+        simulation.force("link")
+            .links(data.links);
     }
     else if (NETWORKCONFIG.layout_style === 1){
         data.nodes.forEach(function(node) {
             node.x = 0;
             node.y = 0;
         })
-        linkForce.strength(0);
-        simulation.force("charge", d3.forceCollide().radius(NETWORKCONFIG.node_size * 1.5))
-            .force("r", d3.forceRadial(300, (window.innerWidth - 30) / 2, (window.innerHeight - 30) / 2))
-            .alpha(5)
-            .alphaDecay(0.1)
-            .alphaMin(0.02);
+        simulation = simulation_radius
+            .nodes(data.nodes)
+            .on("tick", tick);
+        simulation.force("link");
     }
     else if(NETWORKCONFIG.layout_style === 2) {
         drawTree();
     }
 
+    startLayout();
+    
     // 连线对象
     link_elements = link_layout.selectAll("path")
         .data(data.links);
@@ -249,14 +267,6 @@ function drawNetworkGraph(data) {
                 link["width"] = NETWORKCONFIG.link_width;
             }
             return link.width;
-        })
-        .attr("class", function(link) {
-            if("style" in link) {
-                return link_styles[link.style];
-            } else {
-                link["style"] = NETWORKCONFIG.link_style;
-                return;
-            }
         })
         .on("mousedown.select-link", select_link)
         .on("mouseover.hover-link", hover_link);
@@ -290,7 +300,6 @@ function drawNetworkGraph(data) {
         .on("start", drag_start)
         .on("drag", draging)
         .on("end", drag_end));
-    node_elements.selectAll("text").remove();
     node_elements.selectAll("circle").remove();
     node_elements.append("circle")
         .attr("r", function(node) {
@@ -299,25 +308,7 @@ function drawNetworkGraph(data) {
             }
             return node.size;
         });
-    node_elements.append("text")
-        .attr("class", "node-text")
-        .attr("dy", ".35em")
-        .attr("x", function (node) {
-            return textBreaking(d3.select(this), node.name);
-        })
-        .style("display", SHOWCONFIG.node_text === true ? "block" : "none");
-    node_elements.filter(function(node) { return node.border === true; })
-        .append("text")
-        .attr("class", "tip")
-        .attr("transform", "translate(15, -15)")
-        .text("x");
     fill_circle();
-
-    simulation.nodes(data.nodes)
-        .on("tick", tick)
-        .force("link")
-        .links(data.links);
-    simulation.restart();
 
     // 绑定右键菜单
     $(".node").smartMenu(node_menu, {
@@ -328,13 +319,29 @@ function drawNetworkGraph(data) {
     });
 }
 
+function fill_text() {
+    let item = arguments[0] ? arguments[0] : "name"; 
+    node_elements.selectAll("text").remove();
+    node_elements.append("text")
+        .attr("class", "node-text")
+        .attr("dy", ".35em")
+        .attr("x", function (node) {
+            return textBreaking(d3.select(this), node[item]);
+        })
+        .style("display", SHOWCONFIG.node_text === true ? "block" : "none");
+    node_elements.filter(function(node) { return node.border === true; })
+        .append("text")
+        .attr("class", "tip")
+        .attr("transform", "translate(15, -15)")
+        .text("x");
+}
 $("#container").smartMenu(create_menu, {
     name: "create_menu"
 });
 
 function tick() {
     node_elements.attr("transform", function(node) { return "translate(" + node.x + "," + node.y + ")"; });
-    link_elements.attr("d", function(link) { return genLinkPath(link, NETWORKCONFIG.link_style); })
+    link_elements.attr("d", function(link) { return genLinkPath(link, NETWORKCONFIG.link_type); })
         .attr("marker-end", "url(#resolved)");
     link_text_elements.attr("dx", function(link) { return getLinkTextDx(link); });
 }
@@ -426,25 +433,32 @@ function markColor(color_value) {
     var find_elements = d3.selectAll(".finded");
     select_elements.each(function(node) {
         node["color"] = color_value;
+        d3.select(this)
+            .select("circle")
+            .style("fill", color_value)
     });
     find_elements.each(function(node) {
         node["color"] = color_value;
+        d3.select(this)
+            .select("circle")
+            .style("fill", color_value)
     });
-    fill_circle();
 }
 
 // 调整图参数
 // 吸引力
 d3.select("#gravitation").on("input propertychange", function() {
-	NetworkGraph.change_gravitation(this.value);
+    NETWORKCONFIG.gravitation = parseFloat(this.value);
+    simulation.force("link").strength(NETWORKCONFIG.gravitation);
+    startLayout();
 });
 
 // 排斥力
 d3.select("#repulsion").on("input propertychange", function() {
-    NetworkGraph.change_repulsion(-this.value);
+    NETWORKCONFIG.repulsion = - this.value;
+    simulation.force("charge", d3.forceManyBody().strength(NETWORKCONFIG.repulsion));
+    startLayout();
 });
-
-
 
 // 节点大小缩放比例
 d3.select("#nodes-size").on("input propertychange", function() {
@@ -470,9 +484,9 @@ d3.select("#links-width")
 });
 
 // 边类型
-var link_style_buttons = d3.selectAll(".link-type");
-link_style_buttons.on("click", function() {
-        link_style_buttons.classed("high-light", false);
+var link_type_buttons = d3.selectAll(".link-type");
+link_type_buttons.on("click", function() {
+        link_type_buttons.classed("high-light", false);
         d3.select(this).classed("high-light", true);
         NETWORKCONFIG.link_type = this.value;
         tick();
@@ -550,24 +564,6 @@ d3.select("#link-color")
         .style("stroke", this.value);
 });
 
-// 边样式
-const link_styles = ["style-0", "style-55", "style-1010", "style-2010"]
-d3.selectAll(".link-style")
-    .on("click", function() {
-        let style = link_styles[this.value];
-        link_elements.each(function(link) {
-            if (link.selected === true) {
-                for (var i = 0; i < 4; i++) {
-                    d3.select(this)
-                        .classed(link_styles[i], false);
-                }
-                d3.select(this)
-                    .classed(style, true);
-            }
-        })
-});
-  
-
 // // 节点轮廓宽度
 // d3.select("#node-stroke").on("input propertychange", function() {
 //     node_elements.select("circle").style("stroke-width", this.value);
@@ -621,7 +617,7 @@ function draging(node) {
             node.y += d3.event.dy;
             d3.select(this).attr("transform", "translate(" + node.x + "," + node.y + ")");
         });
-    link_elements.attr("d", function(link) { return genLinkPath(link, NETWORKCONFIG.link_style); });
+    link_elements.attr("d", function(link) { return genLinkPath(link, NETWORKCONFIG.link_type); });
     link_text_elements.attr("dx", function(link) { return getLinkTextDx(link); });
 }
 
@@ -655,8 +651,9 @@ function stopLayout() {
 
 // 掠过显示节点信息
 function hover_node(node) {
-    var exclude_attr = ["x", "y", "vx", "vy", "selected", "previouslySelected",
+    let exclude_attr = ["x", "y", "vx", "vy", "selected", "previouslySelected",
                         "color", "id", "label", "name", "size", "index"];
+    d3.selectAll(".temp-node").remove();
     d3.select("#node-index").text("index: " + node["index"]);
     d3.select("#node-name").text("name: " + node["name"]);
     d3.select("#node-label").text("label: " + node["label"]);
@@ -665,7 +662,7 @@ function hover_node(node) {
             continue;
         }
         d3.select("#node-info").append("p")
-            .attr("class", "temp-info")
+            .attr("class", "temp-node")
             .text(key + ": " + node[key]);
     }
 }
@@ -692,24 +689,19 @@ function select_link(link) {
 
 // 掠过显示关系信息
 function hover_link(link) {
-    var exclude_attr = ["source", "target", "label"];
+    let exclude_attr = ["index", "source", "target", "label"];
+    d3.selectAll(".temp-link").remove();
+    d3.select("#link-label").text("label: " + link.label);
     d3.select("#link-source").text("source: " + link.source.name);
     d3.select("#link-target").text("target: " + link.target.name);
-    d3.select("#link-label").text("label: " + link.label);
-    // for(var key in link){
-    //     // 可用来排除一些属性
-    //     if(exclude_attr.indexOf(item.toString()) != -1) {
-    //         continue;
-    //     }
-    //     var temp = link_info.append("p")
-    //         .attr("class", "temp-link-info");
-    //     if (key != "source" && key != "target") {
-    //         temp.text(key + ": " + link[key]);
-    //     }
-    //     else {
-    //         temp.text(key + ": " + link[key]["label"]);
-    //     }                    
-    // }
+    for(var key in link){
+        if(exclude_attr.indexOf(key.toString()) != -1) {
+            continue;
+        }
+        d3.select("#link-info").append("p")
+            .attr("class", "temp-link")
+            .text(key + ": " + link[key]);                  
+    }
 }
 
 // 查找节点
@@ -754,6 +746,35 @@ d3.select("#begin-find")
             });
         });
     });
+
+function updateLabels(data) {
+    let exclude_attr = ["x", "y", "vx", "vy", "selected", "previouslySelected",
+                        "color", "size", "index"];
+    let label_bar_ul = d3.select("#labels-bar").select("ul");
+    label_bar_ul.selectAll("*").remove();
+    data.nodes.forEach(node => {
+        for(let attr in node) {
+            if (exclude_attr.indexOf(attr) === -1) {
+                label_bar_ul.append("li")
+                    .attr("class", "labels")
+                    .attr("id", "id-" + attr)
+                    .text(attr);
+                exclude_attr.push(attr);
+            }
+        }
+    })
+    fill_text();
+    d3.select("#id-name")
+        .classed("labels-high-light", true);
+    d3.selectAll(".labels")
+        .on("click", function() {
+            d3.selectAll(".labels-high-light")
+                .classed("labels-high-light", false);
+            d3.select(this)
+                .classed("labels-high-light", true);
+            fill_text($(this)[0].textContent);
+        })
+}
 
 // 渐变 先不用
 // radial_gradient = defs_layout.append("radialGradient")

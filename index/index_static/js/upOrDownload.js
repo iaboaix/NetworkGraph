@@ -67,7 +67,6 @@ d3.select("#upload-button")
             contentType: false,
             processData: false,
             success: function(cur_data) {
-                console.log(cur_data);
                 data = JSON.parse(cur_data);
                 updateData(data);
                 d3.select("#upload-layout").style("display", "none");
@@ -82,29 +81,52 @@ d3.select("#upload-button")
 
 // 导出数据
 d3.select("#download-data")
-    .on("click", downFile);
-
-// 先清洗数据 再下载
-function downFile() {
-    var temp = JSON.parse(JSON.stringify(data));
-    temp.nodes.forEach(function(node) {
-        delete node.index;
-        delete node.x;
-        delete node.y;
-        delete node.vx;
-        delete node.vy;
-        delete node.color;
-        delete node.selected;
-        delete node.previouslySelected;
+    .on("click", function() {
+        var temp = JSON.parse(JSON.stringify(data));
+        temp.nodes.forEach(function(node) {
+            delete node.index;
+            delete node.x;
+            delete node.y;
+            delete node.vx;
+            delete node.vy;
+            delete node.color;
+            delete node.selected;
+            delete node.previouslySelected;
+        });
+        temp.links.forEach(function(link) {
+            delete link.index;
+            link.source = link.source.id;
+            link.target = link.target.id;
+        })
+        downloadData(temp);
     });
-    temp.links.forEach(function(link) {
-        delete link.index;
-        link.source = link.source.id;
-        link.target = link.target.id;
-    })
-    var elementA = document.createElement('a');
-    elementA.setAttribute('href', 'data:text/plain;charset=utf-8,' + JSON.stringify(temp, null, 4));
-    var time = new Date().getTime();
+
+// 下载示例数据
+d3.select("#download-demo")
+    .on("click", function() {
+        let temp = {
+            "nodes": [
+                {"id": 0, "name": "Tom", "life": "1998-?", "label": "male", "image": "http://148.70.238.152/static/image/logo.png"},
+                {"id": 1, "name": "Jack", "label": "female"},
+                {"id": 2, "name": "Marry", "life": "1699–1756", "label": "male"},
+                {"id": 3, "name": "Herry", "label": "female"}
+            ],
+
+            "links": [
+                {"source": 0, "target": 1, "label": "couple"},
+                {"source": 0, "target": 2, "label": "father-child"},
+                {"source": 1, "target": 2, "label": "mother-child"},
+                {"source": 2, "target": 3, "label": "couple"}
+            ]
+        };
+        downloadData(temp);
+    });
+
+// 下载
+function downloadData(data) {
+    let elementA = document.createElement('a');
+    elementA.setAttribute('href', 'data:text/plain;charset=utf-8,' + JSON.stringify(data, null, 4));
+    let time = new Date().getTime();
     elementA.setAttribute('download', 'data_' + time + '.json');
     elementA.style.display = 'none';
     document.body.appendChild(elementA);
@@ -117,3 +139,11 @@ d3.select("#download-img")
 	.on("click", function() {
 		saveSvgAsPng(document.getElementById("container"), "networkGraph.png");
 	})
+
+// 分析示例数据
+d3.selectAll(".public_data")
+    .on("click", function() {
+        $.post("public_data", JSON.stringify({ "file_name": $(this)[0].textContent }), function(data, status){
+            updateData(JSON.parse(data));
+        })
+    })

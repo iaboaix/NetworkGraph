@@ -1,0 +1,15 @@
+﻿{
+	"nodes": [
+		{"id": 0, "name": "Tom", "life": "1998-?", "label": "male", "image": "http://148.70.238.152/static/image/logo.png"},
+		{"id": 1, "name": "Jack", "label": "female"},
+		{"id": 2, "name": "Marry", "life": "1699–1756", "label": "male"},
+		{"id": 3, "name": "Herry", "label": "female"}
+	],
+
+	"links": [
+		{"source": 0, "target": 1, "label": "couple"},
+		{"source": 0, "target": 2, "label": "father-child"},
+		{"source": 1, "target": 2, "label": "mother-child"},
+		{"source": 2, "target": 3, "label": "couple"}
+	]
+}

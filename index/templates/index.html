@@ -30,6 +30,7 @@
     </svg>
     <div id="top-tool-bar">
         <div id="logo"></div>
+        <button class="top-menu-item" id="download-demo"><i class="fa fa-download"></i> 下载示例数据</button>
         <button class="top-menu-item" id="upload-data"><i class="fa fa-upload"></i> 上传数据</button>
         <button class="top-menu-item" id="download-data"><i class="fa fa-download"></i> 导出数据</button>
         <button class="top-menu-item" id="download-img"><i class="fa fa-share"></i> 导出图片</button>
@@ -40,6 +41,7 @@
                 <button id="search-button"><i class="fa fa-search"></i></button>
             </div>
             <button class="top-tool-button" id="screen-button"><i class="fa fa-expand" id="screen-switch"></i></button>
+            <button class="top-tool-button" id="public-data-button"><i class="fa fa-database"></i></button>
             <button class="top-tool-button" id="route-visiable-button"><i class="fa fa-road"></i></button>
             <button class="top-tool-button" id="setting-visiable-button"><i class="fa fa-gear"></i></button>
         </div>  
@@ -60,9 +62,9 @@
         </div>
         <div id="link-info">
             <p><strong>关系属性:</strong></p>
+            <p id="link-label"></p>
             <p id="link-source"></p>
             <p id="link-target"></p>
-            <p id="link-label"></p>
         </div>
     </div>
     <div id="color-layout">
@@ -87,8 +89,27 @@
 	    </div>
         <button id="color-button" type=""></button>
     </div>
+    <div id="public-data-box" class="right-box" >
+        <table id="public-data-table">
+            <tbody>
+                <tr class="box-title">
+                    <td colspan=2>公共数据集</td>
+                </tr>
+                <tr>
+                    <td>上传者</td>
+                    <td>数据集名称</td>
+                </tr>
+                {% for file in file_list %}
+                <tr>
+                    <td>匿名</td>
+                    <td class="public_data"><u>{{ file }}</u></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     <div id="setting-box" class="right-box">
-        <table id="setting-box-content">
+        <table id="setting-table">
             <tbody>
 				<tr class="box-title">
 		            <td colspan=2>网络图设置</td>
@@ -96,7 +117,7 @@
                 <tr>
                     <td>节点斥力</td>
                     <td>
-                        <input type="range" name="points" id="repulsion" min="100" max="1000" step="10" value="300" />
+                        <input type="range" name="points" id="repulsion" min="100" max="3000" step="10" value="300" />
                     </td>
                 </tr>
                 <tr>
@@ -165,23 +186,14 @@
                 <tr>
                     <td>边宽度</td>
                     <td>
-                        <input type="range" name="points" id="link-width" min="0" max="10" step="0.1" value="1" />
+                        <input type="range" name="points" id="link-width" min="0" max="20" step="0.1" value="1" />
                     </td>
-                </tr>
-                <tr>
-                    <td>边样式</td>
-                    <td>
-                        <button id="0-button" class="link-style high-light" value="0"></button>
-                        <button id="55-button" class="link-style" value="1"></button>
-                        <button id="1010-button" class="link-style" value="2"></button>
-                        <button id="2010-button" class="link-style" value="3"></button>
-                    </td>
-                </tr>            
+                </tr>        
             </tbody>
         </table>
     </div>
     <div id="route-box" class="right-box">
-        <table id="route-box-content">
+        <table id="route-table">
             <tbody>
 				<tr class="box-title">
 		            <td colspan=2>路径查找</td>
@@ -204,9 +216,14 @@
             </tbody>
         </table>
     </div>
+    <!--     
     <div id="status-bar">
         <div id="tips">TIPS: CTRL可进行点选，SHIFT可 打开/关闭 框选。</div>
         <div id="notice">如果发现BUG或有好的修改意见,请在<a id="github" href="https://github.com/iaboaix/NetworkGraph.git">Github</a>进行提交。</div>
+    </div> 
+    -->
+    <div id="labels-bar">
+        <ul></ul>
     </div>
     <div id="upload-layout">
         <div id="upload-top-layout">
@@ -252,8 +269,8 @@
         </tbody>
     </table>
     <script type="text/javascript">
-    	var data = {{ Dict|safe }};
-    	var support_labels = {{ List|safe }};
+    	var data = {{ default_data|safe }};
+        var support_labels = [];
     </script>
     <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/tools.js' %}"></script>
