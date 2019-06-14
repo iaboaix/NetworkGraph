@@ -183,41 +183,25 @@ var link_text_elements = null;
 var create_x = 0;
 var create_y = 0;
 
-var simulation = null;
-
-var link_force = d3.forceLink()
+var linkForce = d3.forceLink()
     .id(function (link) { return link.id })
-    .strength(NETWORKCONFIG.gravitation);
+    .strength(NETWORKCONFIG.link_strength);
 
-var simulation_force = d3.forceSimulation()
-    .force("link", link_force)
-    .force("charge", d3.forceManyBody().strength(NETWORKCONFIG.repulsion).distanceMax(400))
-    .force("center", d3.forceCenter((window.innerWidth - 30) / 2, (window.innerHeight - 30) / 2))
-    .force("collision", d3.forceCollide(NETWORKCONFIG.node_size))
-    .alpha(1)
-    .alphaDecay(0.002)
-    .alphaMin(0.002)
+var simulation = d3.forceSimulation()
+    .force("link", linkForce)
     .on("end", function() {
         stopLayout();
     });
 
-var link_radius = d3.forceLink()
-    .id(function (link) { return link.id });
 
-var simulation_radius = d3.forceSimulation()
-    .force("charge", d3.forceCollide().radius(NETWORKCONFIG.node_size * 1.5))
-    .force("r", d3.forceRadial(300, (window.innerWidth - 30) / 2, (window.innerHeight - 30) / 2))
-    .alpha(5)
-    .alphaDecay(0.1)
-    .alphaMin(0.02)
-    .on("end", function() {
-        stopLayout();
-    });
+// 用来记录图数据不同类型的 label
+var labels = [];
 
 // 更新数据
 updateData(data);
 
 function updateData(data) {
+    countUpData(data);
     drawNetworkGraph(data);
     drawBarGraph(data);
     updateLabels(data);
@@ -231,28 +215,32 @@ function setNetworkInfo(data) {
 function drawNetworkGraph(data) {
 	setNetworkInfo(data);
     if (NETWORKCONFIG.layout_style === 0) {
-        simulation = simulation_force
-            .nodes(data.nodes)
-            .on("tick", tick);
-        simulation.force("link")
-            .links(data.links);
+        linkForce.strength(NETWORKCONFIG.gravitation);
+        simulation.alpha(1)
+            .alphaDecay(0.002)
+            .alphaMin(0.002)
+            .force("r", null)
+            .force("charge", d3.forceManyBody().strength(NETWORKCONFIG.repulsion).distanceMax(400))
+            .force("center", d3.forceCenter((window.innerWidth - 30) / 2, (window.innerHeight - 30) / 2))
+            .force("collision", d3.forceCollide(NETWORKCONFIG.node_size));
     }
     else if (NETWORKCONFIG.layout_style === 1){
         data.nodes.forEach(function(node) {
             node.x = 0;
             node.y = 0;
         })
-        simulation = simulation_radius
-            .nodes(data.nodes)
-            .on("tick", tick);
-        simulation.force("link");
+        linkForce.strength(0);
+        simulation.force("charge", d3.forceCollide().radius(NETWORKCONFIG.node_size * 1.5))
+            .force("r", d3.forceRadial(300, (window.innerWidth - 30) / 2, (window.innerHeight - 30) / 2))
+            .alpha(5)
+            .alphaDecay(0.1)
+            .alphaMin(0.02);
     }
     else if(NETWORKCONFIG.layout_style === 2) {
         drawTree();
     }
-
     startLayout();
-    
+
     // 连线对象
     link_elements = link_layout.selectAll("path")
         .data(data.links);
@@ -307,7 +295,8 @@ function drawNetworkGraph(data) {
                 node["size"] = NETWORKCONFIG.node_size;
             }
             return node.size * NETWORKCONFIG.node_scale;
-        });
+        })
+        .lower();
     fill_circle();
 
     simulation.nodes(data.nodes)
@@ -512,7 +501,7 @@ layout_styles.on("click", function() {
         }
         layout_styles.classed("high-light", false);
         d3.select(this).classed("high-light", true)
-        NETWORKCONFIG.layout_style = this.value;
+        NETWORKCONFIG.layout_style = parseInt(this.value);
         drawNetworkGraph(data);
     })
 
@@ -619,7 +608,7 @@ function fill_circle() {
                     return node.color;
                 }
                 else {
-                    var color_index = support_labels.indexOf(node.label);
+                    var color_index = labels.indexOf(node.label);
                     node["color"] = color(color_index > -1 ? color_index : 0);
                     return node.color;
                 }
@@ -632,7 +621,7 @@ function fill_circle() {
                     return node.color;
                 }
                 else {
-                    var color_index = support_labels.indexOf(node.label);
+                    var color_index = labels.indexOf(node.label);
                     node["color"] = color( color_index > -1 ? color_index : 0);
                     return node.color;
                 }
@@ -813,6 +802,14 @@ function updateLabels(data) {
                 .classed("labels-high-light", true);
             fill_text($(this)[0].textContent);
         })
+}
+
+function countUpData(data) {
+    data.nodes.forEach(node => {
+        if (labels.indexOf(node.label) === -1) {
+            labels.push(node.label);
+        }
+    })
 }
 
 // 渐变 先不用

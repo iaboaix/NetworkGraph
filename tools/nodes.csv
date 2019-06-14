@@ -1,191 +1,191 @@
-﻿id:ID,label:LABEL,label,name,life
-0,male,male,Johann Philipp Trump,1667-1707
-1,female,female,Juliana Maria Rodenroth,
-2,male,male,Johann Sebastian Trump,1699–1756
-3,female,female,Susanna Margaretha Kohl,
-4,male,male,Johann Paul Trump,1727–1792
-5,female,female,Maria Elisabetha Setzer,
-6,male,male,Charlotte Louisa Trump,1789–1833
-7,female,female,Johann Georg Heinz,
-8,male,male,John Henry Heinz,1811–1891
-9,male,male,Henry J. Heinz,1844–1919
-10,male,male,Johannes Trump,1789–1835
-11,female,female,Susanna Maria Bechtloff,
-12,male,male,Friedrich Trump,?-1876
-13,female,female,Elisabetha Trump,
-14,male,male,Maria Katharina Trump,1827-?
-15,male,male,Christian Johannes Trump,1829–1877
-16,female,female,Katharina Kober,1836–1922
-17,male,male,Johannes Trump,1860-?
-18,male,male,Katharina Trump,1861-?
-19,male,male,Jakob Trump,1863-?
-20,male,male,Sybilla Luisa Trump,1865–1931
-21,female,female,Schuster,
-22,male,male,Konrad Trump,1868–1868
-23,male,male,Friedrich Trump,1869–1918
-24,female,female,Elisabeth Christ,
-25,male,male,Elizabeth/Elisabeth Trump,1904–1961
-26,female,female,William O. Walter,
-27,male,male,William Trump Walter,1931-?
-28,female,female,Susan Walter,
-29,male,male,John W. Walter,1934-?
-30,female,female,Joan Walter,
-31,male,male,Christine/Christy Weppler,
-32,female,female,Robert/Bob Weppler,
-33,male,male,Catherine Weppler,
-34,male,male,Sarah Weppler,
-35,male,male,Lauren Weppler,
-36,male,male,Nancy Kiley,
-37,female,female,James/Jim Kiley,
-38,male,male,Emily Kiley,
-39,male,male,Matthew Kiley,
-40,male,male,Cynthia/Cindy Frey,
-41,female,female,Rod Frey,
-42,male,male,Connor Frey,
-43,male,male,Aidan Frey,
-44,male,male,Frederick Christ Trump,1905–1999
-45,female,female,Mary MacLeod,1912–2000
-46,female,female,Maryanne Trump,1937-?
-47,male,male,David Desmond,
-48,male,male,John Barry,
-49,male,male,David William Desmond,1960-?
-50,male,male,"Frederick Christ Trump, Jr.",1938–1981
-51,female,female,Linda Clapp,
-52,male,male,Frederick Christ Trump III,1963-?
-53,female,female,Lisa Beth Lorant,
-54,male,male,daughter,1992-?
-55,male,male,son,1994-?
-56,male,male,William Trump,1999-?
-57,male,male,Mary Trump,
-58,male,male,Elizabeth Joan Trump,
-59,female,female,James Walter Grau,
-60,Donald-John-Trump,Donald-John-Trump,Donald John Trump,1946-?
-61,female,female,Ivana Zelníčková,
-62,female,female,Marla Maples,
-63,female,female,Melania Knauss,1970-?
-64,male,male,Donald Trump Jr.,1977-?
-65,female,female,Vanessa Haydon,
-66,female,female,Kai Madison Trump,2007-?
-67,male,male,Donald John Trump III,2009-?
-68,male,male,Tristan Milos Trump,2012-?
-69,male,male,Spencer Frederick Trump,2013-?
-70,female,female,Chloe Sophia Trump,2014-?
-71,Ivanka-Trump,Ivanka-Trump,Ivanka Trump,1981-?
-72,male,male,Jared Kushner,
-73,male,male,Eric Trump,1984-?
-74,female,female,Lara Yunaska,
-75,male,male,Eric Luke Trump,2017-?
-76,male,male,Tiffany Trump,1993-?
-77,male,male,Barron Trump,2006-?
-78,male,male,Robert Trump,
-79,female,female,Blaine Beard,
-80,male,male,John George Trump,1907-1985
-81,female,female,Elora Sauerbrun,1913-1983
-82,male,male,John Gordon Trump,1938-2012
-83,male,male,Christine Trump Philp,
-84,male,male,Karen Trump Ingraham,
-85,male,male,Elisabetha Trump,1837-?
-86,female,female,Karl Freund,
-87,male,male,Barbara Trump,1876-?
-88,male,male,Anna Elisabetha Trump,1831-?
-89,female,female,Konrad Schwinn,
-90,us,us,United States of America,
-91,twitter,twitter,Twitter,
-92,germany,germany,Germany,
-93,职位,职位,美国总统,
-94,职位,职位,美国副总统,
-95,机构,机构,美国联邦,
-96,机构,机构,美国国务院,
-97,机构,机构,美国财政部,
-98,机构,机构,美国国防部,
-99,机构,机构,美国司法部,
-100,机构,机构,美国内政部,
-101,机构,机构,美国农业部,
-102,机构,机构,美国商务部,
-103,机构,机构,美国劳工部,
-104,机构,机构,美国卫生及公共服务部,
-105,机构,机构,美国住房与城市发展部,
-106,机构,机构,美国交通部,
-107,机构,机构,美国能源部,
-108,机构,机构,美国教育部,
-109,机构,机构,美国退伍军人事务部,
-110,机构,机构,美国国土安全部,
-111,机构,机构,联邦政府独立行政机构,
-112,机构,机构,美国中央情报局,
-113,机构,机构,美国期货交易管理委员会,
-114,机构,机构,美国国家环境保护局,
-115,机构,机构,联邦通讯管理委员会,
-116,机构,机构,美国联邦储备理事会,
-117,机构,机构,联邦贸易管理委员会,
-118,机构,机构,美国总务署,
-119,机构,机构,美国国家航空航天局,
-120,机构,机构,国家档案记录署,
-121,机构,机构,国家劳工关系委员会,
-122,机构,机构,国家科学基金,
-123,机构,机构,人事管理处,
-124,机构,机构,和平工作队,
-125,机构,机构,小型企业总署,
-126,机构,机构,社会保障总署,
-127,机构,机构,证券交易监管委员会,
-128,机构,机构,美国国际发展局,
-129,机构,机构,美国国际贸易委员会,
-130,机构,机构,美国邮政,
-131,机构,机构,美国邮政价格委员会,
-132,机构,机构,美国国家运输安全委员会,
-133,机构,机构,美国总统办事机构,
-134,机构,机构,白宫办公厅,
-135,机构,机构,副总统办公室,
-136,机构,机构,行政管理和预算局,
-137,机构,机构,总统经济顾问委员会,
-138,机构,机构,国家安全委员会,
-139,机构,机构,美国贸易代表办公室,
-140,机构,机构,政策制定办公室,
-141,机构,机构,科学和技术政策办公室,
-142,机构,机构,改善环境质量委员会,
-143,机构,机构,国家麻醉品控制政策办公室,
-144,机构,机构,白宫行政办公室,
-145,Mike-Pence,Mike-Pence,迈克·彭斯,1956.6.7-?
-146,default,default,詹姆斯·马蒂斯,1950.9.8-?
-147,约翰·凯利,约翰·凯利,约翰·凯利,
-148,妮基·黑利,妮基·黑利,妮基·黑利,
-149,迈克尔·弗林,迈克尔·弗林,迈克尔·弗林,
-150,迈克·蓬佩奥,迈克·蓬佩奥,迈克·蓬佩奥,
-151,特里·布兰斯塔德,特里·布兰斯塔德,特里·布兰斯塔德,
-152,斯蒂芬·努钦,斯蒂芬·努钦,斯蒂芬·努钦,
-153,威尔伯·罗斯,威尔伯·罗斯,威尔伯·罗斯,
-154,加里·柯恩,加里·柯恩,加里·柯恩,
-155,彼得·纳瓦罗,彼得·纳瓦罗,彼得·纳瓦罗,
-156,苏世民,苏世民,苏世民,
-157,罗伯特·莱特希泽,罗伯特·莱特希泽,罗伯特·莱特希泽,
-158,杰夫·塞申斯,杰夫·塞申斯,杰夫·塞申斯,
-159,瑞安·金克,瑞安·金克,瑞安·金克,
-160,安德鲁·普兹徳,安德鲁·普兹徳,安德鲁·普兹徳,
-161,汤姆·普莱斯,汤姆·普莱斯,汤姆·普莱斯,
-162,长本·卡森,长本·卡森,长本·卡森,
-163,赵小兰,赵小兰,赵小兰,
-164,里克·佩里,里克·佩里,里克·佩里,
-165,贝特西·德沃斯,贝特西·德沃斯,贝特西·德沃斯,
-166,斯哥特·普鲁特,斯哥特·普鲁特,斯哥特·普鲁特,
-167,米克·马瓦尼,米克·马瓦尼,米克·马瓦尼,
-168,雷恩斯·普里巴斯,雷恩斯·普里巴斯,雷恩斯·普里巴斯,
-169,斯蒂芬·班农,斯蒂芬·班农,斯蒂芬·班农,
-170,凯莉安·康威,凯莉安·康威,凯莉安·康威,
-171,肖恩·斯派塞,肖恩·斯派塞,肖恩·斯派塞,
-172,著作,著作,即将到来的中国战争,
-173,著作,著作,被中国害死,
-174,著作,著作,卧虎：中国军事主义对世界意味着什么,
-175,著作,著作,未来与中国战争在哪里打，如何赢,
-176,著作,著作,中国制造，终极警告标签,
-177,著作,著作,新黑暗心脏：第三世界中中华帝国智库,
-178,中国台湾,中国台湾,中国台湾,
-179,机构,机构,福茂集团,
-180,职位,职位,福茂集团董事长,
-181,male,male,赵锡成,
-182,Addison-Mitchell-Mitch-McConnell-Jr.,Addison-Mitchell-Mitch-McConnell-Jr.,米奇·麦康奈尔,
-183,公司,公司,通用电气,
-184,公司,公司,通用汽车,
-185,公司,公司,迪士尼,
-186,公司,公司,IBM,
-187,职位,职位,驻联合国代表,
-188,职位,职位,驻华大使,
-189,机构,机构,企业顾问委员会,
+﻿id:ID,label:LABEL,label,name,life,image
+0,male,male,Johann Philipp Trump,1667-1707,male.jpg
+1,female,female,Juliana Maria Rodenroth,,female.jpg
+2,male,male,Johann Sebastian Trump,1699–1756,male.jpg
+3,female,female,Susanna Margaretha Kohl,,female.jpg
+4,male,male,Johann Paul Trump,1727–1792,male.jpg
+5,female,female,Maria Elisabetha Setzer,,female.jpg
+6,male,male,Charlotte Louisa Trump,1789–1833,male.jpg
+7,female,female,Johann Georg Heinz,,female.jpg
+8,male,male,John Henry Heinz,1811–1891,male.jpg
+9,male,male,Henry J. Heinz,1844–1919,male.jpg
+10,male,male,Johannes Trump,1789–1835,male.jpg
+11,female,female,Susanna Maria Bechtloff,,female.jpg
+12,male,male,Friedrich Trump,?-1876,male.jpg
+13,female,female,Elisabetha Trump,,female.jpg
+14,male,male,Maria Katharina Trump,1827-?,male.jpg
+15,male,male,Christian Johannes Trump,1829–1877,male.jpg
+16,female,female,Katharina Kober,1836–1922,female.jpg
+17,male,male,Johannes Trump,1860-?,male.jpg
+18,male,male,Katharina Trump,1861-?,male.jpg
+19,male,male,Jakob Trump,1863-?,male.jpg
+20,male,male,Sybilla Luisa Trump,1865–1931,male.jpg
+21,female,female,Schuster,,female.jpg
+22,male,male,Konrad Trump,1868–1868,male.jpg
+23,male,male,Friedrich Trump,1869–1918,male.jpg
+24,female,female,Elisabeth Christ,,female.jpg
+25,male,male,Elizabeth/Elisabeth Trump,1904–1961,male.jpg
+26,female,female,William O. Walter,,female.jpg
+27,male,male,William Trump Walter,1931-?,male.jpg
+28,female,female,Susan Walter,,female.jpg
+29,male,male,John W. Walter,1934-?,male.jpg
+30,female,female,Joan Walter,,female.jpg
+31,male,male,Christine/Christy Weppler,,male.jpg
+32,female,female,Robert/Bob Weppler,,female.jpg
+33,male,male,Catherine Weppler,,male.jpg
+34,male,male,Sarah Weppler,,male.jpg
+35,male,male,Lauren Weppler,,male.jpg
+36,male,male,Nancy Kiley,,male.jpg
+37,female,female,James/Jim Kiley,,female.jpg
+38,male,male,Emily Kiley,,male.jpg
+39,male,male,Matthew Kiley,,male.jpg
+40,male,male,Cynthia/Cindy Frey,,male.jpg
+41,female,female,Rod Frey,,female.jpg
+42,male,male,Connor Frey,,male.jpg
+43,male,male,Aidan Frey,,male.jpg
+44,male,male,Frederick Christ Trump,1905–1999,male.jpg
+45,female,female,Mary MacLeod,1912–2000,female.jpg
+46,female,female,Maryanne Trump,1937-?,female.jpg
+47,male,male,David Desmond,,male.jpg
+48,male,male,John Barry,,male.jpg
+49,male,male,David William Desmond,1960-?,male.jpg
+50,male,male,"Frederick Christ Trump, Jr.",1938–1981,male.jpg
+51,female,female,Linda Clapp,,female.jpg
+52,male,male,Frederick Christ Trump III,1963-?,male.jpg
+53,female,female,Lisa Beth Lorant,,female.jpg
+54,male,male,daughter,1992-?,male.jpg
+55,male,male,son,1994-?,male.jpg
+56,male,male,William Trump,1999-?,male.jpg
+57,male,male,Mary Trump,,male.jpg
+58,male,male,Elizabeth Joan Trump,,male.jpg
+59,female,female,James Walter Grau,,female.jpg
+60,male,male,Donald John Trump,1946-?,Donald-John-Trump.jpg
+61,female,female,Ivana Zelníčková,,female.jpg
+62,female,female,Marla Maples,,female.jpg
+63,female,female,Melania Knauss,1970-?,female.jpg
+64,male,male,Donald Trump Jr.,1977-?,male.jpg
+65,female,female,Vanessa Haydon,,female.jpg
+66,female,female,Kai Madison Trump,2007-?,female.jpg
+67,male,male,Donald John Trump III,2009-?,male.jpg
+68,male,male,Tristan Milos Trump,2012-?,male.jpg
+69,male,male,Spencer Frederick Trump,2013-?,male.jpg
+70,female,female,Chloe Sophia Trump,2014-?,female.jpg
+71,female,female,Ivanka Trump,1981-?,Ivanka-Trump.jpg
+72,male,male,Jared Kushner,,male.jpg
+73,male,male,Eric Trump,1984-?,male.jpg
+74,female,female,Lara Yunaska,,female.jpg
+75,male,male,Eric Luke Trump,2017-?,male.jpg
+76,male,male,Tiffany Trump,1993-?,male.jpg
+77,male,male,Barron Trump,2006-?,male.jpg
+78,male,male,Robert Trump,,male.jpg
+79,female,female,Blaine Beard,,female.jpg
+80,male,male,John George Trump,1907-1985,male.jpg
+81,female,female,Elora Sauerbrun,1913-1983,female.jpg
+82,male,male,John Gordon Trump,1938-2012,male.jpg
+83,male,male,Christine Trump Philp,,male.jpg
+84,male,male,Karen Trump Ingraham,,male.jpg
+85,male,male,Elisabetha Trump,1837-?,male.jpg
+86,female,female,Karl Freund,,female.jpg
+87,male,male,Barbara Trump,1876-?,male.jpg
+88,male,male,Anna Elisabetha Trump,1831-?,male.jpg
+89,female,female,Konrad Schwinn,,female.jpg
+90,country,country,United States of America,,us.jpg
+91,twitter,twitter,Twitter,,twitter.jpg
+92,country,country,Germany,,germany.jpg
+93,职位,职位,美国总统,,职位.jpg
+94,职位,职位,美国副总统,,职位.jpg
+95,机构,机构,美国联邦,,美国联邦.jpg
+96,机构,机构,美国国务院,,美国国务院.jpg
+97,机构,机构,美国财政部,,美国财政部.jpg
+98,机构,机构,美国国防部,,美国国防部.jpg
+99,机构,机构,美国司法部,,美国司法部.jpg
+100,机构,机构,美国内政部,,机构.jpg
+101,机构,机构,美国农业部,,机构.jpg
+102,机构,机构,美国商务部,,机构.jpg
+103,机构,机构,美国劳工部,,机构.jpg
+104,机构,机构,美国卫生及公共服务部,,机构.jpg
+105,机构,机构,美国住房与城市发展部,,机构.jpg
+106,机构,机构,美国交通部,,机构.jpg
+107,机构,机构,美国能源部,,机构.jpg
+108,机构,机构,美国教育部,,机构.jpg
+109,机构,机构,美国退伍军人事务部,,机构.jpg
+110,机构,机构,美国国土安全部,,机构.jpg
+111,机构,机构,联邦政府独立行政机构,,机构.jpg
+112,机构,机构,美国中央情报局,,机构.jpg
+113,机构,机构,美国期货交易管理委员会,,机构.jpg
+114,机构,机构,美国国家环境保护局,,机构.jpg
+115,机构,机构,联邦通讯管理委员会,,机构.jpg
+116,机构,机构,美国联邦储备理事会,,机构.jpg
+117,机构,机构,联邦贸易管理委员会,,机构.jpg
+118,机构,机构,美国总务署,,机构.jpg
+119,机构,机构,美国国家航空航天局,,机构.jpg
+120,机构,机构,国家档案记录署,,机构.jpg
+121,机构,机构,国家劳工关系委员会,,机构.jpg
+122,机构,机构,国家科学基金,,机构.jpg
+123,机构,机构,人事管理处,,机构.jpg
+124,机构,机构,和平工作队,,机构.jpg
+125,机构,机构,小型企业总署,,机构.jpg
+126,机构,机构,社会保障总署,,机构.jpg
+127,机构,机构,证券交易监管委员会,,机构.jpg
+128,机构,机构,美国国际发展局,,机构.jpg
+129,机构,机构,美国国际贸易委员会,,机构.jpg
+130,机构,机构,美国邮政,,机构.jpg
+131,机构,机构,美国邮政价格委员会,,机构.jpg
+132,机构,机构,美国国家运输安全委员会,,机构.jpg
+133,机构,机构,美国总统办事机构,,机构.jpg
+134,机构,机构,白宫办公厅,,机构.jpg
+135,机构,机构,副总统办公室,,机构.jpg
+136,机构,机构,行政管理和预算局,,机构.jpg
+137,机构,机构,总统经济顾问委员会,,机构.jpg
+138,机构,机构,国家安全委员会,,机构.jpg
+139,机构,机构,美国贸易代表办公室,,机构.jpg
+140,机构,机构,政策制定办公室,,机构.jpg
+141,机构,机构,科学和技术政策办公室,,机构.jpg
+142,机构,机构,改善环境质量委员会,,机构.jpg
+143,机构,机构,国家麻醉品控制政策办公室,,机构.jpg
+144,机构,机构,白宫行政办公室,,机构.jpg
+145,male,male,迈克·彭斯,1956.6.7-?,迈克·彭斯.jpg
+146,male,male,詹姆斯·马蒂斯,1950.9.8-?,詹姆斯·马蒂斯.jpg
+147,male,male,约翰·凯利,,约翰·凯利.jpg
+148,female,female,妮基·黑利,,妮基·黑利.jpg
+149,male,male,迈克尔·弗林,,male.jpg
+150,male,male,迈克·蓬佩奥,,male.jpg
+151,male,male,特里·布兰斯塔德,,特里·布兰斯塔德.jpg
+152,male,male,斯蒂芬·努钦,,male.jpg
+153,male,male,威尔伯·罗斯,,male.jpg
+154,male,male,加里·柯恩,,male.jpg
+155,male,male,彼得·纳瓦罗,,male.jpg
+156,male,male,苏世民,,苏世民.jpg
+157,male,male,罗伯特·莱特希泽,,male.jpg
+158,male,male,杰夫·塞申斯,,male.jpg
+159,male,male,瑞安·金克,,male.jpg
+160,male,male,安德鲁·普兹徳,,male.jpg
+161,male,male,汤姆·普莱斯,,male.jpg
+162,male,male,长本·卡森,,male.jpg
+163,female,female,赵小兰,,female.jpg
+164,male,male,里克·佩里,,male.jpg
+165,female,female,贝特西·德沃斯,,female.jpg
+166,male,male,斯哥特·普鲁特,,male.jpg
+167,male,male,米克·马瓦尼,,male.jpg
+168,male,male,雷恩斯·普里巴斯,,male.jpg
+169,male,male,斯蒂芬·班农,,male.jpg
+170,female,female,凯莉安·康威,,female.jpg
+171,male,male,肖恩·斯派塞,,male.jpg
+172,著作,著作,即将到来的中国战争,,book.jpg
+173,著作,著作,被中国害死,,book.jpg
+174,著作,著作,卧虎：中国军事主义对世界意味着什么,,book.jpg
+175,著作,著作,未来与中国战争在哪里打，如何赢,,book.jpg
+176,著作,著作,中国制造，终极警告标签,,book.jpg
+177,著作,著作,新黑暗心脏：第三世界中中华帝国智库,,book.jpg
+178,中国台湾,中国台湾,中国台湾,,中国台湾.jpg
+179,机构,机构,福茂集团,,机构.jpg
+180,职位,职位,福茂集团董事长,,职位.jpg
+181,male,male,赵锡成,,male.jpg
+182,male,male,米奇·麦康奈尔,,米奇·麦康奈尔.jpg
+183,公司,公司,通用电气,,公司.jpg
+184,公司,公司,通用汽车,,公司.jpg
+185,公司,公司,迪士尼,,公司.jpg
+186,公司,公司,IBM,,公司.jpg
+187,职位,职位,驻联合国代表,,职位.jpg
+188,职位,职位,驻华大使,,职位.jpg
+189,机构,机构,企业顾问委员会,,机构.jpg
