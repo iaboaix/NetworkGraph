@@ -199,6 +199,7 @@ updateData(data);
 function updateData(data) {
     drawNetworkGraph(data);
     drawBarGraph(data);
+    updateLabels(data);
 }
 
 function setNetworkInfo(data) {
@@ -290,7 +291,6 @@ function drawNetworkGraph(data) {
         .on("start", drag_start)
         .on("drag", draging)
         .on("end", drag_end));
-    node_elements.selectAll("text").remove();
     node_elements.selectAll("circle").remove();
     node_elements.append("circle")
         .attr("r", function(node) {
@@ -299,18 +299,6 @@ function drawNetworkGraph(data) {
             }
             return node.size;
         });
-    node_elements.append("text")
-        .attr("class", "node-text")
-        .attr("dy", ".35em")
-        .attr("x", function (node) {
-            return textBreaking(d3.select(this), node.name);
-        })
-        .style("display", SHOWCONFIG.node_text === true ? "block" : "none");
-    node_elements.filter(function(node) { return node.border === true; })
-        .append("text")
-        .attr("class", "tip")
-        .attr("transform", "translate(15, -15)")
-        .text("x");
     fill_circle();
 
     simulation.nodes(data.nodes)
@@ -328,6 +316,22 @@ function drawNetworkGraph(data) {
     });
 }
 
+function fill_text() {
+    let item = arguments[0] ? arguments[0] : "name"; 
+    node_elements.selectAll("text").remove();
+    node_elements.append("text")
+        .attr("class", "node-text")
+        .attr("dy", ".35em")
+        .attr("x", function (node) {
+            return textBreaking(d3.select(this), node[item]);
+        })
+        .style("display", SHOWCONFIG.node_text === true ? "block" : "none");
+    node_elements.filter(function(node) { return node.border === true; })
+        .append("text")
+        .attr("class", "tip")
+        .attr("transform", "translate(15, -15)")
+        .text("x");
+}
 $("#container").smartMenu(create_menu, {
     name: "create_menu"
 });
@@ -655,8 +659,9 @@ function stopLayout() {
 
 // 掠过显示节点信息
 function hover_node(node) {
-    var exclude_attr = ["x", "y", "vx", "vy", "selected", "previouslySelected",
+    let exclude_attr = ["x", "y", "vx", "vy", "selected", "previouslySelected",
                         "color", "id", "label", "name", "size", "index"];
+    d3.selectAll(".temp-node").remove();
     d3.select("#node-index").text("index: " + node["index"]);
     d3.select("#node-name").text("name: " + node["name"]);
     d3.select("#node-label").text("label: " + node["label"]);
@@ -665,7 +670,7 @@ function hover_node(node) {
             continue;
         }
         d3.select("#node-info").append("p")
-            .attr("class", "temp-info")
+            .attr("class", "temp-node")
             .text(key + ": " + node[key]);
     }
 }
@@ -692,24 +697,19 @@ function select_link(link) {
 
 // 掠过显示关系信息
 function hover_link(link) {
-    var exclude_attr = ["source", "target", "label"];
+    let exclude_attr = ["index", "source", "target", "label"];
+    d3.selectAll(".temp-link").remove();
+    d3.select("#link-label").text("label: " + link.label);
     d3.select("#link-source").text("source: " + link.source.name);
     d3.select("#link-target").text("target: " + link.target.name);
-    d3.select("#link-label").text("label: " + link.label);
-    // for(var key in link){
-    //     // 可用来排除一些属性
-    //     if(exclude_attr.indexOf(item.toString()) != -1) {
-    //         continue;
-    //     }
-    //     var temp = link_info.append("p")
-    //         .attr("class", "temp-link-info");
-    //     if (key != "source" && key != "target") {
-    //         temp.text(key + ": " + link[key]);
-    //     }
-    //     else {
-    //         temp.text(key + ": " + link[key]["label"]);
-    //     }                    
-    // }
+    for(var key in link){
+        if(exclude_attr.indexOf(key.toString()) != -1) {
+            continue;
+        }
+        d3.select("#link-info").append("p")
+            .attr("class", "temp-link")
+            .text(key + ": " + link[key]);                  
+    }
 }
 
 // 查找节点
@@ -754,6 +754,35 @@ d3.select("#begin-find")
             });
         });
     });
+
+function updateLabels(data) {
+    let exclude_attr = ["x", "y", "vx", "vy", "selected", "previouslySelected",
+                        "color", "size", "index"];
+    let label_bar_ul = d3.select("#labels-bar").select("ul");
+    label_bar_ul.selectAll("*").remove();
+    data.nodes.forEach(node => {
+        for(let attr in node) {
+            if (exclude_attr.indexOf(attr) === -1) {
+                label_bar_ul.append("li")
+                    .attr("class", "labels")
+                    .attr("id", "id-" + attr)
+                    .text(attr);
+                exclude_attr.push(attr);
+            }
+        }
+    })
+    fill_text();
+    d3.select("#id-name")
+        .classed("labels-high-light", true);
+    d3.selectAll(".labels")
+        .on("click", function() {
+            d3.selectAll(".labels-high-light")
+                .classed("labels-high-light", false);
+            d3.select(this)
+                .classed("labels-high-light", true);
+            fill_text($(this)[0].textContent);
+        })
+}
 
 // 渐变 先不用
 // radial_gradient = defs_layout.append("radialGradient")

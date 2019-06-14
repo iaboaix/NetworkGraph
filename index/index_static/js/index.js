@@ -81,15 +81,3 @@ for (var i = 0; i <= 1; i += 0.01) {
         .attr("class", "color-item")
         .style("background-color", d3.interpolateSinebow(i));
 }
-
-// 请求图片 为典型场景分析准备
-support_labels.forEach(function(label) {
-    defs_layout.append("pattern")
-        .attr("id", label)
-        .attr("width", "100%")
-        .attr("height", "100%")
-        .append("image")
-        .attr("width", NETWORKCONFIG.node_size * 2)
-        .attr("height", NETWORKCONFIG.node_size * 2)
-        .attr("xlink:href", "static/image/label/" + label + ".jpg");
-})
