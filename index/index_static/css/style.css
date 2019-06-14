@@ -76,7 +76,7 @@ html, body {
     margin-right: 0px;
     float: left;
 }
-#search-line {
+#search-lineedit {
     width: 90px;
     height: 20px;
     float: left;
@@ -85,7 +85,7 @@ html, body {
     border-radius: 3px;
     background-color: transparent;
 }
-#search-line:hover {
+#search-lineedit:hover {
     border-color: #16E3CD;
 }
 #search-button {

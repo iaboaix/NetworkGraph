@@ -306,7 +306,7 @@ function drawNetworkGraph(data) {
             if(!("size" in node)) {
                 node["size"] = NETWORKCONFIG.node_size;
             }
-            return node.size;
+            return node.size * NETWORKCONFIG.node_scale;
         });
     fill_circle();
 
@@ -469,14 +469,18 @@ d3.select("#repulsion").on("input propertychange", function() {
 
 // 节点大小缩放比例
 d3.select("#nodes-size").on("input propertychange", function() {
-    let scale = this.value;
+    NETWORKCONFIG.node_scale = this.value;
     node_elements.each(function(node) {
         d3.select(this)
             .select("circle")
-            .attr("r", node.size * scale);
-        d3.selectAll("image")
-            .attr("width", node.size * scale * 2)
-            .attr("height", node.size * scale * 2);
+            .attr("r", node.size * NETWORKCONFIG.node_scale);
+        d3.select("#" + d3.select(this)
+                            .select("circle")
+                            .style("fill")
+                            .match(/(url\(\"\#=?)(\S*)(\"\)=?)/)[2])
+            .select("image")
+            .attr("width", node.size * NETWORKCONFIG.node_scale * 2)
+            .attr("height", node.size * NETWORKCONFIG.node_scale * 2);
     })
     // d3.select("marker").attr("refX", NETWORKCONFIG.node_size + 7);
 });
@@ -508,7 +512,7 @@ layout_styles.on("click", function() {
         }
         layout_styles.classed("high-light", false);
         d3.select(this).classed("high-light", true)
-        NETWORKCONFIG.layout_style = parseInt(this.value);
+        NETWORKCONFIG.layout_style = this.value;
         drawNetworkGraph(data);
     })
 
@@ -525,13 +529,32 @@ d3.select("#analyse-mode")
 d3.select("#node-size")
     .on("input propertychange", function() {
         let r = this.value;
-        node_elements.each(function(node) {
-            if (node.selected === true) {
-                d3.select(this)
-                    .select("circle")
-                    .attr("r", node.size = r);
-            }
-        })
+        if (NETWORKCONFIG.analyse_mode === false) {
+            node_elements.each(function(node) {
+                if (node.selected === true) {
+                    d3.select(this)
+                        .select("circle")
+                        .attr("r", (node.size = r) * NETWORKCONFIG.node_scale);
+                }
+            });
+        } else {
+             node_elements.each(function(node) {
+                if (node.selected === true) {
+                    d3.select(this)
+                        .select("circle")
+                        .attr("r", (node.size = r) * NETWORKCONFIG.node_scale);
+                    d3.select("#" + d3.select(this)
+                                        .select("circle")
+                                        .style("fill")
+                                        .match(/(url\(\"\#=?)(\S*)(\"\)=?)/)[2])
+                        .select("image")
+                        .attr("width", node.size * NETWORKCONFIG.node_scale * 2)
+                        .attr("height", node.size * NETWORKCONFIG.node_scale * 2);
+                }
+                
+            });                   
+        }
+
 });
 
 // 节点透明度
@@ -580,7 +603,16 @@ function fill_circle() {
     if (NETWORKCONFIG.analyse_mode === true) {
         node_elements.select("circle")
             .style("fill", function(node) {
-                return (node.label != "undefined" && support_labels.indexOf(node.label) > -1) ? "url(#" + node.label + ")" : "url(#default)";
+                defs_layout.append("pattern")
+                    .attr("id", "pattern-" + node.index)
+                    .attr("width", "100%")
+                    .attr("height", "100%")
+                    .append("image")
+                    .attr("width", NETWORKCONFIG.node_size * NETWORKCONFIG.node_scale * 2)
+                    .attr("height", NETWORKCONFIG.node_size * NETWORKCONFIG.node_scale * 2)
+                    .attr("xlink:href", "static/image/label/" + (typeof node.image === "undefined" ? "default.jpg" : node.image));
+                d3.select(this)
+                    .attr("fill", "url(#pattern-" + node.index + ")");
             })
             .style("stroke", function(node) {
                 if ("color" in node) {

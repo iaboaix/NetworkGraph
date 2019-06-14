@@ -17,6 +17,8 @@ var NETWORKCONFIG = {
     "link_width": 1,         // 边宽度
     "link_color": "#00FFFB", // 连线颜色
     "link_type": "slink",   // slink: 直线, curve: 曲线, hlink: 横直线, vlink: 竖直线
+    "node_scale": 1,
+    "link_scale": 1,
 };
 
 var BARCONFIG = {  
