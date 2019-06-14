@@ -310,6 +310,12 @@ function drawNetworkGraph(data) {
         });
     fill_circle();
 
+    simulation.nodes(data.nodes)
+        .on("tick", tick)
+        .force("link")
+        .links(data.links);
+    simulation.restart();
+
     // 绑定右键菜单
     $(".node").smartMenu(node_menu, {
         name: "node_menu"
@@ -335,6 +341,7 @@ function fill_text() {
         .attr("transform", "translate(15, -15)")
         .text("x");
 }
+
 $("#container").smartMenu(create_menu, {
     name: "create_menu"
 });
