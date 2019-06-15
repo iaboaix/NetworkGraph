@@ -8,7 +8,7 @@
 
 // 屏蔽右键菜单
 document.oncontextmenu = function(ev) {
-	ev.preventDefault();
+    ev.preventDefault();
 }
 
 // 圆内文字切分
@@ -113,3 +113,9 @@ function getLinkTextDx(link) {
     var dx = (distance - 3 * text_length) / 2;
     return dx;
 }
+
+d3.select("#background-color-button")
+    .on("change", function() {
+        console.log(this.value)
+        container.style("background-color", this.value);
+    })
