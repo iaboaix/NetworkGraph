@@ -83,3 +83,16 @@ for (var i = 0; i <= 1; i += 0.01) {
         .attr("class", "color-item")
         .style("background-color", d3.interpolateSinebow(i));
 }
+
+setTip(0);
+
+function setTip(index) {
+    $("#tips-content").text(tips[index]);
+    $(".tip-switch").removeClass("tip-switch-high-light");
+    $(".tip-switch").eq(index).addClass("tip-switch-high-light");
+}
+
+d3.selectAll(".tip-switch")
+    .on("click", function() {
+        setTip($(this)[0].id);
+    })

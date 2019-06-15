@@ -67,6 +67,15 @@
             <p id="link-target"></p>
         </div>
     </div>
+    <div id="tips-layout">
+        <div id="tips-title">贴心小提示</div>
+        <div id="tips-content"></div>
+        <div id="tips-switch-layout">
+            {% for _ in tips %}
+                <div class="tip-switch" id={{ forloop.counter0 }}></div>
+            {% endfor %}
+        </div>
+    </div>
     <div id="color-layout">
         <div><i id="color-marker" class="fa fa-map-pin"></i></div>
         <div id="color-bar"></div>
@@ -81,11 +90,12 @@
 	    </div>
         <hr />
 	    <div id="show-control-bar">
-	    	<button id="info-show" title="详细信息" class="high-light"><i class="fa fa-info-circle"></i></button>
+	    	<button id="info-show" title="信息面板" class="high-light"><i class="fa fa-info-circle"></i></button>
 	        <button id="bar-graph-show" title="分类统计图"><i class="fa fa-bar-chart"></i></button>	
-	        <button id="node-button" title="节点提示" class="high-light"><i class="fa fa-dot-circle-o"></i></button>
-			<button id="link-button" title="关系提示"><i class="fa fa-link"></i></button>
-			<button id="marker-button" title="箭头提示" class="high-light"><i class="fa fa-location-arrow"></i></button>
+	        <button id="node-button" title="节点文字" class="high-light"><i class="fa fa-dot-circle-o"></i></button>
+			<button id="link-button" title="关系文字"><i class="fa fa-link"></i></button>
+            <button id="marker-button" title="箭头" class="high-light"><i class="fa fa-location-arrow"></i></button>
+            <button id="tips-button" title="贴心小提示" class="high-light"><i class="fa fa-gratipay"></i></button>
 	    </div>
         <button id="color-button" type=""></button>
     </div>
@@ -216,15 +226,10 @@
             </tbody>
         </table>
     </div>
-    <!--     
-    <div id="status-bar">
-        <div id="tips">TIPS: CTRL可进行点选，SHIFT可 打开/关闭 框选。</div>
-        <div id="notice">如果发现BUG或有好的修改意见,请在<a id="github" href="https://github.com/iaboaix/NetworkGraph.git">Github</a>进行提交。</div>
-    </div> 
-    -->
     <div id="labels-bar">
         <ul></ul>
     </div>
+    <div id="github"><a id="github_link" href="https://github.com/iaboaix/NetworkGraph.git"></a></div>
     <div id="upload-layout">
         <div id="upload-top-layout">
             <div id="file-title">导入json数据</div>
@@ -270,6 +275,7 @@
     </table>
     <script type="text/javascript">
     	var data = {{ default_data|safe }};
+        var tips = {{ tips|safe }};
     </script>
     <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/tools.js' %}"></script>

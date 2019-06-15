@@ -13,6 +13,7 @@ def index(request):
     except:
         print('ERROR neo4j未启动')
     return render(request, 'index.html', {
+        'tips': get_tips(),
         'file_list': get_file_list(),
         'default_data': data
         })
@@ -43,3 +44,12 @@ def get_public_data(request):
 
 def get_file_list():
     return os.listdir(os.path.join('index', 'index_static', 'data', 'public_data'))
+
+def get_tips():
+    tips = []
+    with open(os.path.join('index', 'tips.txt'), 'r') as file:
+        tip = file.readline()
+        while len(tip) != 0:
+            tips.append(tip)
+            tip = file.readline()
+    return tips

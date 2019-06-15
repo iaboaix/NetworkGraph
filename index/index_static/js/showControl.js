@@ -17,7 +17,8 @@ var SHOWCONFIG = {
     "link_text": false,
     "marker": true,
     "color": false,
-    "public_data_box": false
+    "public_data_box": false,
+    "tips": true
 };
 
 // 信息显示开关
@@ -25,6 +26,13 @@ d3.select("#info-show")
     .on("click", function() {
         d3.select(this).classed("high-light", SHOWCONFIG.info = !SHOWCONFIG.info);
         d3.select("#info-layout").style("animation", SHOWCONFIG.info === true ? "show-info 1s forwards" : "hide-info 1s forwards");
+    });
+
+// 贴心小提示显示开关
+d3.select("#tips-button")
+    .on("click", function() {
+        d3.select(this).classed("high-light", SHOWCONFIG.tips = !SHOWCONFIG.tips);
+        d3.select("#tips-layout").style("animation", SHOWCONFIG.tips === true ? "show-info 1s forwards" : "hide-info 1s forwards");
     });
 
 // 柱状图显示开关
