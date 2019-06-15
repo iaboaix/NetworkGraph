@@ -39,7 +39,7 @@ html, body {
     background-size: cover;
 }
 .top-menu-item {
-    width: 90px;
+    width: auto;
     height: 100%;
     float: left;
     font-size: 12px;
@@ -76,7 +76,7 @@ html, body {
     margin-right: 0px;
     float: left;
 }
-#search-line {
+#search-lineedit {
     width: 90px;
     height: 20px;
     float: left;
@@ -85,7 +85,7 @@ html, body {
     border-radius: 3px;
     background-color: transparent;
 }
-#search-line:hover {
+#search-lineedit:hover {
     border-color: #16E3CD;
 }
 #search-button {
@@ -149,10 +149,9 @@ html, body {
         right: -300px; 
     }
 }
-.box-header {
-    height: 38px;
-    line-height: 38px;
-    background: #027080;
+.box-title td {
+    font-size: 15px;
+    text-align: left;
 }
 #attr-table {
     width: auto;
@@ -190,6 +189,9 @@ circle:hover {
 .selected circle {
     stroke-width: 5px;
 }
+.selected {
+    stroke-dasharray: 1;
+}
 .finded circle {
     stroke-width: 20px;
     stroke: #00FFFB;
@@ -198,7 +200,7 @@ path {
     fill: none;
     cursor: pointer;
     stroke: #00FFFB;
-    stroke-width: 1px;
+    stroke-width: 2px;
 }
 path:hover {
     stroke-width: 4px !important;
@@ -277,7 +279,7 @@ text {
 }
 #color-button {
     position: absolute;
-    bottom: 20px;
+    bottom: 30px;
     background-image: url("../image/color.png");
     background-size: cover;
 }
@@ -305,7 +307,7 @@ text {
     height: 50px;
     position: absolute;
     left: calc(30px - 100%);
-    bottom: 20px;
+    bottom: 30px;
 }
 @keyframes show-color-layout {
     from {
@@ -379,28 +381,28 @@ input[type="range"]::-webkit-slider-thumb {
     cursor: pointer;
     transition: 0.3s ease-in-out;
 }
-.line-style {
+.link-type {
     float: left;
     width: 35px;
     margin: 7px;
 }
-#sline-button {
+#slink-button {
     background-image: url("../image/sline.png");
     background-size: cover;
 }
-#curve-button {
+#clink-button {
     background-image: url("../image/curve.png");
     background-size: cover;
 }
-#hline-button {
+#hlink-button {
     background-image: url("../image/hline.png");
     background-size: cover;
 }
-#vline-button {
+#vlink-button {
     background-image: url("../image/vline.png");
     background-size: cover;
 }
-.layout-switch {
+.layout-style {
     float: left;
     width: 30%;
     margin: 3px;
@@ -472,16 +474,6 @@ input[type="file"] {
     background-color: white;
     color: black;
 }
-#status-bar {
-    width: calc(100% - 30px);
-    height: 20px;
-    background-color: #027080;
-    position: absolute;
-    left: 30px;
-    bottom: 0px;
-    font-size: 12px;
-    line-height: 20px;
-}
 #tips {
     float: left;
 }
@@ -511,7 +503,63 @@ input[type="file"] {
         opacity: 0; 
     }
 }
+
 select {
     width: 100%;
     height: 100%;
+}
+
+#public-data-box {
+    overflow: auto;
+}
+
+ul {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+li {
+    margin: 0px 0px 0px 15px
+}
+#labels-bar {
+    width: calc(100% - 30px);
+    height: 30px;
+    background-color: #027080;
+    position: absolute;
+    left: 30px;
+    bottom: 0px;
+    font-size: 12px;
+    line-height: 20px;
+}
+.labels {
+    border-radius: 0 5px 5px 0;
+    background-color: #ba8f6c;
+    padding: 0px 10px 0px 5px;
+    position: relative;
+    top: 5px;
+    opacity: 0.8;
+    float: left;
+}
+.labels:before {
+    content: " ";
+    position: absolute;
+    left: -20px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: #027080 #ba8f6c #027080 #027080;
+    background-color: black;
+}
+.labels:after {
+    content: " ";
+    width: 4px;
+    height: 4px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
+    position: absolute;
+    top: 8px;
+    left: -3px;
+}
+.labels-high-light:after {
+    box-shadow: 0 0 0 1px #57f6ff;
 }

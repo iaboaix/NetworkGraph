@@ -16,7 +16,8 @@ var SHOWCONFIG = {
     "node_text": true,
     "link_text": false,
     "marker": true,
-    "color": false
+    "color": false,
+    "public_data_box": false
 };
 
 // 信息显示开关
@@ -62,6 +63,22 @@ d3.select("#marker-button")
             .style("display", SHOWCONFIG.marker === true ? "block" : "none");
     });
 
+// 公共数据面板显示开关
+var public_data_box = d3.select("#public-data-box");
+d3.select("#public-data-button")
+    .on("click", function() {
+        if (SHOWCONFIG.route === true) {
+            SHOWCONFIG.route = false;
+            route_box.style("animation", "hide-box 1s forwards");
+        }
+        if (SHOWCONFIG.setting === true) {
+            SHOWCONFIG.setting = false;
+            setting_box.style("animation", "hide-box 1s forwards");
+        }
+        SHOWCONFIG.public_data_box = !SHOWCONFIG.public_data_box;
+        public_data_box.style("animation", SHOWCONFIG.public_data_box === true ? "show-box 1s forwards" : "hide-box 1s forwards");
+    });
+
 // 设置面板显示开关
 var setting_box = d3.select("#setting-box");
 d3.selectAll("#setting-visiable-button")
@@ -69,6 +86,10 @@ d3.selectAll("#setting-visiable-button")
         if (SHOWCONFIG.route === true) {
             SHOWCONFIG.route = false;
             route_box.style("animation", "hide-box 1s forwards");
+        }
+        if (SHOWCONFIG.public_data_box === true) {
+            SHOWCONFIG.public_data_box = false;
+            public_data_box.style("animation", "hide-box 1s forwards");
         }
         SHOWCONFIG.setting = !SHOWCONFIG.setting;
         setting_box.style("animation", SHOWCONFIG.setting === true ? "show-box 1s forwards" : "hide-box 1s forwards");
@@ -81,6 +102,10 @@ d3.select("#route-visiable-button")
         if (SHOWCONFIG.setting === true) {
             SHOWCONFIG.setting = false;
             setting_box.style("animation", "hide-box 1s forwards");
+        }
+        if (SHOWCONFIG.public_data_box === true) {
+            SHOWCONFIG.public_data_box = false;
+            public_data_box.style("animation", "hide-box 1s forwards");
         }
         SHOWCONFIG.route = !SHOWCONFIG.route;
         route_box.style("animation", SHOWCONFIG.route === true ? "show-box 1s forwards" : "hide-box 1s forwards");

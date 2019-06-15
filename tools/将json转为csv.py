@@ -19,7 +19,7 @@ import csv
 
 csvf = open("nodes.csv", 'w', newline='', encoding="utf-8-sig")
 w = csv.writer(csvf)
-w.writerow(("id:ID", "label:LABEL", "label", "name", "life"))#写入表头
+w.writerow(("id:ID", "label:LABEL", "label", "name", "life", "image"))
 for node in js["nodes"]:
     life = ""
     try:
@@ -31,17 +31,22 @@ for node in js["nodes"]:
         label = node["label"]
     except:
         pass
-    w.writerow((node["id"], label, label, node["name"], life))#写入行
+    image = ""
+    try:
+        image = node["image"]
+    except:
+        pass
+    w.writerow((node["id"], label, label, node["name"], life, image))
 csvf.close()
 
 csvf = open("links.csv", 'w', newline='', encoding="utf-8-sig")
 w = csv.writer(csvf)
-w.writerow((":START_ID", ":END_ID", "label:TYPE"))#写入表头
+w.writerow((":START_ID", ":END_ID", "label:TYPE"))
 for link in js["links"]:
     label = ""
     try:
         label = link["label"]
     except:
         pass
-    w.writerow((int(link["source"]), int(link["target"]), link["label"]))#写入行
+    w.writerow((int(link["source"]), int(link["target"]), link["label"]))
 csvf.close()

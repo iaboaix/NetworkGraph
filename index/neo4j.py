@@ -6,7 +6,7 @@ class Neo4jToJson:
         self.graph = Graph("http://localhost:7474",username="neo4j",password="000000")
 
     def start(self):
-        return self.query("Donald-John-Trump", "Donald John Trump")
+        return self.query("male", "Donald John Trump")
 
     def expand(self, node):
         return self.query(node["label"], node["name"])
@@ -46,6 +46,8 @@ class Neo4jToJson:
         node = {"id": neo4j_node["id"], "label": neo4j_node["label"], "name": neo4j_node["name"]}
         if "life" in neo4j_node:
         	node["life"] = neo4j_node["life"]
+        if "image" in neo4j_node:
+            node["image"] = neo4j_node["image"]
         return node
 
 
