@@ -100,25 +100,25 @@ var node_menu = [
         {
             text: "选中父节点",
             func: function() {
-                select_nodes(0);
+                selectNodes(0);
             }
         },        
         {
             text: "选中子节点",
             func: function() {
-                select_nodes(1);
+                selectNodes(1);
             }
         },        
         {
             text: "选中同级",
             func: function() {
-                select_nodes(2);
+                selectNodes(2);
             }
         },        
         {
             text: "选中关联",
             func: function() {
-                select_nodes(3);
+                selectNodes(3);
             }
         }
     ]

@@ -19,6 +19,7 @@ function selectNode(node) {
 
 // 右键按条件选择节点
 function selectNodes(type) {
+    console.log(type)
     var selected_nodes = data.nodes.filter(function(node, i) {
         return node.selected;
     });
@@ -33,22 +34,22 @@ function selectNodes(type) {
     }
     data.links.forEach(function(link, i) {
         // 选取中父节点
-        if (selected_nodes.indexOf(link.target) > -1 && type == 0) {
+        if (selected_nodes.indexOf(link.target) > -1 && type === 0) {
             link.source.selected = true;
         }
         // 选取中子节点
-        else if (selected_nodes.indexOf(link.source) > -1 && type == 1) {
+        else if (selected_nodes.indexOf(link.source) > -1 && type === 1) {
             link.target.selected = true;
         }
         // 选取中同级
-        else if (parent_nodes.indexOf(link.source) > -1 && type == 2) {
+        else if (parent_nodes.indexOf(link.source) > -1 && type === 2) {
             link.target.selected = true;
         }
         // 选取中关联
-        else if (selected_nodes.indexOf(link.source) > -1 && type == 3) { 
+        else if (selected_nodes.indexOf(link.source) > -1 && type === 3) { 
             link.target.selected = true;
         }
-        else if (selected_nodes.indexOf(link.target) > -1 && type == 3) { 
+        else if (selected_nodes.indexOf(link.target) > -1 && type === 3) { 
             link.source.selected = true;
         }
     });

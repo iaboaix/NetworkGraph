@@ -47,7 +47,7 @@ def get_file_list():
 
 def get_tips():
     tips = []
-    with open(os.path.join('index', 'tips.txt'), 'r') as file:
+    with open(os.path.join('index', 'tips.txt'), 'r', encoding='utf8') as file:
         tip = file.readline()
         while len(tip) != 0:
             tips.append(tip)
