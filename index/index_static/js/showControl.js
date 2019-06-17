@@ -10,15 +10,18 @@ var SHOWCONFIG = {
     "screen": false,
     "brush": false,
     "info": true,
-    "setting": false,
-    "route": false,
     "bar_chart": false,
     "node_text": true,
     "link_text": false,
     "marker": true,
     "color": false,
-    "public_data_box": false,
-    "tips": true
+    "tips": true,
+    "right_box": {
+        "comments-box": false,
+        "public-data-box": false,
+        "route-box": false,
+        "setting-box": false,
+    }
 };
 
 // 信息显示开关
@@ -66,59 +69,54 @@ d3.select("#link-button")
 d3.select("#marker-button")
     .on("click", function() {
         d3.select(this).classed("high-light", SHOWCONFIG.marker = !SHOWCONFIG.marker);
-        network_graph.select("marker")
+        link_layout.selectAll("marker")
             .select("path")
             .style("display", SHOWCONFIG.marker === true ? "block" : "none");
     });
 
+function changeBoxState(box) {
+    let need_show = true;
+    Object.keys(SHOWCONFIG.right_box).forEach(key => {
+        if (SHOWCONFIG.right_box[key] === true) {
+            SHOWCONFIG.right_box[key] = false;
+            d3.select("#" + key).style("animation", "hide-box 1s forwards");
+            d3.select("#" + key.replace("box", "button")).classed("high-light", false);
+            if (key === box) { 
+                need_show = false;
+            }
+        }
+    })
+    if (need_show === true) {
+        SHOWCONFIG.right_box[box] = true;
+        d3.select("#" + box).style("animation", "show-box 1s forwards");
+        d3.select("#" + box.replace("box", "button")).classed("high-light", true)
+    }
+}
+
+
+// 留言面板显示开关
+d3.select("#comments-button")
+    .on("click", function() {
+        changeBoxState("comments-box");
+    });
+
 // 公共数据面板显示开关
-var public_data_box = d3.select("#public-data-box");
 d3.select("#public-data-button")
     .on("click", function() {
-        if (SHOWCONFIG.route === true) {
-            SHOWCONFIG.route = false;
-            route_box.style("animation", "hide-box 1s forwards");
-        }
-        if (SHOWCONFIG.setting === true) {
-            SHOWCONFIG.setting = false;
-            setting_box.style("animation", "hide-box 1s forwards");
-        }
-        SHOWCONFIG.public_data_box = !SHOWCONFIG.public_data_box;
-        public_data_box.style("animation", SHOWCONFIG.public_data_box === true ? "show-box 1s forwards" : "hide-box 1s forwards");
+        changeBoxState("public-data-box");
     });
 
 // 设置面板显示开关
-var setting_box = d3.select("#setting-box");
-d3.selectAll("#setting-visiable-button")
+d3.selectAll("#setting-button")
     .on("click", function() {
-        if (SHOWCONFIG.route === true) {
-            SHOWCONFIG.route = false;
-            route_box.style("animation", "hide-box 1s forwards");
-        }
-        if (SHOWCONFIG.public_data_box === true) {
-            SHOWCONFIG.public_data_box = false;
-            public_data_box.style("animation", "hide-box 1s forwards");
-        }
-        SHOWCONFIG.setting = !SHOWCONFIG.setting;
-        setting_box.style("animation", SHOWCONFIG.setting === true ? "show-box 1s forwards" : "hide-box 1s forwards");
+        changeBoxState("setting-box");
     });
 
 // 路径查找显示开关
-var route_box = d3.select("#route-box");
-d3.select("#route-visiable-button")
+d3.select("#route-button")
     .on("click", function() {
-        if (SHOWCONFIG.setting === true) {
-            SHOWCONFIG.setting = false;
-            setting_box.style("animation", "hide-box 1s forwards");
-        }
-        if (SHOWCONFIG.public_data_box === true) {
-            SHOWCONFIG.public_data_box = false;
-            public_data_box.style("animation", "hide-box 1s forwards");
-        }
-        SHOWCONFIG.route = !SHOWCONFIG.route;
-        route_box.style("animation", SHOWCONFIG.route === true ? "show-box 1s forwards" : "hide-box 1s forwards");
+        changeBoxState("route-box");
     });
-
 
 // 配色条显示开关
 d3.select("#color-button")

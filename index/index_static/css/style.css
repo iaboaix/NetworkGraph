@@ -274,6 +274,7 @@ text {
     text-align: center;
 }
 #tips-content {
+    text-indent: 2em;
     font-size: 13px;
     padding: 0px 8px 0px 8px;
     margin: 5px 0px 5px 0px;
@@ -616,4 +617,106 @@ li {
     width: 100%;
     height: 100%;
     padding: 0px 0px 0px 0px;
+}
+#comments-box {
+    height: calc(100% - 74px);
+    width: calc(300px - 10px);
+    background-color: #027090;
+    padding: 5px;
+    text-align: left;
+}
+#comments-layout {
+    border: 1px solid white;
+    height: calc(100% - 205px);
+    max-height: calc(100% - 205px);
+    overflow: auto;
+    padding: 5px;
+}
+.comment-item {
+    margin: 10px 0px 10px 0px;
+    border-bottom: 2px solid gray;
+}
+.comment-user-title {
+    height: 40px;
+    line-height: 40px;
+}
+.comment-user-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    float: left;
+}
+.comment-user-name {
+    font-size: 18px;
+    margin-left: 10px;
+    float: left;
+}
+.comment-content {
+    width: 100%;
+    margin: 5px 0px 5px 0px;
+    font-size: 13px;
+    text-indent: 2em;
+}
+.comment-time {
+    font-size: 12px;
+    text-align: right;
+}
+#username-layout {
+    line-height: 40px;
+}
+#textarea-layout {
+    width: 100%;
+    height: 100px;
+}
+#user-comment {
+}
+#textarea-layout span {
+    float: right;
+}
+textarea {
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    color: white;
+    background-color: #027090;
+    border:  1px solid white;
+    border-radius: 5px;
+    padding: 5px;
+    resize: none;
+}
+#submit-button {
+    height: 30px;
+    float: none;
+    background-color: #027080;
+    margin-right: 10px;
+}
+#submit-button:hover {
+    background-color: #55D6C2;
+}
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+#comments-layout::-webkit-scrollbar
+{
+    width: 8px;
+    height: 16px;
+    background-color: #F5F5F5;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+#comments-layout::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+/*定义滑块 内阴影+圆角*/
+#comments-layout::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-image: -webkit-gradient(linear,
+                       left bottom,
+                       left top,
+                       color-stop(0, rgb(122,153,217)),
+                       color-stop(0.5, rgb(73,125,189)),
+                       color-stop(1, rgb(28,58,148)));
 }

@@ -57,22 +57,6 @@ var text_layout = network_graph.append("g")
 var node_layout = network_graph.append("g")
         .attr("class", "node-layout");
 
-// 箭头
-var marker = network_graph.append("marker")
-    .attr("id", "resolved")
-    .attr("markerUnits", "userSpaceOnUse")
-    .attr("viewBox", "0 -5 10 10")//坐标系的区域
-    .attr("refX", NETWORKCONFIG.node_size + 7)//箭头坐标
-    .attr("refY", 0)
-    .attr("markerWidth", 18)//标识的大小
-    .attr("markerHeight", 12)
-    .attr("orient", "auto")//绘制方向，可设定为：auto（自动确认方向）和 角度值
-    .attr("stroke-width", 2)//箭头宽度
-    .append("path")
-    .attr("class", "link")
-    .attr("d", "M2,0 L0,-3 L9,0 L0,3 L2,0") //箭头的路径 
-    .style("fill", "#00FFFB");
-
 // 颜色比例尺
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -84,15 +68,66 @@ for (var i = 0; i <= 1; i += 0.01) {
         .style("background-color", d3.interpolateSinebow(i));
 }
 
+d3.select("#background-select")
+    .on("change", function() {
+        let style = "";
+        if (this.value !== "未选择") {
+            style = "url(static/image/background/" + this.value + ")";
+        } else {
+            style = d3.select("#background-color-button").value;
+        }
+        container.style("background", style);
+        container.style("background-size", "cover");
+    })
+
+var tip_id = 0;
 setTip(0);
+setInterval(() => {
+    setTip((tip_id++) % 3);
+}, 3000)
+
+d3.selectAll(".tip-switch")
+    .on("click", function() {
+        setTip(tip_id = $(this)[0].id);
+    }) 
 
 function setTip(index) {
-    $("#tips-content").text(tips[index]);
+    $("#tips-content").html(tip_list[index]);
     $(".tip-switch").removeClass("tip-switch-high-light");
     $(".tip-switch").eq(index).addClass("tip-switch-high-light");
 }
 
-d3.selectAll(".tip-switch")
-    .on("click", function() {
-        setTip($(this)[0].id);
+// 留言功能
+var font_count = $("#font-count");
+$("#user-comment").on("change", function() {
+    font_count.text($(this).val().length);
+});
+$("#user-comment").on("keydown", function() {
+    font_count.text($(this).val().length);
+});
+$("#user-comment").on("keyup", function() {
+    font_count.text($(this).val().length);
+});
+
+$("#comment-button").on("click", () => {
+    let username = $("#username")[0].textContent;
+    let comment = $("#user-comment").val();
+    $.post("comment", JSON.stringify({ "username": username, "comment-content": comment}), function(_, status){
+        if (status === "success") {
+            addComment(username, comment);
+        }
     })
+});
+
+function addComment(username, comment) {
+    $("#comments-layout").append(
+        "<div class=\"comment-item\">\
+            <div class=\"comment-user-title\">\
+                <div class=\"comment-user-image\" style=\"background: url(static/image/userhead/" + username + ".jpg); background-size: cover;\">\
+                </div><div class=\"comment-user-name\">" + username + "</div>\
+                </div>\
+            <div class=\"comment-content\">" + comment + "</div>\
+            <div class=\"comment-time\">" + "刚刚" + "</div>\
+        </div>"
+    );
+}

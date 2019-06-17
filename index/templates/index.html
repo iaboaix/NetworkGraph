@@ -40,10 +40,11 @@
                 <input type="text" name="" id="search-lineedit">
                 <button id="search-button"><i class="fa fa-search"></i></button>
             </div>
-            <button class="top-tool-button" id="screen-button"><i class="fa fa-expand" id="screen-switch"></i></button>
+            <button class="top-tool-button" id="comments-button"><i class="fa fa-comments"></i></button>
             <button class="top-tool-button" id="public-data-button"><i class="fa fa-database"></i></button>
-            <button class="top-tool-button" id="route-visiable-button"><i class="fa fa-road"></i></button>
-            <button class="top-tool-button" id="setting-visiable-button"><i class="fa fa-gear"></i></button>
+            <button class="top-tool-button" id="route-button"><i class="fa fa-road"></i></button>
+            <button class="top-tool-button" id="setting-button"><i class="fa fa-gear"></i></button>
+            <button class="top-tool-button" id="screen-button"><i class="fa fa-expand" id="screen-switch"></i></button>
         </div>  
     </div>
     <div id="info-layout">
@@ -71,7 +72,7 @@
         <div id="tips-title">贴心小提示</div>
         <div id="tips-content"></div>
         <div id="tips-switch-layout">
-            {% for _ in tips %}
+            {% for _ in tip_list %}
                 <div class="tip-switch" id={{ forloop.counter0 }}></div>
             {% endfor %}
         </div>
@@ -117,6 +118,27 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+    <div id="comments-box" class="right-box">
+        <div id="comments-layout">
+            {% for comment in comment_list %}
+            <div class="comment-item">
+                <div class="comment-user-title">
+                    <div class="comment-user-image" style="background: url(static/image/userhead/{{ comment.0 }}.jpg); background-size: cover;"></div><div class="comment-user-name">{{ comment.0 }}</div>
+                </div>
+                <div class="comment-content">{{ comment.1 }}</div>
+                <div class="comment-time">{{ comment.2 }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <div id="submit-layout">
+            <div id="username-layout">昵称：<span id="username">anonymous</span></div>
+            <div id="textarea-layout">
+                <textarea id="user-comment"></textarea>
+                <span><i id="font-count">0</i>/200</span>
+            </div>
+            <button id="comment-button" class="submit">提交</button>
+        </div>
     </div>
     <div id="setting-box" class="right-box">
         <table id="setting-table">
@@ -180,11 +202,11 @@
                 <tr>
                     <td>背景图片</td>
                     <td>
-                        <select>
+                        <select id="background-select">
                             <option>未选择</option>
-                            <option>1.jpg</option>
-                            <option>2.jpg</option>
-                            <option>3.jpg</option>
+                            {% for background in background_list %}
+                                <option>{{ background }}</option> 
+                            {% endfor %}
                         </select>
                     </td>
                 </tr>
@@ -292,7 +314,8 @@
     </table>
     <script type="text/javascript">
     	var data = {{ default_data|safe }};
-        var tips = {{ tips|safe }};
+        var tip_list = {{ tip_list|safe }};
+        var background_list = {{ background_list|safe }};
     </script>
     <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/tools.js' %}"></script>

@@ -241,15 +241,24 @@ function drawNetworkGraph(data) {
     }
     startLayout();
 
+    simulation.nodes(data.nodes)
+        .on("tick", tick)
+        .force("link")
+        .links(data.links);
+
     // 连线对象
-    link_elements = link_layout.selectAll("path")
+    link_elements = link_layout.selectAll("g")
         .data(data.links);
     link_elements.exit().remove();
     link_elements = link_elements.enter()
-        .append("path")
+        .append("g")
         .attr("class", "link")
-        .merge(link_elements)
-        .attr("id", function(link, i){ return "link-" + i; })
+        .merge(link_elements);
+        // .attr("id", function(link, i){ return "link-" + i; })
+    link_elements.append("path")
+    	.attr("class", "link-path")
+        .attr("id", link => "link-" + link.index)
+    	.attr("marker-end", link => "url(#marker-" + link.index + ")")
         .style("stroke-width", function(link) {
             if(!("width" in link)) {
                 link["width"] = NETWORKCONFIG.link_width;
@@ -258,6 +267,19 @@ function drawNetworkGraph(data) {
         })
         .on("mousedown.select-link", select_link)
         .on("mouseover.hover-link", hover_link);
+    link_elements.append("marker")
+    	.attr("class", "link-marker")
+    	.attr("id", link => "marker-" + link.index)
+		.attr("markerUnits", "userSpaceOnUse")
+		.attr("viewBox", "0 -50 100 100")//坐标系的区域
+		.attr("refX", 220)//箭头坐标
+		.attr("refY", 0)
+		.attr("markerWidth", 12)//标识的大小
+		.attr("markerHeight", 12)
+		.attr("orient", "auto")//绘制方向，可设定为：auto（自动确认方向）和 角度值
+		.append("path")
+		.attr("d", "M20,0 L0,-30 L90,0 L0,30 L20,0") //箭头的路径 
+		.style("fill", "#00FFFB");
 
     // 连线的文字
     link_text_elements = text_layout.selectAll("text")
@@ -271,8 +293,8 @@ function drawNetworkGraph(data) {
         .style("display", SHOWCONFIG.link_text == true ? "block" : "none");
     link_text_elements.selectAll("textPath").remove();
     link_text_elements.append("textPath")
-        .attr("xlink:href", function (link, i) { return "#link-" + i; })
-        .text(function(link) { return link.label; });
+        .attr("xlink:href", link => "#link-" + link.index )
+        .text(link => link.label);
 
     // 节点对象
     node_elements = node_layout.selectAll(".node")
@@ -297,13 +319,20 @@ function drawNetworkGraph(data) {
             return node.size * NETWORKCONFIG.node_scale;
         })
         .lower();
-    fill_circle();
+    pattern_elements = defs_layout.selectAll("pattern")
+    	.data(data.nodes);
+    pattern_elements = pattern_elements.enter()
+    	.merge(pattern_elements)
+    	.append("pattern")
+    	.attr("id", node => "pattern-" + node.id)
+		.attr("width", "100%")
+		.attr("height", "100%");
+	pattern_elements.append("image")
+        .attr("width", NETWORKCONFIG.node_size * NETWORKCONFIG.node_scale * 2)
+        .attr("height", NETWORKCONFIG.node_size * NETWORKCONFIG.node_scale * 2)
+        .attr("xlink:href", node => "static/image/label/" + (typeof node.image === "undefined" ? "default.jpg" : node.image));
 
-    simulation.nodes(data.nodes)
-        .on("tick", tick)
-        .force("link")
-        .links(data.links);
-    simulation.restart();
+    fill_circle();
 
     // 绑定右键菜单
     $(".node").smartMenu(node_menu, {
@@ -337,8 +366,7 @@ $("#container").smartMenu(create_menu, {
 
 function tick() {
     node_elements.attr("transform", function(node) { return "translate(" + node.x + "," + node.y + ")"; });
-    link_elements.attr("d", function(link) { return genLinkPath(link, NETWORKCONFIG.link_type); })
-        .attr("marker-end", "url(#resolved)");
+    link_elements.select("path").attr("d", function(link) { return genLinkPath(link, NETWORKCONFIG.link_type); });
     link_text_elements.attr("dx", function(link) { return getLinkTextDx(link); });
 }
 
@@ -459,18 +487,11 @@ d3.select("#repulsion").on("input propertychange", function() {
 // 节点大小缩放比例
 d3.select("#nodes-size").on("input propertychange", function() {
     NETWORKCONFIG.node_scale = this.value;
-    node_elements.each(function(node) {
-        d3.select(this)
-            .select("circle")
-            .attr("r", node.size * NETWORKCONFIG.node_scale);
-        d3.select("#" + d3.select(this)
-                            .select("circle")
-                            .style("fill")
-                            .match(/(url\(\"\#=?)(\S*)(\"\)=?)/)[2])
-            .select("image")
-            .attr("width", node.size * NETWORKCONFIG.node_scale * 2)
-            .attr("height", node.size * NETWORKCONFIG.node_scale * 2);
-    })
+    node_elements.select("circle")
+    	.attr("r", node => node.size * NETWORKCONFIG.node_scale )
+    pattern_elements.select("image")
+    	.attr("width", node => node.size * NETWORKCONFIG.node_scale * 2)
+        .attr("height", node => node.size * NETWORKCONFIG.node_scale * 2);
     // d3.select("marker").attr("refX", NETWORKCONFIG.node_size + 7);
 });
 
@@ -478,9 +499,10 @@ d3.select("#nodes-size").on("input propertychange", function() {
 d3.select("#links-width")
     .on("input propertychange", function() {
         let scale = this.value;
-        link_elements.style("stroke-width", function(link) {
-            return link.width * scale;
-        });
+        link_elements.selectAll("path")
+        	.style("stroke-width", function(link) {
+	            return link.width * scale;
+	        });
 });
 
 // 边类型
@@ -564,12 +586,10 @@ d3.select("#node-opacity")
 d3.select("#link-width")
     .on("input propertychange", function() {
         let width = this.value;
-        link_elements.each(function(link) {
-            if (link.selected === true) {
-                d3.select(this)
-                    .style("stroke-width", link.width = width);
-            }
-        })
+        d3.selectAll(".link")
+        	.filter(link => link.selected)
+        	.select("path")
+            .style("stroke-width", link => link.width = width);
 });
 
 // 边颜色
@@ -591,18 +611,7 @@ d3.select("#link-color")
 function fill_circle() {
     if (NETWORKCONFIG.analyse_mode === true) {
         node_elements.select("circle")
-            .style("fill", function(node) {
-                defs_layout.append("pattern")
-                    .attr("id", "pattern-" + node.index)
-                    .attr("width", "100%")
-                    .attr("height", "100%")
-                    .append("image")
-                    .attr("width", NETWORKCONFIG.node_size * NETWORKCONFIG.node_scale * 2)
-                    .attr("height", NETWORKCONFIG.node_size * NETWORKCONFIG.node_scale * 2)
-                    .attr("xlink:href", "static/image/label/" + (typeof node.image === "undefined" ? "default.jpg" : node.image));
-                d3.select(this)
-                    .attr("fill", "url(#pattern-" + node.index + ")");
-            })
+            .style("fill", node => "url(#pattern-" + node.id + ")")
             .style("stroke", function(node) {
                 if ("color" in node) {
                     return node.color;
@@ -640,12 +649,12 @@ function drag_start(node) {
 
 function draging(node) {
     node_elements.filter(function(d) { return d.selected; })
-        .each(function (node) {
-            node.x += d3.event.dx;
+    	.attr("transform", node => {
+    		node.x += d3.event.dx;
             node.y += d3.event.dy;
-            d3.select(this).attr("transform", "translate(" + node.x + "," + node.y + ")");
-        });
-    link_elements.attr("d", function(link) { return genLinkPath(link, NETWORKCONFIG.link_type); });
+            return "translate(" + node.x + "," + node.y + ")";
+    	});
+    link_elements.select("path").attr("d", function(link) { return genLinkPath(link, NETWORKCONFIG.link_type); });
     link_text_elements.attr("dx", function(link) { return getLinkTextDx(link); });
 }
 
