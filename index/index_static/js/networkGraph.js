@@ -250,15 +250,30 @@ function drawNetworkGraph(data) {
     link_elements = link_layout.selectAll("g")
         .data(data.links);
     link_elements.exit().remove();
-    link_elements = link_elements.enter()
+    link_elements_enter = link_elements.enter()
         .append("g")
-        .attr("class", "link")
-        .merge(link_elements);
-        // .attr("id", function(link, i){ return "link-" + i; })
-    link_elements.append("path")
-    	.attr("class", "link-path")
+        .attr("class", "link");
+    link_elements_enter.append("path")
+        .attr("class", "link-path");
+    link_elements_enter.append("marker")
+        .attr("class", "link-marker")
+        .attr("markerUnits", "userSpaceOnUse")
+        .attr("viewBox", "0 -50 100 100")//坐标系的区域
+        .attr("refX", 220)//箭头坐标
+        .attr("refY", 0)
+        .attr("markerWidth", 12)//标识的大小
+        .attr("markerHeight", 12)
+        .attr("orient", "auto")//绘制方向，可设定为：auto（自动确认方向）和 角度值
+        .append("path")
+        .attr("d", "M20,0 L0,-30 L90,0 L0,30 L20,0") //箭头的路径 
+        .style("fill", "#00FFFB");;
+
+    link_elements = link_elements_enter.merge(link_elements);
+    link_elements.selectAll("marker")
+        .attr("id", link => "marker-" + link.index);
+    link_elements.selectAll("path")
         .attr("id", link => "link-" + link.index)
-    	.attr("marker-end", link => "url(#marker-" + link.index + ")")
+        .attr("marker-end", link => "url(#marker-" + link.index + ")")
         .style("stroke-width", function(link) {
             if(!("width" in link)) {
                 link["width"] = NETWORKCONFIG.link_width;
@@ -267,51 +282,37 @@ function drawNetworkGraph(data) {
         })
         .on("mousedown.select-link", select_link)
         .on("mouseover.hover-link", hover_link);
-    link_elements.append("marker")
-    	.attr("class", "link-marker")
-    	.attr("id", link => "marker-" + link.index)
-		.attr("markerUnits", "userSpaceOnUse")
-		.attr("viewBox", "0 -50 100 100")//坐标系的区域
-		.attr("refX", 220)//箭头坐标
-		.attr("refY", 0)
-		.attr("markerWidth", 12)//标识的大小
-		.attr("markerHeight", 12)
-		.attr("orient", "auto")//绘制方向，可设定为：auto（自动确认方向）和 角度值
-		.append("path")
-		.attr("d", "M20,0 L0,-30 L90,0 L0,30 L20,0") //箭头的路径 
-		.style("fill", "#00FFFB");
 
     // 连线的文字
     link_text_elements = text_layout.selectAll("text")
         .data(data.links);
     link_text_elements.exit().remove();
-    link_text_elements = link_text_elements.enter()
+    link_text_elements_enter = link_text_elements.enter()
         .append("text")
         .attr("class", "link-text")
-        .style("font-size", 10)
-        .merge(link_text_elements)
-        .style("display", SHOWCONFIG.link_text == true ? "block" : "none");
-    link_text_elements.selectAll("textPath").remove();
-    link_text_elements.append("textPath")
-        .attr("xlink:href", link => "#link-" + link.index )
+        .style("font-size", 10);
+    link_text_elements_enter.append("textPath")
+            .attr("xlink:href", link => "#link-" + link.index );
+    link_text_elements = link_text_elements_enter.merge(link_text_elements)
+        .style("display", SHOWCONFIG.link_text === true ? "block" : "none");
+    link_text_elements.select("textPath")
         .text(link => link.label);
 
     // 节点对象
     node_elements = node_layout.selectAll(".node")
         .data(data.nodes);
     node_elements.exit().remove();
-    node_elements = node_elements.enter()
+    node_elements_enter = node_elements.enter()
         .append("g")
         .attr("class", "node")
-        .merge(node_elements)
         .on("mousedown.select-node", select_node)
         .on("mouseover.hover-link", hover_node)
         .call(d3.drag()
         .on("start", drag_start)
         .on("drag", draging)
         .on("end", drag_end));
-    node_elements.selectAll("circle").remove();
-    node_elements.append("circle")
+
+    node_elements_enter.append("circle")
         .attr("r", function(node) {
             if(!("size" in node)) {
                 node["size"] = NETWORKCONFIG.node_size;
@@ -319,6 +320,8 @@ function drawNetworkGraph(data) {
             return node.size * NETWORKCONFIG.node_scale;
         })
         .lower();
+    node_elements = node_elements_enter.merge(node_elements);
+
     pattern_elements = defs_layout.selectAll("pattern")
     	.data(data.nodes);
     pattern_elements = pattern_elements.enter()
@@ -365,9 +368,9 @@ $("#container").smartMenu(create_menu, {
 });
 
 function tick() {
-    node_elements.attr("transform", function(node) { return "translate(" + node.x + "," + node.y + ")"; });
-    link_elements.select("path").attr("d", function(link) { return genLinkPath(link, NETWORKCONFIG.link_type); });
-    link_text_elements.attr("dx", function(link) { return getLinkTextDx(link); });
+    node_elements.attr("transform", node => "translate(" + node.x + "," + node.y + ")");
+    link_elements.select("path").attr("d", link => genLinkPath(link, NETWORKCONFIG.link_type));
+    link_text_elements.attr("dx", link => getLinkTextDx(link));
 }
 
 // 点击清空所有选中
@@ -492,7 +495,8 @@ d3.select("#nodes-size").on("input propertychange", function() {
     pattern_elements.select("image")
     	.attr("width", node => node.size * NETWORKCONFIG.node_scale * 2)
         .attr("height", node => node.size * NETWORKCONFIG.node_scale * 2);
-    // d3.select("marker").attr("refX", NETWORKCONFIG.node_size + 7);
+    link_elements.select("marker")
+        .attr("refX", link => link.target.size * NETWORKCONFIG.node_scale * 10 + 70) 
 });
 
 // 边宽缩放比例
@@ -565,7 +569,18 @@ d3.select("#node-size")
                 
             });                   
         }
-
+        let selected_nodes = node_elements.filter(node => node.selected).data();
+        link_elements.filter(link => {
+                var need_change = false;
+                selected_nodes.forEach(node => {
+                    if (node.id === link.target.id) {
+                        need_change = true;
+                    }
+                })
+                return need_change;
+            })
+            .select("marker")
+            .attr("refX", link => link.target.size * NETWORKCONFIG.node_scale * 10 + 70);
 });
 
 // 节点透明度

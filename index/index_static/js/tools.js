@@ -98,24 +98,15 @@ function genLinkPath(link, link_type) {
 
 // 获取文字位置
 function getLinkTextDx(link) {
-    var sx = link.source.x;
-    var sy = link.source.y;
-    var tx = link.target.x;
-    var ty = link.target.y;
+    let sx = link.source.x;
+    let sy = link.source.y;
+    let tx = link.target.x;
+    let ty = link.target.y;
     var distance = Math.sqrt(Math.pow(tx - sx, 2) + Math.pow(ty - sy, 2));
-    var text_length = 0;
-    try {
-        var text_length = link.label.length;
-    } catch(error) {
-        console.log("Warning: links缺少label标签！");
-    }
-    
-    var dx = (distance - 3 * text_length) / 2;
-    return dx;
+    return distance / 2;
 }
 
 d3.select("#background-color-button")
     .on("change", function() {
-        console.log(this.value)
         container.style("background-color", this.value);
     })

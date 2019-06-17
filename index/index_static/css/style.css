@@ -230,6 +230,7 @@ button:hover {
 }
 text {
     fill: white;
+    text-anchor: middle;
     user-select: none;
     pointer-events: none;
 }
