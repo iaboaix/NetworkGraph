@@ -333,7 +333,7 @@ function drawNetworkGraph(data) {
 	pattern_elements.append("image")
         .attr("width", NETWORKCONFIG.node_size * NETWORKCONFIG.node_scale * 2)
         .attr("height", NETWORKCONFIG.node_size * NETWORKCONFIG.node_scale * 2)
-        .attr("xlink:href", node => "static/image/label/" + (typeof node.image === "undefined" ? "default.jpg" : node.image));
+        .attr("xlink:href", node => "static/image/fill_image/" + (typeof node.image === "undefined" ? "default.jpg" : node.image));
 
     fill_circle();
 
@@ -656,21 +656,49 @@ function fill_circle() {
     }
 }
 
+var drag_nodes = null,
+    rela_links = null,
+    rela_texts = null;
 // 节点拖拽
 function drag_start(node) {
     stopLayout();
     d3.event.sourceEvent.stopPropagation();
+    drag_nodes = node_elements.filter(function(d) { return d.selected; });
+    rela_links = link_elements.filter(link => {
+        let check = false;
+        drag_nodes.each(node => {
+            if (node.id === link.source.id || node.id === link.target.id) {
+                check = true;
+            }
+        })
+        return check;
+    });
+    rela_texts = link_text_elements.filter(link => {
+        let check = false;
+        drag_nodes.each(node => {
+            if (node.id === link.source.id || node.id === link.target.id) {
+                check = true;
+            }
+        })
+        return check;
+    });
+    lowLight(node_elements, drag_nodes);
+    lowLight(link_elements, rela_links);
+}
+
+function lowLight(selection_all, selection_part) {
+    selection_all.style("opacity", 0.2);
+    selection_part.style("opacity", 1);
 }
 
 function draging(node) {
-    node_elements.filter(function(d) { return d.selected; })
-    	.attr("transform", node => {
-    		node.x += d3.event.dx;
-            node.y += d3.event.dy;
-            return "translate(" + node.x + "," + node.y + ")";
-    	});
-    link_elements.select("path").attr("d", function(link) { return genLinkPath(link, NETWORKCONFIG.link_type); });
-    link_text_elements.attr("dx", function(link) { return getLinkTextDx(link); });
+	drag_nodes.attr("transform", node => {
+		node.x += d3.event.dx;
+        node.y += d3.event.dy;
+        return "translate(" + node.x + "," + node.y + ")";
+	});
+    rela_links.select("path").attr("d", function(link) { return genLinkPath(link, NETWORKCONFIG.link_type); });
+    rela_texts.attr("dx", function(link) { return getLinkTextDx(link); });
 }
 
 function drag_end(node) {
@@ -678,6 +706,8 @@ function drag_end(node) {
         node.selected = false;
         d3.select(this).classed("selected", false);
     }
+    node_elements.style("opacity", 1);
+    link_elements.style("opacity", 1);
 }
 
 // 布局 开始/暂停 按钮
