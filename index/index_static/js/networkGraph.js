@@ -291,11 +291,11 @@ function drawNetworkGraph(data) {
         .append("text")
         .attr("class", "link-text")
         .style("font-size", 10);
-    link_text_elements_enter.append("textPath")
-            .attr("xlink:href", link => "#link-" + link.index );
+    link_text_elements_enter.append("textPath");
     link_text_elements = link_text_elements_enter.merge(link_text_elements)
         .style("display", SHOWCONFIG.link_text === true ? "block" : "none");
     link_text_elements.select("textPath")
+        .attr("xlink:href", link => "#link-" + link.index )
         .text(link => link.label);
 
     // 节点对象
