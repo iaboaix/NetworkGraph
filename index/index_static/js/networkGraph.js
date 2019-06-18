@@ -291,11 +291,11 @@ function drawNetworkGraph(data) {
         .append("text")
         .attr("class", "link-text")
         .style("font-size", 10);
-    link_text_elements_enter.append("textPath")
-            .attr("xlink:href", link => "#link-" + link.index );
+    link_text_elements_enter.append("textPath");
     link_text_elements = link_text_elements_enter.merge(link_text_elements)
         .style("display", SHOWCONFIG.link_text === true ? "block" : "none");
     link_text_elements.select("textPath")
+        .attr("xlink:href", link => "#link-" + link.index )
         .text(link => link.label);
 
     // 节点对象
@@ -347,7 +347,7 @@ function drawNetworkGraph(data) {
 }
 
 function fill_text() {
-    let item = arguments[0] ? arguments[0] : "name"; 
+    let item = arguments[0] ? arguments[0] : "id"; 
     node_elements.selectAll("text").remove();
     node_elements.append("text")
         .attr("class", "node-text")
@@ -734,11 +734,8 @@ function stopLayout() {
 // 掠过显示节点信息
 function hover_node(node) {
     let exclude_attr = ["x", "y", "vx", "vy", "selected", "previouslySelected",
-                        "color", "id", "label", "name", "size", "index"];
+                        "color", "size"];
     d3.selectAll(".temp-node").remove();
-    d3.select("#node-index").text("index: " + node["index"]);
-    d3.select("#node-name").text("name: " + node["name"]);
-    d3.select("#node-label").text("label: " + node["label"]);
     for (var key in node) {
         if (exclude_attr.indexOf(key.toString()) != -1) {
             continue;
@@ -773,9 +770,9 @@ function select_link(link) {
 function hover_link(link) {
     let exclude_attr = ["index", "source", "target", "label"];
     d3.selectAll(".temp-link").remove();
-    d3.select("#link-label").text("label: " + link.label);
-    d3.select("#link-source").text("source: " + link.source.name);
-    d3.select("#link-target").text("target: " + link.target.name);
+    d3.select("#link-label").text("label: " + (typeof link.label === "undefined" ? "default" : link.label));
+    d3.select("#link-source").text("source: " + link.source.id);
+    d3.select("#link-target").text("target: " + link.target.id);
     for(var key in link){
         if(exclude_attr.indexOf(key.toString()) != -1) {
             continue;
