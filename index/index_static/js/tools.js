@@ -62,25 +62,38 @@ function textBreaking(d3text, text) {
 }
 
 // 生成关系连线路径
-function genLinkPath(link, link_type) {
-    var path = null;
-    var temp = 0;
-    var sx = link.source.x;
-    var sy = link.source.y;
-    var tx = link.target.x;
-    var ty = link.target.y;
-    var dx = (tx - sx) / 8;
-    var dy = (ty - sy) / 8;
-    var x1 = sx + dx;
-    var y1 = sy + dy;
-    var x2 = sx + dx * 2;
-    var y2 = sy + dy * 2;
-    var x3 = sx + dx * 3;
-    var y3 = sy + dy * 3;
-    var x4 = sx + dx * 4;
-    var y4 = sy + dy * 4;
-    var x7 = sx + dx * 7;
-    var y6 = sy + dy * 6;
+function getLinkPath(link, link_type) {
+    if (link.source === link.target) {
+          // <path d="M70 110 C 70 140, 110 140, 110 110" stroke="black" fill="transparent"/>
+        let size = typeof link.source.size === "undefined" ? NETWORKCONFIG.node_size : link.source.size;
+        let sx = link.source.x + size * NETWORKCONFIG.node_scale / 4 * 3;
+        let sy = link.source.y + size * NETWORKCONFIG.node_scale / 4;
+        let tx = link.source.x + size * NETWORKCONFIG.node_scale / 4;
+        let ty = link.source.y + size * NETWORKCONFIG.node_scale / 4 * 3;
+        let cx1 = sx + 150;
+        let cy1 = sy;
+        let cx2 = tx;
+        let cy2 = ty + 150;
+        return "M" + sx + " " + sy + "C" + cx1 + " " + cy1 + ", " + cx2 + " " + cy2 + ", " + tx + " " + ty;
+    }
+    let path = null;
+    let temp = 0;
+    let sx = link.source.x;
+    let sy = link.source.y;
+    let tx = link.target.x;
+    let ty = link.target.y;
+    let dx = (tx - sx) / 8;
+    let dy = (ty - sy) / 8;
+    let x1 = sx + dx;
+    let y1 = sy + dy;
+    let x2 = sx + dx * 2;
+    let y2 = sy + dy * 2;
+    let x3 = sx + dx * 3;
+    let y3 = sy + dy * 3;
+    let x4 = sx + dx * 4;
+    let y4 = sy + dy * 4;
+    let x7 = sx + dx * 7;
+    let y6 = sy + dy * 6;
     if (link_type === "slink") {
         path = "M" + sx + "," + sy + " L" + tx + "," + ty;
     }
