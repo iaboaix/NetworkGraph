@@ -119,6 +119,15 @@ function getLinkTextDx(link) {
     return distance / 2;
 }
 
+// 获取文字旋转角度
+function getLinkTextRotate(link) {
+    let transform = "";
+    if (link.source.x > link.target.x) {
+        transform = "rotate(180, " + (link.source.x + link.target.x) / 2 + " " + (link.source.y + link.target.y) / 2 + ")";
+    }
+    return transform;
+}
+
 d3.select("#background-color-button")
     .on("change", function() {
         container.style("background-color", this.value);

@@ -370,7 +370,8 @@ $("#container").smartMenu(create_menu, {
 function tick() {
     node_elements.attr("transform", node => "translate(" + node.x + "," + node.y + ")");
     link_elements.select("path").attr("d", link => getLinkPath(link, NETWORKCONFIG.link_type));
-    link_text_elements.attr("dx", link => getLinkTextDx(link));
+    link_text_elements.attr("dx", link => getLinkTextDx(link))
+    	.attr("transform", link => getLinkTextRotate(link));
 }
 
 // 点击清空所有选中
@@ -698,7 +699,8 @@ function draging(node) {
         return "translate(" + node.x + "," + node.y + ")";
 	});
     rela_links.select("path").attr("d", function(link) { return getLinkPath(link, NETWORKCONFIG.link_type); });
-    rela_texts.attr("dx", function(link) { return getLinkTextDx(link); });
+    rela_texts.attr("dx", function(link) { return getLinkTextDx(link); })
+    	.attr("transform", link => getLinkTextRotate(link));
 }
 
 function drag_end(node) {
