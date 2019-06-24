@@ -143,7 +143,8 @@ d3.select("#download-img")
 // 分析示例数据
 d3.selectAll(".public_data")
     .on("click", function() {
-        $.post("public_data", JSON.stringify({ "file_name": $(this)[0].textContent }), function(data, status){
-            updateData(JSON.parse(data));
+        $.post("public_data", JSON.stringify({ "file_name": $(this)[0].textContent }), function(cur_data, status){
+            data = JSON.parse(cur_data);
+            updateData(data);
         })
     })
