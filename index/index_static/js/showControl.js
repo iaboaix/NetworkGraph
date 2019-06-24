@@ -99,6 +99,7 @@ d3.select("#comments-button")
     .on("click", function() {
         changeBoxState("comments-box");
     });
+comments_layout[0].scrollTop = comments_layout[0].scrollHeight;
 
 // 公共数据面板显示开关
 d3.select("#public-data-button")

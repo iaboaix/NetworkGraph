@@ -115,12 +115,16 @@ $("#comment-button").on("click", () => {
     $.post("comment", JSON.stringify({ "username": username, "comment-content": comment}), function(_, status){
         if (status === "success") {
             addComment(username, comment);
+            $("#user-comment").val("");
+        } else {
+        	alert("留言失败！");
         }
     })
 });
 
+const comments_layout = $("#comments-layout");
 function addComment(username, comment) {
-    $("#comments-layout").append(
+	comments_layout.append(
         "<div class=\"comment-item\">\
             <div class=\"comment-user-title\">\
                 <div class=\"comment-user-image\" style=\"background: url(static/image/userhead/" + username + ".jpg); background-size: cover;\">\
@@ -130,4 +134,5 @@ function addComment(username, comment) {
             <div class=\"comment-time\">" + "刚刚" + "</div>\
         </div>"
     );
+    comments_layout.animate({scrollTop: comments_layout[0].scrollHeight}, 1000);
 }

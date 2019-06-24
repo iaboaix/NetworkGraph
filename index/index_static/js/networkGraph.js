@@ -699,7 +699,8 @@ function draging(node) {
         return "translate(" + node.x + "," + node.y + ")";
 	});
     rela_links.select("path").attr("d", function(link) { return getLinkPath(link, NETWORKCONFIG.link_type); });
-    rela_texts.attr("dx", function(link) { return getLinkTextDx(link); });
+    rela_texts.attr("dx", function(link) { return getLinkTextDx(link); })
+    	.attr("transform", link => getLinkTextRotate(link));
 }
 
 function drag_end(node) {
