@@ -29,6 +29,12 @@ def expand(request):
         data = data_neo4j.expand(node)
     return HttpResponse(json.dumps(data))
 
+def search_graph(request):
+    if request.POST:
+        type = json.loads(request.body.decode())['type']
+        data = data_neo4j.search_by_type(type)
+    return HttpResponse(json.dumps(data))
+
 def upload(request):
     if request.method == 'POST':
         data = dict()

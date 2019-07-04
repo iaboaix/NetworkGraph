@@ -787,25 +787,40 @@ function hover_link(link) {
 d3.select("#search-lineedit")
     .on("keypress", function() {
         if (d3.event.key === "Enter") {
-            find_node_name();
+            searchGraph();
         }
     });
 d3.select("#search-button")
-    .on("click", find_node_name);
+    .on("click", searchGraph);
 
-function find_node_name() {
-    var node_name = $("#search-lineedit").val();
-    var is_find = false;
-    node_elements.each(function(node) {
-        if (node.name === node_name) {
-            d3.select(this).classed("finded", true);
-            is_find = true;
-        }
+function searchGraph() {
+    $.post("search_graph", JSON.stringify({ "type": $("#search-lineedit").val() }), function(data, status){
+    	data = JSON.parse(data);
+    	updateData(data);
     })
-    if (is_find === false) {
-        alert("未查找到此节点");
-    }
 }
+// d3.select("#search-lineedit")
+//     .on("keypress", function() {
+//         if (d3.event.key === "Enter") {
+//             find_node_name();
+//         }
+//     });
+// d3.select("#search-button")
+//     .on("click", find_node_name);
+
+// function find_node_name() {
+//     var node_name = $("#search-lineedit").val();
+//     var is_find = false;
+//     node_elements.each(function(node) {
+//         if (node.name === node_name) {
+//             d3.select(this).classed("finded", true);
+//             is_find = true;
+//         }
+//     })
+//     if (is_find === false) {
+//         alert("未查找到此节点");
+//     }
+// }
 
 // 最短路径查找
 d3.select("#begin-find")
