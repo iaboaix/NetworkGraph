@@ -9,16 +9,18 @@ class Neo4jToJson:
         self.graph = Graph("http://39.98.255.46:7474",username="neo4j",password="tcmsystem5652.")
 
     def start(self):
-        return self.query("MATCH p=()-[r:identification_and_combine]-() RETURN p LIMIT 25")
+        return self.query("MATCH p=()-[r:express]-() RETURN p LIMIT 25")
 
-    def search_by_type(self, type):
-        return self.query("MATCH p=()-[r:{0}]->() RETURN p LIMIT 25".format(type))
+    def search_by_type(self, cell, limit=25):
+        return self.query("MATCH p=(n:Cell)-[]-() WHERE n.cell='{0}' RETURN p LIMIT {1}".format(cell, limit))
 
     def expand(self, node):
         return self.query(node["id"])
 
     def query(self, sql):
+        print(sql)
         relationships = self.graph.run(sql).data()
+        print("relationships:\n", relationships)
         nodes = list()
         rels = list()
         for rel in relationships:
@@ -29,8 +31,6 @@ class Neo4jToJson:
             temp_rel = self.create_rel(rel['p'])
             if(temp_rel not in rels):
                 rels.append(temp_rel)
-        print("result:")
-        print({"nodes": nodes, "links": rels})
         return {"nodes": nodes, "links": rels}
 
     def create_node(self, neo4j_node):

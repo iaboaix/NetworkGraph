@@ -794,10 +794,17 @@ d3.select("#search-button")
     .on("click", searchGraph);
 
 function searchGraph() {
-    $.post("search_graph", JSON.stringify({ "type": $("#search-lineedit").val() }), function(data, status){
-    	data = JSON.parse(data);
-    	updateData(data);
-    })
+    let limit = $("#search-limit-select").val();
+    let cell = $("#search-lineedit").val();
+    if (cell !== "") {
+        $.post("search_graph", JSON.stringify({ "cell": cell, "limit": limit}), function(data, status){
+            data = JSON.parse(data);
+            updateData(data);
+        })
+    } else {
+        alert("请先输入cell！");
+    }
+
 }
 // d3.select("#search-lineedit")
 //     .on("keypress", function() {

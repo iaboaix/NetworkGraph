@@ -31,8 +31,8 @@ def expand(request):
 
 def search_graph(request):
     if request.POST:
-        type = json.loads(request.body.decode())['type']
-        data = data_neo4j.search_by_type(type)
+        info = json.loads(request.body.decode())
+        data = data_neo4j.search_by_type(info['cell'], info['limit'])
     return HttpResponse(json.dumps(data))
 
 def upload(request):
