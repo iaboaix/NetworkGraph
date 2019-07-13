@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src="d3.js"></script>
+    <script type="text/javascript" src="NetworkGraph.min.js"></script>
+    <style>
+        html {
+            height: 100%;
+        }
+        body {
+            width: 100%;
+            height: 100%;
+        }
+        #vis {
+            width: 500px;
+            height: 500px;
+            margin: 0 auto;
+        }
+    </style>
+    <title>NetworkGraph</title>
+</head>
+<body>
+    <div id="vis"></div>
+    <script>
+        var network = new NetworkGraph("#vis");
+        var data = network.getDemoData();
+        network.drawNetworkGraph(data);
+    </script>
+</body>
+</html>
