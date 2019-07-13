@@ -265,8 +265,7 @@ function drawNetworkGraph(data) {
         .attr("markerHeight", 12)
         .attr("orient", "auto")//绘制方向，可设定为：auto（自动确认方向）和 角度值
         .append("path")
-        .attr("d", "M20,0 L0,-30 L90,0 L0,30 L20,0") //箭头的路径 
-        .style("fill", "#00FFFB");;
+        .attr("d", "M20,0 L0,-30 L90,0 L0,30 L20,0"); //箭头的路径
 
     link_elements = link_elements_enter.merge(link_elements);
     link_elements.selectAll("marker")
