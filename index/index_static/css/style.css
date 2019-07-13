@@ -206,9 +206,15 @@ path:hover {
     stroke-width: 4px !important;
     stroke-opacity: 0.8;
 }
-.route {
+marker path{
+    fill: #00FFFB;
+}
+.route path{
     stroke: red;
     stroke-width: 5px;
+}
+.route marker path{
+    fill: red;
 }
 .selected path{
     stroke: yellow;
