@@ -29,25 +29,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- 引入d3.v5.js 和 NetworkGraph.js --->
-    <script type="text/javascript" src="d3.v5.js"></script>
-    <script type="text/javascript" src="NetworkGraph.js"></script>
+    <script type="text/javascript" src="d3.js"></script>
+    <script type="text/javascript" src="NetworkGraph.min.js"></script>
     <style>
+        html {
+            height: 100%;
+        }
+        body {
+            width: 100%;
+            height: 100%;
+        }
         #vis {
-            width: 500px;
-            height: 500px;
+            width: 100%;
+            height: 100%;
             margin: 0 auto;
         }
     </style>
     <title>NetworkGraph</title>
 </head>
 <body>
-    <!-- 创建一个 id 为 vis 的 div 容器 -->
-    <div id="vis"></div>
+    <svg id="vis"></svg>
     <script>
-        var network = new NetworkGraph("#vis");
-        var data = network.getDemoData();
-        network.drawNetworkGraph(data);
+        var network_graph = new NetworkGraph("vis");
+        var data0 = {
+            "nodes": [
+                { "id": 0, "label": "Person",  "size": 30 },
+                { "id": 1, "label": "Company", "size": 10 },
+                { "id": 2, "label": "Company", "size": 15 },
+                { "id": 3, "label": "Company" }
+            ],
+            "links": [
+                { "type": "EMPLOY", "source": 0, "target": 1 },
+                { "type": "EMPLOY", "source": 1, "target": 2 },
+                { "type": "EMPLOY", "source": 2, "target": 3 },
+                { "type": "EMPLOY", "source": 0, "target": 2 }
+            ]
+        };
+        var data1 = {
+            "nodes": [
+                { "id": 10, "label": "Person"  },
+                { "id": 11, "label": "Company" },
+                { "id": 12, "label": "Company" },
+                { "id": 13, "label": "Company" },
+                { "id": 14, "label": "Person"  },
+                { "id": 15, "label": "Company" },
+                { "id": 16, "label": "Company" },
+                { "id": 17, "label": "Company" }
+            ],
+            "links": [
+                { "type": "EMPLOY", "source": 10, "target": 11 },
+                { "type": "EMPLOY", "source": 11, "target": 12 },
+                { "type": "EMPLOY", "source": 12, "target": 13 },
+                { "type": "EMPLOY", "source": 12, "target": 14 },
+                { "type": "EMPLOY", "source": 15, "target": 16 },
+                { "type": "EMPLOY", "source": 17, "target": 15 },
+                { "type": "EMPLOY", "source": 11, "target": 15 },
+                { "type": "EMPLOY", "source": 12, "target": 16 }
+            ]
+        };
+        var links = [
+            { "source": 0, "target": 10, "type": "0-10" },
+            { "source": 1, "target": 11, "type": "1-11" }
+        ]
+        var graph0 = network_graph.drawNetworkGraph(data0, "force", 300, 400);
+        var graph1 = network_graph.drawNetworkGraph(data1, "radius", 900, 400);
+        graph1.connectGraph(graph0, links);
     </script>
 </body>
 </html>
