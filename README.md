@@ -54,3 +54,6 @@
 ```
 ### 使用效果
 ![Image text](https://github.com/iaboaix/NetworkGraph/blob/master/others/NetworkGraph.jpg)
+
+## [Donate-打赏](Donate)
+<a href="javascript:;" alt="微信"><img src="others/wechat.jpg" height="300" width="300"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" alt="支付宝"><img src="others/alipay.jpg" height="300" width="300"></a>
