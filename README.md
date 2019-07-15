@@ -1,27 +1,104 @@
 # NetworkGraph
 
-[![Demo](https://img.shields.io/badge/D3-NetworkGraph-green.svg)](http://148.70.238.152/)
-[![Demo](https://img.shields.io/badge/QQ%E7%BE%A4-144973444-blue.svg)](https://jq.qq.com/?_wv=1027&k=5oRv4zr)
-[![Demo](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://github.com/iaboaix/NetworkGraph/blob/master/LICENSE)
+![](https://img.shields.io/badge/build-passing-brightgreen.svg)
+![](https://img.shields.io/badge/name-NetworkGraph-red.svg)  
+![](https://img.shields.io/badge/qq%E7%BE%A4-144973444-green.svg)
+![](https://img.shields.io/badge/author-iaboaix-blue.svg)
+![](https://img.shields.io/badge/license-MIT-lightgrey.svg)  
+![](https://img.shields.io/badge/D3-v5.7.0-yellow.svg)
+![](https://img.shields.io/badge/neo4j-v3.4.9-orange.svg)
+![](https://img.shields.io/badge/python-v3.7.1-red.svg)
+![](https://img.shields.io/badge/django-v2.7.1-blueviolet.svg)
+![](https://img.shields.io/badge/py2neo-v4.2.0-ff69b4.svg)  
 
-如果对您有帮助，请点击:star:  
+如果对您有帮助，请点击 <b>Star</b> 支持开发者
 
-## 项目预览
-[http://148.70.238.152/](http://148.70.238.152/)  
+## 一、项目预览
+[![Image text](others/preview.jpg)](http://148.70.238.152/)  
 
-## QQ群
-[QQ群【D3网络图可视化】](https://jq.qq.com/?_wv=1027&k=5oRv4zr)  
+## 二、功能简介
+- ### 快捷菜单栏(上)
+  下载示例数据、上传数据进行分析、导出编辑后的数据、导出图片、布局计算 开始/结束 控制、查找节点、全屏切换、以及留言、公共数据集、路径分析、图参数调节面板的显隐控制
+- ### 快捷工具栏(左上)
+  网络图缩放、旋转
+- ### 可视控制区(左下)
+  对网络图提示框、分类统计图、节点内文字、关系文字、关系箭头、贴心小提示进行显隐控制
+- ### 调色区(下)
+  对节点颜色进行更改  
+  注：先选中后才能更改
+- ### 留言面板(右)
+  对项目留言
+- ### 公共数据集选择面板(右)
+  选择公共数据集进行可视化分析
+- ### 路径分析面板(右)
+  输入两个节点的 index 进行路径分析
+- ### 图参数调节面板(右)
+  对网络图的节点间斥力、连接强度、节点和边的缩放比例、边的类型、网络图布局方式、分析模式以及对背景颜色或图片进行调整，也可对批量节点的大小、透明度、边的宽度进行调节  
+  注：需先进行节点和边的选中，方可调节
+- ### 右键菜单
+  - 右键点击空白区域，可进行节点创建
+  - 右键点击关系，可进行关系打破
+  - 右键点击节点，可进行节点扩展、节点删除、构建关系以及按条件选取
+## 三、项目部署
+- ### linux
+  #### 安装 python3 运行环境
+  1、yum install python36...  
+  2、yum install pip36...  
+  3、pip install django  
+  4、pip install py2neo
+  #### 安装java jdk
+  5、yum install java-1.8.0-openjdk
+  #### 安装neo4j
+  6、wget https://neo4j.com/artifact.php?name=neo4j-community-3.4.12-unix.tar.gz  
+  7、tar -xzvf neo4j-community-3.4.12-unix.tar.gz
+  #### 导入数据
+  8、neo4j-admin import --nodes nodes.csv --relationships links.csv
+  #### 修改neo4j配置 远程访问并修改密码
+  9、vim neo4j.conf  
+  10、把54行dbms.connectors.default_listen_address=0.0.0.0注释去掉  
+  11、远程访问neo4j数据库 http://IP:7474/ 修改初始密码
+  #### 拉取代码
+  12、git clone https://github.com/iaboaix/NetworkGraph.git
+  #### 启动 neo4j 和 django
+  13、neo4j start  
+  14、nohup python3 manage.py runserver --insecure 0.0.0.0:80 &  
+  15、访问 http://127.0.0.1/
+- ### windows
+  #### 安装 python3 运行环境
+  1、安装python3.x  
+  2、安装python包  
+  3、pip install django  
+  4、pip install py2neo
+  #### 安装java jdk
+  5、下载地址  
+  https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+  #### 安装neo4j
+  6、下载地址  
+  https://neo4j.com/download/  
+  7、导入数据  
+  neo4j-admin import --nodes nodes.csv --relationships links.csv  
+  8、访问neo4j数据库并修改初始密码  
+  http://127.0.0.1:7474/  
+  修改初始密码为xxxxxx
+  #### 拉取代码
+  9、git clone https://github.com/iaboaix/NetworkGraph.git
+  #### 启动neo4j django
+  10、neo4j start  
+  11、python3 manage.py runserver --insecure 0.0.0.0:80  
+  12、访问 http://127.0.0.1/
+- ### tips:
+  1、启动之前，将服务器外网IP地址加入 django settings.py 的 ALLOWED_HOSTS  
+  2、若 django sqlite 报错  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vim /usr/local/lib64/python3.6/site-packages/django/db/models/base.py  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将版本检测代码段注释掉  
+  3、若 django debug = false 之后 静态文件找不到 启动时添加 --insecure  
 
-## 系统预览
-![Image text](https://github.com/iaboaix/NetworkGraph/blob/master/others/preview.jpg)
-
-## NetworkGraph.js模块使用方法
+## 四、NetworkGraph.min.js模块使用方法
 
 ### 下载最新模块
-[NetworkGraph.min.js](https://github.com/iaboaix/NetworkGraph/blob/master/others/NetworkGraph/NetworkGraph.min.js)
+[NetworkGraph.min.js](others/NetworkGraph/NetworkGraph.min.js)
 
 ### 示例代码
-### 
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -50,7 +127,6 @@
 <body>
     <svg id="vis"></svg>
     <script>
-        var network_graph = new NetworkGraph("vis");
         var data0 = {
             "nodes": [
                 { "id": 0, "label": "Person",  "size": 30 },
@@ -91,6 +167,7 @@
             { "source": 0, "target": 10, "type": "0-10" },
             { "source": 1, "target": 11, "type": "1-11" }
         ]
+        var network_graph = new NetworkGraph("vis");
         var graph0 = network_graph.drawNetworkGraph(data0, "force", 300, 400);
         var graph1 = network_graph.drawNetworkGraph(data1, "radius", 900, 400);
         graph1.connectGraph(graph0, links);
@@ -99,7 +176,9 @@
 </html>
 ```
 ### 使用效果
-![Image text](https://github.com/iaboaix/NetworkGraph/blob/master/others/NetworkGraph.jpg)
+<img src="others/NetworkGraph.jpg" height="auto" width="auto">
 
-## [Donate-打赏](Donate)
-<a href="javascript:;" alt="微信"><img src="others/wechat.jpg" height="300" width="300"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" alt="支付宝"><img src="others/alipay.jpg" height="300" width="300"></a>
+## 五、点击加入QQ群: [D3网络图可视化](https://jq.qq.com/?_wv=1027&k=5oRv4zr)  
+
+## 六、[Sponsor-赞助](Sponsor)
+<img src="others/wechat.jpg" height="300" width="300">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="others/alipay.jpg" height="300" width="300">
