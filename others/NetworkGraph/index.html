@@ -63,12 +63,43 @@
             ]
         };
         var links = [
-            { "source": 0, "target": 10, "type": "0-10" },
-            { "source": 1, "target": 11, "type": "1-11" }
+            { "source": 0, "target": 10, "type": "" },
+            { "source": 1, "target": 11, "type": "" }
         ]
         var graph0 = network_graph.drawNetworkGraph(data0, "force", 300, 400);
         var graph1 = network_graph.drawNetworkGraph(data1, "radius", 900, 400);
         graph1.connectGraph(graph0, links);
+        var node0 = {
+            "id": 100,
+            "label": "Company",
+            "size": 50,
+        };
+        var node1 = {
+            "id": 101,
+            "label": "Company",
+            "size": 30,
+        };
+        setTimeout(() => {
+            // network.addNode(node);
+            // network.addNode(node, x, y);
+            graph0.addNode(node0, 100, 200);
+            graph1.addNode(node1, 100, 200);
+        }, 1000);
+        setTimeout(() => {
+            // network.addLink(node,    node,    node_type);
+            // network.addLink(node_id, node_id, node_type);
+            // network.addLink(node,    node_id, node_type);
+            // network.addLink(node_id, node,    node_type);
+            graph0.addLink(node0, 3, "TEST");
+            graph1.addLink(node1, 16, "TEST");
+        }, 2000);
+        setTimeout(() => {
+            // network.removeLink(link);
+            graph0.removeLink(data0.links[0]);
+            graph0.removeNode(5);
+            graph1.removeLink(data1.links[2]);
+            graph1.removeNode(15);
+        }, 3000);
     </script>
 </body>
 </html>
