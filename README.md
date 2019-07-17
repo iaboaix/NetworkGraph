@@ -132,13 +132,23 @@
                 { "id": 0, "label": "Person",  "size": 30 },
                 { "id": 1, "label": "Company", "size": 10 },
                 { "id": 2, "label": "Company", "size": 15 },
-                { "id": 3, "label": "Company" }
+                { "id": 3, "label": "Company" },
+                { "id": 4, "label": "Company", "size": 17 },
+                { "id": 5, "label": "Company", "size": 40 },
+                { "id": 6, "label": "Company", "size": 35 }
             ],
             "links": [
                 { "type": "EMPLOY", "source": 0, "target": 1 },
+                { "type": "EMPLOY", "source": 0, "target": 1 },
+                { "type": "EMPLOY", "source": 1, "target": 0 },
                 { "type": "EMPLOY", "source": 1, "target": 2 },
                 { "type": "EMPLOY", "source": 2, "target": 3 },
-                { "type": "EMPLOY", "source": 0, "target": 2 }
+                { "type": "EMPLOY", "source": 0, "target": 2 },
+                { "type": "EMPLOY", "source": 3, "target": 4 },
+                { "type": "EMPLOY", "source": 3, "target": 4 },
+                { "type": "EMPLOY", "source": 3, "target": 6 },
+                { "type": "EMPLOY", "source": 5, "target": 0 },
+                { "type": "EMPLOY", "source": 3, "target": 0 },
             ]
         };
         var data1 = {
@@ -164,9 +174,10 @@
             ]
         };
         var links = [
-            { "source": 0, "target": 10, "type": "" },
-            { "source": 1, "target": 11, "type": "" }
-        ]
+            { "source": 0 , "target": 10, "type": "" },
+            { "source": 1 , "target": 11, "type": "" },
+            { "source": 11, "target": 1 , "type": "" }
+        ];
         var network_graph = new NetworkGraph("vis");
         var graph0 = network_graph.drawNetworkGraph(data0, "force", 300, 400);
         var graph1 = network_graph.drawNetworkGraph(data1, "radius", 900, 400);
@@ -207,7 +218,7 @@
 </html>
 ```
 ### 使用效果
-<img src="others/NetworkGraph.jpg" height="auto" width="auto">
+<img src="others/NetworkGraph.png" height="auto" width="auto">
 
 ## 五、点击加入QQ群: [D3网络图可视化](https://jq.qq.com/?_wv=1027&k=5oRv4zr)  
 
